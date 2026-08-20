@@ -24,9 +24,7 @@ for (const directory of packageDirectories) {
   }
 
   if (manifest.version !== root.version) {
-    throw new Error(
-      `${manifestPath}: version ${manifest.version} does not match ${root.version}`,
-    );
+    throw new Error(`${manifestPath}: version ${manifest.version} does not match ${root.version}`);
   }
 
   if (manifest.repository?.url !== expectedRepository) {
