@@ -61,7 +61,7 @@ flowchart TD
 | Catalog    | `@olano/mcp-catalog`                                                              | Stable names for curated data.gov.sg datasets, ACRA shards, and SingStat tables                                           |
 | Domain     | `@olano/mcp-rail-sg`, `@olano/mcp-finance-sg`                                     | Rail-network queries and official mortgage-rate context with domain-specific caveats                                      |
 | Analysis   | `@olano/mcp-analytics`, `@olano/mcp-insights-sg`                                  | Local statistics, semantic routing, prompt discovery, compatibility records, aligned series, and derived calculations     |
-| Experience | `@olano/mcp-singapore`, `@olano/sg-cli`, `skills/*`, `plugins/*`                  | Aggregate MCP surface, cross-agency workflows, prompts, resources, CLI, Agent Skills, and Claude Code plugins             |
+| Experience | `@olano/mcp-singapore`, `@olano/sg-cli`, `skills/*`, `plugins/*`                  | Aggregate MCP surface, workflows, prompts, resources, CLI, Agent Skills, and Claude/Codex plugins                         |
 
 The catalog, finance, analytics, and insights packages are registration libraries. Focused executable
 servers are provided where a standalone provider or domain endpoint is useful. The aggregate server
@@ -97,12 +97,14 @@ transport. This keeps `list`, `prompts`, and explicit `tool` invocation behavior
 MCP client. `ask` is a deterministic router: it returns a recommendation and does not invoke an
 external model or automatically run the recommended tool.
 
-### Agent Skills and Claude Code plugins
+### Agent Skills and Claude/Codex plugins
 
 Canonical Agent Skills live under `skills/*`. The `plugins/*` directories package byte-identical
-copies beside one fixed aggregate tool profile because Claude Code caches each installed plugin as a
-self-contained directory. `scripts/check-claude-plugins.mjs` prevents copied skills, MCP profile
-arguments, and explicit plugin versions from drifting.
+copies beside one fixed aggregate tool profile because clients cache each installed plugin as a
+self-contained directory. Each directory contains provider-specific manifests and MCP configuration
+for Claude Code and Codex without duplicating the canonical skill source.
+`scripts/check-claude-plugins.mjs` and `scripts/check-openai-plugins.mjs` prevent copied skills,
+profile arguments, policy URLs, assets, and explicit plugin versions from drifting.
 
 ## Compatibility registry
 

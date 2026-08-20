@@ -1,0 +1,30 @@
+{
+  "name": "olano-singapore-economy",
+  "version": "0.3.0",
+  "description": "Singapore economy, prices, employment, income, trade, and population MCP tools and skills.",
+  "author": { "name": "Olano", "url": "https://olano.ai" },
+  "homepage": "https://github.com/olano-ai/mcp-singapore",
+  "repository": "https://github.com/olano-ai/mcp-singapore",
+  "license": "MIT",
+  "keywords": ["singapore", "economy", "singstat", "indicators"],
+  "skills": "./skills/",
+  "mcpServers": "./.codex-mcp.json",
+  "interface": {
+    "displayName": "Olano Singapore Economy",
+    "shortDescription": "Analyse Singapore economic and population series.",
+    "longDescription": "Analyse Singapore GDP, prices, employment, income, population, trade, retail, tourism, and business indicators with matched periods, units, frequencies, and adjustment status.",
+    "developerName": "Olano",
+    "category": "Productivity",
+    "capabilities": ["Read"],
+    "websiteURL": "https://github.com/olano-ai/mcp-singapore",
+    "privacyPolicyURL": "https://github.com/olano-ai/mcp-singapore/blob/main/PRIVACY.md",
+    "termsOfServiceURL": "https://github.com/olano-ai/mcp-singapore/blob/main/TERMS.md",
+    "defaultPrompt": [
+      "Compare Singapore CPI and retail-sales changes over exactly matched monthly periods.",
+      "Summarise the latest Singapore GDP, labour, income, and population indicators with units and dates."
+    ],
+    "brandColor": "#EF5350",
+    "composerIcon": "./assets/olano-singapore.svg",
+    "logo": "./assets/olano-singapore.svg"
+  }
+}

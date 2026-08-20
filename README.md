@@ -132,6 +132,25 @@ and bundles focused Agent Skills. Optional API values are declared as sensitive 
 configuration. See [Claude Code plugins](docs/claude-code.md) for the complete matrix, CLI setup,
 credential handling, updates, and validation.
 
+### Codex and OpenAI plugins
+
+The same repository is also an installable Codex plugin marketplace. Add it once, then use
+`/plugins` to choose the complete plugin or a focused `property`, `mobility`, `business`, `economy`,
+`civic`, or `finance` plugin:
+
+```bash
+codex plugin marketplace add olano-ai/mcp-singapore
+```
+
+Each repository plugin bundles focused Agent Skills and launches the matching local MCP profile.
+Optional credentials are inherited from `DATA_GOV_SG_API_KEY`, `ONEMAP_TOKEN`, and
+`LTA_DATAMALL_API_KEY`; no credential is stored in the plugin files. See
+[Codex and OpenAI plugins](docs/openai-plugins.md) for the matrix and installation details.
+
+Focused skills are also prepared for review in OpenAI's public Plugins Directory. Public
+skills-only listings do not include the local stdio server: install from this repository when you
+want the skills and MCP together.
+
 ## Example questions
 
 Ask these in an MCP client, or use `olano-sg examples [category]` to browse the packaged prompt

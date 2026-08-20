@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Olano Singapore</title>
+  <rect width="512" height="512" rx="112" fill="#fff"/>
+  <g fill="none" stroke="#EF5350" stroke-width="24" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M256 92 376 164 376 348 256 420 136 348 136 164Z"/>
+    <path d="M256 92V214M376 164 272 224M376 348 272 288M256 420V298M136 348 240 288M136 164 240 224"/>
+    <circle cx="256" cy="256" r="58" fill="#fff"/>
+  </g>
+</svg>
