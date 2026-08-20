@@ -38,6 +38,8 @@ jobs:
         run: npm pack --dry-run --workspaces
 
       - name: Publish packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           npm publish --workspace @olano/mcp-core --access public
           npm publish --workspace @olano/mcp-datagov --access public
