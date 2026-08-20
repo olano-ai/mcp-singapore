@@ -1,0 +1,124 @@
+name: Bootstrap Singapore MCP 0.3.0
+
+on:
+  push:
+    branches:
+      - 'release/v0.3.0-bootstrap'
+
+concurrency:
+  group: bootstrap-release-0.3.0
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  publish:
+    if: github.repository == 'olano-ai/mcp-singapore'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    environment: npm
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: 0193437b2fe4ae0b06d85baf85836feec490acc8
+          fetch-depth: 0
+
+      - name: Verify exact release commit
+        env:
+          EXPECTED_SHA: 0193437b2fe4ae0b06d85baf85836feec490acc8
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          git fetch --no-tags origin main
+          git merge-base --is-ancestor "$EXPECTED_SHA" origin/main
+          test "$(node -p "require('./package.json').version")" = '0.3.0'
+
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Install trusted-publishing npm client
+        run: npm install --global 'npm@11.9.0'
+
+      - run: npm ci
+      - run: npm run build
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npx vitest run
+      - run: node scripts/check-capability-coverage.mjs
+      - run: npm run check:plugins
+
+      - name: Run official Claude Code plugin validator
+        run: |
+          validator='@anthropic-ai/claude-code@2.1.237'
+          npm exec --yes --package="$validator" -- claude plugin validate .
+          for plugin in plugins/*; do
+            npm exec --yes --package="$validator" -- claude plugin validate "$plugin"
+          done
+
+      - name: Validate release metadata
+        run: node scripts/check-release.mjs
+        env:
+          RELEASE_TAG: v0.3.0
+
+      - run: node scripts/verify-packages.mjs
+
+      - name: Publish packages in dependency order
+        run: node scripts/publish-workspaces.mjs
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Install the pinned MCP Registry publisher
+        env:
+          MCP_PUBLISHER_VERSION: 1.8.1
+          MCP_PUBLISHER_SHA256: a06c9096dcb9727c13555b6be26c7effa707b01f06a4c561ba7a3635443cf2cc
+        run: |
+          archive=/tmp/mcp-publisher.tar.gz
+          curl --fail --location --retry 3 \
+            "https://github.com/modelcontextprotocol/registry/releases/download/v${MCP_PUBLISHER_VERSION}/mcp-publisher_linux_amd64.tar.gz" \
+            --output "$archive"
+          echo "${MCP_PUBLISHER_SHA256}  ${archive}" | sha256sum --check --strict
+          tar --extract --gzip --file "$archive" --directory /tmp mcp-publisher
+          sudo install --mode 0755 /tmp/mcp-publisher /usr/local/bin/mcp-publisher
+          mcp-publisher --help >/dev/null
+
+      - name: Publish official MCP Registry metadata
+        env:
+          MCP_REGISTRY_SERVER_PATH: io.github.olano-ai%2Fmcp-singapore
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          detail_url="https://registry.modelcontextprotocol.io/v0.1/servers/${MCP_REGISTRY_SERVER_PATH}/versions/${version}"
+          if curl --fail --silent --show-error "$detail_url" >/dev/null; then
+            echo 'MCP Registry version already published; skipping.'
+          else
+            mcp-publisher login github-oidc
+            published=false
+            for attempt in 1 2 3 4 5; do
+              if mcp-publisher publish; then
+                published=true
+                break
+              fi
+              if curl --fail --silent "$detail_url" >/dev/null; then
+                published=true
+                break
+              fi
+              sleep "$((attempt * 10))"
+            done
+            test "$published" = true
+          fi
+
+      - name: Create the release tag
+        env:
+          RELEASE_SHA: 0193437b2fe4ae0b06d85baf85836feec490acc8
+        run: |
+          if git ls-remote --exit-code --tags origin refs/tags/v0.3.0 >/dev/null; then
+            test "$(git rev-list -n 1 v0.3.0)" = "$RELEASE_SHA"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git tag --annotate v0.3.0 "$RELEASE_SHA" --message 'Singapore MCP 0.3.0'
+          git push origin refs/tags/v0.3.0
