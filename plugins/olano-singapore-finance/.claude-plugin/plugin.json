@@ -1,0 +1,19 @@
+{
+  "name": "olano-singapore-finance",
+  "version": "0.3.0",
+  "description": "Singapore official rates, mortgage scenarios, FX, income, and inflation MCP tools and skills.",
+  "author": { "name": "Olano", "url": "https://olano.ai" },
+  "homepage": "https://github.com/olano-ai/mcp-singapore",
+  "repository": "https://github.com/olano-ai/mcp-singapore",
+  "license": "MIT",
+  "keywords": ["singapore", "finance", "mortgage", "rates"],
+  "userConfig": {
+    "data_gov_sg_api_key": {
+      "type": "string",
+      "title": "data.gov.sg API key",
+      "description": "Optional data.gov.sg API key",
+      "sensitive": true,
+      "required": false
+    }
+  }
+}

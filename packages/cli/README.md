@@ -14,6 +14,9 @@ npx @olano/sg-cli prompts
 npx @olano/sg-cli profiles
 npx @olano/sg-cli profile mobility
 npx @olano/sg-cli tool weather_two_hour_forecast '{}'
+npx @olano/sg-cli setup claude property
+npx @olano/sg-cli setup claude mobility --dry-run
+npx @olano/sg-cli doctor claude property
 ```
 
 The npm package is `@olano/sg-cli`; the executable is deliberately shorter: `olano-sg`.
@@ -32,3 +35,9 @@ the aggregate server.
 `profile <name>` previews the exact names selected by that server-side prefix contract (including
 the always-available profile discovery tool). To run the MCP server with the reduced inventory,
 use `npx @olano/mcp-singapore --profile <name>` or set `OLANO_SG_PROFILE`.
+
+`setup claude [profile]` adds or refreshes the `olano-ai/mcp-singapore` Claude Code marketplace and
+installs the matching plugin at user scope. It defaults to the complete `all` profile; focused
+profiles are recommended for smaller tool inventories. `doctor claude [profile]` is read-only and
+reports whether Claude Code, the Olano marketplace, and that plugin are available. Profiles are
+`all`, `property`, `mobility`, `business`, `economy`, `civic`, and `finance`.

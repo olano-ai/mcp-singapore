@@ -10,12 +10,12 @@ package has a trusted publisher configured, the token fallback can be removed.
 1. Update the root and all workspace package versions to the same value.
 2. Merge the release commit into `main`.
 3. Push an annotated tag from that commit whose name is exactly `v<version>`
-   (for example, `v0.2.0`). The tag must point to a commit contained in `main`.
+   (for example, `v0.3.0`). The tag must point to a commit contained in `main`.
 4. Approve the `npm` GitHub environment deployment if approval is enabled.
 
 Pushing the tag starts the workflow; creating a GitHub Release is optional and
 does not publish a second time. The workflow runs the build, formatting, lint,
-tests, the mandatory competitor-parity contract, metadata validation, and dry-run
+tests, the mandatory capability-coverage contract, metadata validation, and dry-run
 package-content checks before publishing all workspaces in topological
 dependency order. A safe rerun skips package versions already present on npm.
 
@@ -23,7 +23,7 @@ After npm accepts the aggregate package, the workflow verifies the SHA-256 of a 
 `mcp-publisher` binary, authenticates to the official MCP Registry with GitHub OIDC, and publishes
 `server.json`. A safe rerun checks the exact registry version first and skips it when present.
 
-For v0.2.0 this includes the core provider packages, catalog, analytics,
+For v0.3.0 this includes the core provider packages, catalog, analytics,
 insights, rail, the optional finance adapter when retained, the aggregate
 `@olano/mcp-singapore` server, and `@olano/sg-cli`. The publisher discovers
 workspaces from `packages/*`, so future workspaces are included automatically.
@@ -64,6 +64,8 @@ npm run build
 npm run format:check
 npm run lint
 npx vitest run
+npm run check:plugins
+npm exec --yes --package='@anthropic-ai/claude-code@2.1.237' -- claude plugin validate .
 RELEASE_TAG="v$(node -p "require('./package.json').version")" node scripts/check-release.mjs
 node scripts/verify-packages.mjs
 docker build --tag olano-mcp-singapore:local .

@@ -109,11 +109,28 @@ npx -y @olano/sg-cli ask "Compare recent HDB resale prices in Bedok"
 npx -y @olano/sg-cli datasets economy
 npx -y @olano/sg-cli prompts
 npx -y @olano/sg-cli tool weather_two_hour_forecast '{}'
+npx -y @olano/sg-cli setup claude property
+npx -y @olano/sg-cli doctor claude property
 ```
 
 `ask` and its `query` alias use a deterministic local router. They recommend tools, extract obvious
 arguments, and report missing inputs; they do not send the question to an external model or silently
 execute the recommendation. Use `tool` for an explicit invocation.
+
+### Claude Code plugins
+
+This repository is also the installable Claude Code marketplace `olano`:
+
+```text
+/plugin marketplace add olano-ai/mcp-singapore
+/plugin install olano-singapore-property@olano
+```
+
+Choose the complete `olano-singapore` plugin or a focused `property`, `mobility`, `business`,
+`economy`, `civic`, or `finance` plugin. Each plugin starts the matching MCP profile automatically
+and bundles focused Agent Skills. Optional API values are declared as sensitive Claude Code user
+configuration. See [Claude Code plugins](docs/claude-code.md) for the complete matrix, CLI setup,
+credential handling, updates, and validation.
 
 ## Example questions
 
@@ -134,6 +151,18 @@ catalog. Results depend on upstream coverage and any credentials shown above.
 - “Find HDB carparks whose address contains `Bishan` and group them by carpark type.”
 - “Show bounded private-property transaction evidence for a project or district.”
 - “Build a property-area brief for Queenstown with OneMap location context.”
+
+The first example is a single MCP operation. `hdb_resale_stats` applies the exact town and flat-type
+filters, selects the latest available matching month by default, returns the transaction rows, and
+calculates the range, median, Q1, Q3, and price per square metre inside the server:
+
+```bash
+npx -y @olano/sg-cli tool hdb_resale_stats '{"town":"BEDOK","flatType":"4 ROOM"}'
+```
+
+Use `latestMonths`, `startMonth`, or `endMonth` to choose a different period. A direct dataset
+download is not required. This operation is available in the aggregate server's `all` and
+`property` profiles; it is not part of the focused `@olano/mcp-datagov` row-reader package.
 
 ### COE, buses, roads, parking, and taxis
 
@@ -221,8 +250,8 @@ It also exposes read-only resources at `singapore://about`, `singapore://sources
 
 ## Compatibility contract
 
-Version 0.2.0 includes a machine-readable compatibility registry for all 87 capabilities exposed by
-`@altronis/sgdata-mcp@0.5.3`. Each record names an Olano tool and marks the implementation as:
+Version 0.3.0 includes a machine-readable coverage registry for 87 stable `sg_*` compatibility
+capabilities. Each record names an Olano tool and marks the implementation as:
 
 - `native` — Olano implements the calculation or workflow directly;
 - `delegated` — a focused Olano tool covers the capability through the named upstream source; or
@@ -233,21 +262,28 @@ Use `singapore_capability_registry` to inspect the full mapping or
 `singapore_capability_check` to inspect one capability. The contract is checked in CI. Compatibility
 means coverage of the user need; it does not imply identical output, code, branding, or affiliation.
 
-Olano extends that baseline with OneMap routing and geocoding, live LTA DataMall tools, a dedicated
+Olano extends the compatibility contract with OneMap routing and geocoding, live LTA DataMall tools, a dedicated
 MRT/LRT package, stdio and Streamable HTTP, MCP prompts and resources, deterministic semantic
 routing, explicit freshness/source metadata, bounded retrieval, period-aware cross-series analysis,
 an optional persistent public-response cache, a standalone CLI, and packaged Agent Skills.
 
 ## Packaged Agent Skills
 
-The repository includes three reusable workflows for clients that support Agent Skills:
+The repository includes eight reusable workflows for clients that support Agent Skills:
 
 - `research-singapore` — general locations, mobility, economy, population, environment, and public
   services research;
 - `analyze-singapore-property` — HDB/private-property evidence, neighbourhood, transport, amenities,
   and educational mortgage scenarios;
 - `research-singapore-business` — ACRA/UEN lookup, business formations, sectors, labour, inflation,
-  exchange rates, retail, tourism, and trade context.
+  exchange rates, retail, tourism, and trade context;
+- `analyze-singapore-mobility` — MRT/LRT, bus, road, parking, taxi, routing, and COE analysis;
+- `analyze-singapore-economy` — period- and unit-aware economic indicator analysis;
+- `research-singapore-civic` — weather, health, education, population, safety, and public services;
+- `analyze-singapore-finance` — official rates and transparent mortgage and affordability scenarios;
+  and
+- `develop-with-singapore-mcp` — profile selection, exact tool calls, credentials, transports, and
+  troubleshooting.
 
 See [skills/README.md](skills/README.md) for installation and usage guidance.
 

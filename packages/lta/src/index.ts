@@ -95,7 +95,7 @@ export function registerLtaTools(server: McpServer): void {
 
 export function createLtaServer(): McpServer {
   const server = new McpServer(
-    { name: '@olano/mcp-lta', version: '0.2.0' },
+    { name: '@olano/mcp-lta', version: '0.3.0' },
     { instructions: 'Read-only access to LTA DataMall. Every tool requires LTA_DATAMALL_API_KEY.' },
   );
   registerLtaTools(server);

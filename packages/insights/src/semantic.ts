@@ -684,9 +684,14 @@ export function summarizeHdbResales(rows: Row[]): Record<string, unknown> {
     .map((row) => String(row.month ?? ''))
     .filter(Boolean)
     .sort();
+  const priceSummary = prices.length ? summarizeValues(prices) : null;
   return {
     transaction_count: prices.length,
-    price_sgd: prices.length ? summarizeValues(prices) : null,
+    price_sgd: priceSummary,
+    price_range_sgd: priceSummary ? { minimum: priceSummary.min, maximum: priceSummary.max } : null,
+    quartiles_sgd: priceSummary
+      ? { q1: priceSummary.p25, median: priceSummary.median, q3: priceSummary.p75 }
+      : null,
     price_per_sqm_sgd: perSquareMetre.length ? summarizeValues(perSquareMetre) : null,
     coverage: {
       first_month: periods[0] ?? null,
@@ -694,8 +699,32 @@ export function summarizeHdbResales(rows: Row[]): Record<string, unknown> {
     },
     by_town: groupedStats(rows, 'town', 'resale_price').slice(0, 30),
     by_flat_type: groupedStats(rows, 'flat_type', 'resale_price').slice(0, 20),
-    by_month: groupedStats(rows, 'month', 'resale_price').slice(-36),
+    by_month: groupedStats(rows, 'month', 'resale_price')
+      .sort((left, right) => String(left.label).localeCompare(String(right.label)))
+      .slice(-36),
   };
+}
+
+export function hdbSelectionIsComplete(input: {
+  fetchedAllMatchingRows: boolean;
+  explicitDateWindow: boolean;
+  startMonth?: string;
+  earliestFetchedMonth: string | null;
+  earliestSelectedMonth: string | null;
+}): boolean {
+  if (input.fetchedAllMatchingRows) return true;
+  if (input.explicitDateWindow) {
+    return Boolean(
+      input.startMonth &&
+      input.earliestFetchedMonth &&
+      input.earliestFetchedMonth < input.startMonth,
+    );
+  }
+  return Boolean(
+    input.earliestFetchedMonth &&
+    input.earliestSelectedMonth &&
+    input.earliestFetchedMonth < input.earliestSelectedMonth,
+  );
 }
 
 export interface CoeMetric {
@@ -986,6 +1015,7 @@ function source(datasetId: string, agency: string): Record<string, string> {
     freshness:
       'Upstream-defined; inspect the linked official metadata before presenting as current.',
     retrieval: 'Official API request with bounded in-memory caching.',
+    retrieved_at: new Date().toISOString(),
   };
 }
 
@@ -1381,9 +1411,9 @@ export function registerSemanticInsightTools(server: McpServer): void {
     'hdb_resale_stats',
     'sg_hdb_resale_stats',
     {
-      title: 'Summarise HDB resale transactions',
+      title: 'Query and summarise HDB resale transactions',
       description:
-        'Calculate bounded price, price-per-square-metre, town, flat-type and monthly statistics from official HDB resale registrations.',
+        'Use this tool for filtered HDB resale transactions, latest-period results, price ranges, medians, quartiles and price-per-square-metre statistics. It applies exact town and flat-type filters at data.gov.sg and performs the bounded aggregation inside the MCP; a direct API download is not required.',
       inputSchema: z.object({
         town: z.string().trim().min(2).max(80).optional(),
         flatType: z.string().trim().min(2).max(40).optional(),
@@ -1396,25 +1426,103 @@ export function registerSemanticInsightTools(server: McpServer): void {
           .string()
           .regex(/^\d{4}-\d{2}$/)
           .optional(),
+        latestMonths: z
+          .number()
+          .int()
+          .min(1)
+          .max(120)
+          .default(1)
+          .describe(
+            'Number of latest available matching months to include when startMonth and endMonth are omitted.',
+          ),
         sampleSize: z.number().int().min(20).max(5_000).default(1_000),
+        transactionLimit: z
+          .number()
+          .int()
+          .min(1)
+          .max(500)
+          .default(100)
+          .describe('Maximum selected transaction rows to return alongside the statistics.'),
       }),
     },
-    async ({ town, flatType, street, startMonth, endMonth, sampleSize }) => {
+    async ({
+      town,
+      flatType,
+      street,
+      startMonth,
+      endMonth,
+      latestMonths,
+      sampleSize,
+      transactionLimit,
+    }) => {
+      if (startMonth && endMonth && startMonth > endMonth) {
+        throw new Error('startMonth must be earlier than or equal to endMonth.');
+      }
       const filters: Record<string, string> = {};
       if (town) filters.town = town.toUpperCase();
       if (flatType) filters.flat_type = flatType.toUpperCase();
+      if (startMonth && endMonth && startMonth === endMonth) filters.month = startMonth;
       const payload = await dataGov.get('datastore_search', {
         resource_id: HDB_RESALE_ID,
         filters: Object.keys(filters).length ? JSON.stringify(filters) : undefined,
-        q: street,
         sort: 'month desc',
         limit: sampleSize,
         offset: 0,
       });
-      const rows = dataGovRows(payload).filter((row) => {
+      const sourceRows = dataGovRows(payload);
+      const normalizedStreet = normalizeText(street);
+      const fetchedRows = sourceRows.filter(
+        (row) => !normalizedStreet || normalizeText(row.street_name).includes(normalizedStreet),
+      );
+      const sourceAvailableMonths = [
+        ...new Set(sourceRows.map((row) => String(row.month ?? '')).filter(Boolean)),
+      ].sort((left, right) => right.localeCompare(left));
+      const availableMonths = [
+        ...new Set(fetchedRows.map((row) => String(row.month ?? '')).filter(Boolean)),
+      ].sort((left, right) => right.localeCompare(left));
+      const explicitDateWindow = Boolean(startMonth || endMonth);
+      const selectedMonths = explicitDateWindow
+        ? availableMonths.filter(
+            (month) => (!startMonth || month >= startMonth) && (!endMonth || month <= endMonth),
+          )
+        : availableMonths.slice(0, latestMonths);
+      const selectedMonthSet = new Set(selectedMonths);
+      const rows = fetchedRows.filter((row) => {
         const month = String(row.month ?? '');
-        return (!startMonth || month >= startMonth) && (!endMonth || month <= endMonth);
+        return explicitDateWindow
+          ? (!startMonth || month >= startMonth) && (!endMonth || month <= endMonth)
+          : selectedMonthSet.has(month);
       });
+      const resultEnvelope = record(record(payload).result);
+      const reportedTotal = numericValue(resultEnvelope.total);
+      const fetchedAllMatchingRows =
+        reportedTotal !== null
+          ? sourceRows.length >= reportedTotal
+          : sourceRows.length < sampleSize;
+      const earliestFetchedMonth = sourceAvailableMonths.at(-1) ?? null;
+      const earliestSelectedMonth = selectedMonths.at(-1) ?? null;
+      const latestSelectedMonth = selectedMonths[0] ?? null;
+      const selectionComplete = hdbSelectionIsComplete({
+        fetchedAllMatchingRows,
+        explicitDateWindow,
+        ...(startMonth ? { startMonth } : {}),
+        earliestFetchedMonth,
+        earliestSelectedMonth,
+      });
+      const singaporeMonthParts = new Intl.DateTimeFormat('en', {
+        timeZone: 'Asia/Singapore',
+        year: 'numeric',
+        month: '2-digit',
+      }).formatToParts(new Date());
+      const currentSingaporeMonth = `${singaporeMonthParts.find((part) => part.type === 'year')?.value}-${singaporeMonthParts.find((part) => part.type === 'month')?.value}`;
+      const latestMonthMayBePartial = latestSelectedMonth === currentSingaporeMonth;
+      const transactions = [...rows]
+        .sort((left, right) => {
+          const byMonth = String(right.month ?? '').localeCompare(String(left.month ?? ''));
+          if (byMonth) return byMonth;
+          return (numericValue(left.resale_price) ?? 0) - (numericValue(right.resale_price) ?? 0);
+        })
+        .slice(0, transactionLimit);
       return jsonResult({
         filters: {
           town: town?.toUpperCase() ?? null,
@@ -1423,16 +1531,42 @@ export function registerSemanticInsightTools(server: McpServer): void {
           start_month: startMonth ?? null,
           end_month: endMonth ?? null,
         },
+        period_selection: {
+          mode: explicitDateWindow ? 'explicit_date_window' : 'latest_available_months',
+          requested_latest_months: explicitDateWindow ? null : latestMonths,
+          selected_months: selectedMonths,
+          first_month: earliestSelectedMonth,
+          latest_month: latestSelectedMonth,
+          complete_within_source_matches: selectionComplete,
+          latest_month_may_be_partial: latestMonthMayBePartial,
+        },
         sample: {
           requested_rows: sampleSize,
-          fetched_rows: dataGovRows(payload).length,
+          source_matching_rows: reportedTotal,
+          fetched_rows: sourceRows.length,
+          locally_matching_rows: fetchedRows.length,
           included_rows: rows.length,
-          limitation:
-            'Statistics use the most recent bounded matching rows returned by data.gov.sg. Increase sampleSize for broader historical coverage.',
+          all_filtered_history_fetched: fetchedAllMatchingRows,
+          limitation: selectionComplete
+            ? 'The selected period is complete within the exact source filters returned by data.gov.sg.'
+            : 'Statistics use a bounded source sample and may omit matching rows in the selected period. Increase sampleSize or narrow the date window.',
         },
         ...summarizeHdbResales(rows),
-        latest_transactions: rows.slice(0, 5),
+        transactions,
+        transactions_returned: transactions.length,
+        transactions_truncated: rows.length > transactions.length,
+        latest_transactions: transactions.slice(0, 5),
+        calculation: {
+          aggregation_location: 'inside the Olano MCP tool',
+          quartile_method:
+            'inclusive linear interpolation using the zero-based position (n - 1) × percentile',
+          retrieval:
+            'exact town, flat-type and single-month filters plus descending month sort are applied by data.gov.sg; partial-street and multi-month selection are applied to the bounded response inside the MCP',
+        },
         source: source(HDB_RESALE_ID, 'Housing & Development Board'),
+        data_caveat: latestMonthMayBePartial
+          ? 'The latest selected month is the current Singapore calendar month and may still receive additional registered transactions.'
+          : 'Coverage reflects registrations published by the source as of retrieval time.',
         caveat:
           'Public transaction evidence is not a professional valuation or price recommendation.',
       });

@@ -214,11 +214,15 @@ function registerDataset(server: McpServer, spec: DatasetSpec): void {
     query: string | undefined,
     limit: number,
     offset: number,
+    filters?: Record<string, string>,
+    sort?: string,
   ): Promise<unknown> => {
     if (spec.format !== 'geojson') {
       return datastore.get('datastore_search', {
         resource_id: spec.datasetId,
         q: query,
+        filters: filters && Object.keys(filters).length ? JSON.stringify(filters) : undefined,
+        sort,
         limit,
         offset,
       });
@@ -254,19 +258,75 @@ function registerDataset(server: McpServer, spec: DatasetSpec): void {
     async () => jsonResult(await metadata.get(`datasets/${spec.datasetId}/metadata`)),
   );
 
-  server.registerTool(
-    `${spec.prefix}_search`,
-    {
-      title: `Search ${spec.title}`,
-      description: `Search and page through ${spec.title}. Source: ${source}.`,
-      inputSchema: z.object({
-        query: z.string().trim().max(200).optional(),
-        limit: z.number().int().min(1).max(100).default(25),
-        offset: z.number().int().min(0).default(0),
-      }),
-    },
-    async ({ query, limit, offset }) => jsonResult(await loadRows(query, limit, offset)),
-  );
+  if (spec.prefix === 'hdb_resale') {
+    server.registerTool(
+      `${spec.prefix}_search`,
+      {
+        title: 'Search raw HDB resale transactions',
+        description:
+          'Retrieve official HDB resale rows using exact town, flat-type, month and street filters with deterministic sorting and pagination. For medians, quartiles, price ranges or latest-period aggregation, use hdb_resale_stats in the aggregate Singapore MCP.',
+        inputSchema: z.object({
+          query: z
+            .string()
+            .trim()
+            .max(200)
+            .optional()
+            .describe(
+              'Legacy data.gov.sg full-text query. Prefer the structured filters because multi-term q searches may be rejected upstream.',
+            ),
+          town: z.string().trim().min(2).max(80).optional(),
+          flatType: z.string().trim().min(2).max(40).optional(),
+          month: z
+            .string()
+            .regex(/^\d{4}-\d{2}$/)
+            .optional(),
+          street: z.string().trim().min(2).max(100).optional(),
+          block: z.string().trim().min(1).max(20).optional(),
+          flatModel: z.string().trim().min(2).max(80).optional(),
+          sortOrder: z.enum(['asc', 'desc']).default('desc'),
+          limit: z.number().int().min(1).max(100).default(25),
+          offset: z.number().int().min(0).default(0),
+        }),
+      },
+      async ({
+        query,
+        town,
+        flatType,
+        month,
+        street,
+        block,
+        flatModel,
+        sortOrder,
+        limit,
+        offset,
+      }) => {
+        const filters: Record<string, string> = {};
+        if (town) filters.town = town.toUpperCase();
+        if (flatType) filters.flat_type = flatType.toUpperCase();
+        if (month) filters.month = month;
+        if (street) filters.street_name = street.toUpperCase();
+        if (block) filters.block = block.toUpperCase();
+        if (flatModel) filters.flat_model = flatModel;
+        return jsonResult(
+          await loadRows(query, limit, offset, filters, `month ${sortOrder},_id ${sortOrder}`),
+        );
+      },
+    );
+  } else {
+    server.registerTool(
+      `${spec.prefix}_search`,
+      {
+        title: `Search ${spec.title}`,
+        description: `Search and page through ${spec.title}. Source: ${source}.`,
+        inputSchema: z.object({
+          query: z.string().trim().max(200).optional(),
+          limit: z.number().int().min(1).max(100).default(25),
+          offset: z.number().int().min(0).default(0),
+        }),
+      },
+      async ({ query, limit, offset }) => jsonResult(await loadRows(query, limit, offset)),
+    );
+  }
 
   server.registerTool(
     `${spec.prefix}_profile`,

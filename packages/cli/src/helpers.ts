@@ -37,6 +37,11 @@ export const cliExamples: CliExample[] = [
   { category: 'mobility', prompt: 'Compare bids received with quota for COE Category A.' },
   { category: 'weather', prompt: 'What is the two-hour weather forecast across Singapore?' },
   { category: 'weather', prompt: 'Show current PSI and PM2.5 readings.' },
+  {
+    category: 'property',
+    prompt:
+      'Show recent 4-room HDB resale transactions in Bedok and calculate the median and quartiles.',
+  },
   { category: 'property', prompt: 'Summarise recent 4-room HDB resale prices in Ang Mo Kio.' },
   { category: 'property', prompt: 'Compare recent HDB resale evidence for Tampines and Bedok.' },
   { category: 'property', prompt: 'Find public private-property transactions matching Orchard.' },

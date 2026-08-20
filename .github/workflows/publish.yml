@@ -45,8 +45,19 @@ jobs:
       - run: npm run lint
       - run: npx vitest run
 
-      - name: Verify Altronis parity contract
-        run: node scripts/check-parity.mjs
+      - name: Verify capability coverage contract
+        run: node scripts/check-capability-coverage.mjs
+
+      - name: Validate Claude Code plugins
+        run: npm run check:plugins
+
+      - name: Run official Claude Code plugin validator
+        run: |
+          validator='@anthropic-ai/claude-code@2.1.237'
+          npm exec --yes --package="$validator" -- claude plugin validate .
+          for plugin in plugins/*; do
+            npm exec --yes --package="$validator" -- claude plugin validate "$plugin"
+          done
 
       - name: Validate release metadata
         run: node scripts/check-release.mjs

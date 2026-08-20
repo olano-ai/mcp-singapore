@@ -34,9 +34,22 @@ jobs:
         if: matrix.node-version == 22
         run: node scripts/verify-packages.mjs
 
-      - name: Verify Altronis parity contract
+      - name: Verify capability coverage contract
         if: matrix.node-version == 22
-        run: node scripts/check-parity.mjs
+        run: node scripts/check-capability-coverage.mjs
+
+      - name: Validate Claude Code plugins
+        if: matrix.node-version == 22
+        run: npm run check:plugins
+
+      - name: Run official Claude Code plugin validator
+        if: matrix.node-version == 22
+        run: |
+          validator='@anthropic-ai/claude-code@2.1.237'
+          npm exec --yes --package="$validator" -- claude plugin validate .
+          for plugin in plugins/*; do
+            npm exec --yes --package="$validator" -- claude plugin validate "$plugin"
+          done
 
   docker:
     runs-on: ubuntu-latest

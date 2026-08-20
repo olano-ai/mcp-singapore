@@ -1,0 +1,19 @@
+{
+  "name": "olano-singapore-economy",
+  "version": "0.3.0",
+  "description": "Singapore economy, prices, employment, income, trade, and population MCP tools and skills.",
+  "author": { "name": "Olano", "url": "https://olano.ai" },
+  "homepage": "https://github.com/olano-ai/mcp-singapore",
+  "repository": "https://github.com/olano-ai/mcp-singapore",
+  "license": "MIT",
+  "keywords": ["singapore", "economy", "singstat", "indicators"],
+  "userConfig": {
+    "data_gov_sg_api_key": {
+      "type": "string",
+      "title": "data.gov.sg API key",
+      "description": "Optional data.gov.sg API key",
+      "sensitive": true,
+      "required": false
+    }
+  }
+}

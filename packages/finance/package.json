@@ -1,6 +1,6 @@
 {
   "name": "@olano/mcp-finance-sg",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Official Singapore mortgage-rate context and transparent mortgage calculators for MCP",
   "type": "module",
   "license": "MIT",
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/server": "^2.0.0",
-    "@olano/mcp-core": "0.2.0",
+    "@olano/mcp-core": "0.3.0",
     "zod": "^4.1.5"
   },
   "publishConfig": {

@@ -3,13 +3,14 @@ import { McpServer } from '@modelcontextprotocol/server';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   alignSeries,
-  altronisCompatibilityRegistry,
+  capabilityCoverageRegistry,
   calculateTaxMix,
   coeMetric,
   filterCatalogueDatasets,
   formationNet,
   fxQuote,
   haversineMetres,
+  hdbSelectionIsComplete,
   parsePeriod,
   rankNearbyFeatures,
   rankWideRows,
@@ -124,14 +125,14 @@ afterEach(() => {
 describe('compatibility registry', () => {
   it('covers all 87 audited sg_* capabilities without duplicates', () => {
     expect(() => validateCompatibilityRegistry()).not.toThrow();
-    expect(altronisCompatibilityRegistry.map((item) => item.compatibility_tool).sort()).toEqual(
+    expect(capabilityCoverageRegistry.map((item) => item.compatibility_tool).sort()).toEqual(
       expectedCompatibilityNames,
     );
   });
 
   it('registers every compatibility alias and canonical insight tool', async () => {
     const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
-    const server = new McpServer({ name: 'insights-test', version: '0.2.0' });
+    const server = new McpServer({ name: 'insights-test', version: '0.3.0' });
     registerSingaporeInsightTools(server);
     const client = new Client({ name: 'test-client', version: '1.0.0' });
     await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
@@ -181,7 +182,7 @@ describe('compatibility registry', () => {
       ),
     );
     const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
-    const server = new McpServer({ name: 'insights-test', version: '0.2.0' });
+    const server = new McpServer({ name: 'insights-test', version: '0.3.0' });
     registerSingaporeInsightTools(server);
     const client = new Client({ name: 'test-client', version: '1.0.0' });
     await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
@@ -227,7 +228,7 @@ describe('compatibility registry', () => {
       ),
     );
     const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
-    const server = new McpServer({ name: 'insights-test', version: '0.2.0' });
+    const server = new McpServer({ name: 'insights-test', version: '0.3.0' });
     registerSingaporeInsightTools(server);
     const client = new Client({ name: 'test-client', version: '1.0.0' });
     await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
@@ -277,7 +278,7 @@ describe('compatibility registry', () => {
       }),
     );
     const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
-    const server = new McpServer({ name: 'insights-test', version: '0.2.0' });
+    const server = new McpServer({ name: 'insights-test', version: '0.3.0' });
     registerSingaporeInsightTools(server);
     const client = new Client({ name: 'test-client', version: '1.0.0' });
     await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
@@ -318,7 +319,7 @@ describe('compatibility registry', () => {
       ),
     );
     const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
-    const server = new McpServer({ name: 'insights-test', version: '0.2.0' });
+    const server = new McpServer({ name: 'insights-test', version: '0.3.0' });
     registerSingaporeInsightTools(server);
     const client = new Client({ name: 'test-client', version: '1.0.0' });
     await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
@@ -366,7 +367,7 @@ describe('compatibility registry', () => {
       ),
     );
     const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
-    const server = new McpServer({ name: 'insights-test', version: '0.2.0' });
+    const server = new McpServer({ name: 'insights-test', version: '0.3.0' });
     registerSingaporeInsightTools(server);
     const client = new Client({ name: 'test-client', version: '1.0.0' });
     await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
@@ -488,9 +489,162 @@ describe('semantic calculations', () => {
     expect(summary).toMatchObject({
       transaction_count: 3,
       price_sgd: { median: 600000 },
+      price_range_sgd: { minimum: 500000, maximum: 700000 },
+      quartiles_sgd: { q1: 550000, median: 600000, q3: 650000 },
       price_per_sqm_sgd: { median: 6000 },
       coverage: { first_month: '2026-01', latest_month: '2026-03' },
+      by_month: [{ label: '2026-01' }, { label: '2026-02' }, { label: '2026-03' }],
     });
+  });
+
+  it('reports bounded HDB period completeness conservatively', () => {
+    expect(
+      hdbSelectionIsComplete({
+        fetchedAllMatchingRows: false,
+        explicitDateWindow: true,
+        startMonth: '2024-07',
+        earliestFetchedMonth: '2024-07',
+        earliestSelectedMonth: '2024-07',
+      }),
+    ).toBe(false);
+    expect(
+      hdbSelectionIsComplete({
+        fetchedAllMatchingRows: false,
+        explicitDateWindow: true,
+        startMonth: '2024-07',
+        earliestFetchedMonth: '2024-06',
+        earliestSelectedMonth: '2024-07',
+      }),
+    ).toBe(true);
+    expect(
+      hdbSelectionIsComplete({
+        fetchedAllMatchingRows: false,
+        explicitDateWindow: true,
+        earliestFetchedMonth: '2024-06',
+        earliestSelectedMonth: '2024-07',
+      }),
+    ).toBe(false);
+    expect(
+      hdbSelectionIsComplete({
+        fetchedAllMatchingRows: false,
+        explicitDateWindow: false,
+        earliestFetchedMonth: '2026-07',
+        earliestSelectedMonth: '2026-08',
+      }),
+    ).toBe(true);
+  });
+
+  it('keeps only the latest 36 HDB monthly groups in chronological order', () => {
+    const rows = Array.from({ length: 40 }, (_, index) => {
+      const date = new Date(Date.UTC(2023, index, 1));
+      const month = `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}`;
+      return Array.from({ length: (index % 4) + 1 }, () => ({
+        month,
+        town: 'BEDOK',
+        flat_type: '4 ROOM',
+        resale_price: String(500000 + index),
+        floor_area_sqm: '100',
+      }));
+    }).flat();
+    const summary = summarizeHdbResales(rows) as { by_month: { label: string }[] };
+    expect(summary.by_month).toHaveLength(36);
+    expect(summary.by_month[0]?.label).toBe('2023-05');
+    expect(summary.by_month.at(-1)?.label).toBe('2026-04');
+  });
+
+  it('answers the latest-month HDB transaction and quartile workflow inside MCP', async () => {
+    const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          success: true,
+          result: {
+            total: 4,
+            records: [
+              {
+                month: '2026-08',
+                town: 'BEDOK',
+                flat_type: '4 ROOM',
+                block: '1',
+                street_name: 'BEDOK ROAD',
+                resale_price: '900000',
+                floor_area_sqm: '100',
+              },
+              {
+                month: '2026-08',
+                town: 'BEDOK',
+                flat_type: '4 ROOM',
+                block: '2',
+                street_name: 'BEDOK ROAD',
+                resale_price: '420000',
+                floor_area_sqm: '84',
+              },
+              {
+                month: '2026-08',
+                town: 'BEDOK',
+                flat_type: '4 ROOM',
+                block: '3',
+                street_name: 'BEDOK ROAD',
+                resale_price: '600000',
+                floor_area_sqm: '92',
+              },
+              {
+                month: '2026-07',
+                town: 'BEDOK',
+                flat_type: '4 ROOM',
+                block: '4',
+                street_name: 'BEDOK ROAD',
+                resale_price: '500000',
+                floor_area_sqm: '92',
+              },
+            ],
+          },
+        }),
+        { status: 200, headers: { 'content-type': 'application/json' } },
+      ),
+    );
+    vi.stubGlobal('fetch', fetchImpl);
+
+    const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
+    const server = new McpServer({ name: 'insights-test', version: '0.3.0' });
+    registerSingaporeInsightTools(server);
+    const client = new Client({ name: 'test-client', version: '1.0.0' });
+    await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
+
+    const result = await client.callTool({
+      name: 'hdb_resale_stats',
+      arguments: { town: 'Bedok', flatType: '4 ROOM' },
+    });
+
+    expect(result.isError).not.toBe(true);
+    expect(result.structuredContent).toMatchObject({
+      filters: { town: 'BEDOK', flat_type: '4 ROOM' },
+      period_selection: {
+        mode: 'latest_available_months',
+        requested_latest_months: 1,
+        selected_months: ['2026-08'],
+        complete_within_source_matches: true,
+      },
+      transaction_count: 3,
+      price_range_sgd: { minimum: 420000, maximum: 900000 },
+      quartiles_sgd: { q1: 510000, median: 600000, q3: 750000 },
+      transactions: [
+        expect.objectContaining({ block: '2', resale_price: '420000' }),
+        expect.objectContaining({ block: '3', resale_price: '600000' }),
+        expect.objectContaining({ block: '1', resale_price: '900000' }),
+      ],
+      transactions_returned: 3,
+      transactions_truncated: false,
+      calculation: { aggregation_location: 'inside the Olano MCP tool' },
+    });
+    const requestUrl = new URL(String(fetchImpl.mock.calls[0]![0]));
+    expect(JSON.parse(requestUrl.searchParams.get('filters')!)).toEqual({
+      town: 'BEDOK',
+      flat_type: '4 ROOM',
+    });
+    expect(requestUrl.searchParams.get('sort')).toBe('month desc');
+
+    await client.close();
+    await server.close();
   });
 
   it('derives COE demand and success measures', () => {
@@ -725,11 +879,13 @@ describe('semantic calculations', () => {
 
 describe('deterministic router', () => {
   it('routes a detailed HDB question and extracts safe arguments', () => {
-    const route = routeSingaporeQuestion('Show 4-room HDB resale prices in Ang Mo Kio');
+    const route = routeSingaporeQuestion(
+      'Show recent 4-room HDB resale transactions in Bedok and calculate the median and quartiles',
+    );
     expect(route.mode).toBe('recommend_only');
     expect(route.recommendations[0]).toMatchObject({
       tool: 'hdb_resale_stats',
-      arguments: { town: 'ANG MO KIO', flatType: '4 ROOM' },
+      arguments: { town: 'BEDOK', flatType: '4 ROOM' },
     });
   });
 

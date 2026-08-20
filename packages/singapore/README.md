@@ -74,6 +74,11 @@ the listener beyond a local or trusted network.
 - period-aware series alignment, comparison, correlation, visualisation, and local statistics; and
 - company, property-area, location, and market-context workflows.
 
+For recent HDB resale rows and derived statistics, call `hdb_resale_stats`. It accepts exact town
+and flat-type filters, defaults to the latest available matching month, returns bounded transaction
+rows, and calculates the range, median, quartiles, and price per square metre inside the MCP. Use
+`hdb_resale_search` only when raw sorted pagination is the desired output.
+
 Use the companion CLI to inspect the current inventory:
 
 ```bash
@@ -119,10 +124,10 @@ inspect its status.
 
 ## Compatibility
 
-The aggregate includes a machine-readable coverage contract for all 87 capabilities in
-`@altronis/sgdata-mcp@0.5.3`. `singapore_capability_registry` returns the full native, delegated, and
-constrained mapping; `singapore_capability_check` looks up one record. The mapping is validated in
-CI and does not imply identical implementation, output, branding, or affiliation.
+The aggregate includes a machine-readable coverage contract for 87 stable `sg_*` compatibility
+capabilities. `singapore_capability_registry` returns the full native, delegated, and constrained
+mapping; `singapore_capability_check` looks up one record. The mapping is validated in CI and does
+not imply identical implementation, output, branding, or affiliation.
 
 ## Data boundaries
 

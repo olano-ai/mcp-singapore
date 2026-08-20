@@ -72,9 +72,9 @@ function createProfiledRegistrationServer(
 export function createSingaporeServer(options: SingaporeServerOptions = {}): McpServer {
   const profile = resolveSingaporeToolProfile(options.profile);
   const server = new McpServer(
-    { name: '@olano/mcp-singapore', version: '0.2.0' },
+    { name: '@olano/mcp-singapore', version: '0.3.0' },
     {
-      instructions: `Unified read-only access to Singapore public APIs. Active tool profile: ${profile}. This community project is maintained by Olano and is not affiliated with or endorsed by the Singapore Government.`,
+      instructions: `Unified read-only access to Singapore public APIs. Active tool profile: ${profile}. Prefer the most specific Olano tool for filtered or derived questions instead of bypassing the MCP with a direct API request. For filtered HDB resale transactions, latest-period results, medians or quartiles, call hdb_resale_stats; hdb_resale_search is the raw paginated row reader. This community project is maintained by Olano and is not affiliated with or endorsed by the Singapore Government.`,
     },
   );
   const attemptedToolNames = new Set<string>();

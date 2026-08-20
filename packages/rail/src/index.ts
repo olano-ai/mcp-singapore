@@ -1058,7 +1058,7 @@ export function registerRailTools(server: McpServer): void {
 
 export function createRailServer(): McpServer {
   const server = new McpServer(
-    { name: '@olano/mcp-rail-sg', version: '0.2.0' },
+    { name: '@olano/mcp-rail-sg', version: '0.3.0' },
     {
       instructions:
         'Read-only Singapore MRT/LRT station, exit, line-code, interchange, nearest-location, and historical-count tools based on dated official LTA/data.gov.sg snapshots. Treat distance as straight-line and never infer live service status.',

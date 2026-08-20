@@ -22,10 +22,19 @@ const checks = [
     expectation: 'at least one SORA series with an observation',
   },
   {
-    name: 'hdb_resale_search',
-    arguments: { limit: 1, offset: 0 },
-    assert: (value) => nonEmptyArray(value?.result?.records),
-    expectation: 'result.records to contain an HDB transaction',
+    name: 'hdb_resale_stats',
+    arguments: { town: 'BEDOK', flatType: '4 ROOM' },
+    assert: (value) =>
+      value?.filters?.town === 'BEDOK' &&
+      value?.filters?.flat_type === '4 ROOM' &&
+      value?.transaction_count > 0 &&
+      nonEmptyArray(value?.transactions) &&
+      typeof value?.quartiles_sgd?.q1 === 'number' &&
+      typeof value?.quartiles_sgd?.median === 'number' &&
+      typeof value?.quartiles_sgd?.q3 === 'number' &&
+      value?.period_selection?.complete_within_source_matches === true,
+    expectation:
+      'latest-month Bedok 4-room rows, quartiles, and a complete MCP-bounded period selection',
   },
   {
     name: 'singstat_business_formations_monthly_latest',
@@ -43,7 +52,7 @@ const checks = [
 
 const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
 const server = createSingaporeServer();
-const client = new Client({ name: 'olano-live-smoke', version: '0.2.0' });
+const client = new Client({ name: 'olano-live-smoke', version: '0.3.0' });
 await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
 
 try {

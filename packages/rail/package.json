@@ -1,6 +1,6 @@
 {
   "name": "@olano/mcp-rail-sg",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "MCP server for authoritative Singapore MRT and LRT station, exit, line, and network data",
   "type": "module",
   "license": "MIT",
@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/server": "^2.0.0",
-    "@olano/mcp-core": "0.2.0",
+    "@olano/mcp-core": "0.3.0",
     "zod": "^4.1.5"
   },
   "publishConfig": {

@@ -1,0 +1,66 @@
+{
+  "name": "olano",
+  "description": "Olano plugins for Singapore public-data research and analysis.",
+  "version": "0.3.0",
+  "owner": {
+    "name": "Olano"
+  },
+  "plugins": [
+    {
+      "name": "olano-singapore",
+      "description": "The complete Olano Singapore MCP suite with all eight Agent Skills.",
+      "version": "0.3.0",
+      "source": "./plugins/olano-singapore",
+      "category": "productivity",
+      "tags": ["singapore", "mcp", "public-data", "research"]
+    },
+    {
+      "name": "olano-singapore-property",
+      "description": "Singapore HDB, private-property, neighbourhood, and mortgage tools and skills.",
+      "version": "0.3.0",
+      "source": "./plugins/olano-singapore-property",
+      "category": "data-science",
+      "tags": ["singapore", "property", "hdb", "mortgage"]
+    },
+    {
+      "name": "olano-singapore-mobility",
+      "description": "Singapore MRT, LRT, bus, road, parking, taxi, and COE tools and skills.",
+      "version": "0.3.0",
+      "source": "./plugins/olano-singapore-mobility",
+      "category": "productivity",
+      "tags": ["singapore", "transport", "mrt", "lta"]
+    },
+    {
+      "name": "olano-singapore-business",
+      "description": "Singapore company, UEN, sector, retail, tourism, and business-context tools and skills.",
+      "version": "0.3.0",
+      "source": "./plugins/olano-singapore-business",
+      "category": "data-science",
+      "tags": ["singapore", "business", "acra", "uen"]
+    },
+    {
+      "name": "olano-singapore-economy",
+      "description": "Singapore economy, prices, employment, income, trade, and population tools and skills.",
+      "version": "0.3.0",
+      "source": "./plugins/olano-singapore-economy",
+      "category": "data-science",
+      "tags": ["singapore", "economy", "singstat", "indicators"]
+    },
+    {
+      "name": "olano-singapore-civic",
+      "description": "Singapore weather, health, education, population, safety, and public-service tools and skills.",
+      "version": "0.3.0",
+      "source": "./plugins/olano-singapore-civic",
+      "category": "productivity",
+      "tags": ["singapore", "weather", "health", "education"]
+    },
+    {
+      "name": "olano-singapore-finance",
+      "description": "Singapore official rates, mortgage scenarios, FX, income, and inflation tools and skills.",
+      "version": "0.3.0",
+      "source": "./plugins/olano-singapore-finance",
+      "category": "data-science",
+      "tags": ["singapore", "finance", "mortgage", "rates"]
+    }
+  ]
+}
