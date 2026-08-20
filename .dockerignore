@@ -1,0 +1,15 @@
+# Send only the files required to install and compile the workspaces.
+# This prevents credentials, repository history, docs, tests, and local output
+# from ever entering the Docker build context.
+**
+!package.json
+!package-lock.json
+!tsconfig.base.json
+!LICENSE
+!packages/
+!packages/*/
+!packages/*/package.json
+!packages/*/tsconfig.json
+!packages/*/LICENSE
+!packages/*/src/
+!packages/*/src/**

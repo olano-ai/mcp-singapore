@@ -1,0 +1,47 @@
+{
+  "name": "@olano/sg-cli",
+  "version": "0.2.0",
+  "description": "Command-line interface for the Olano Singapore MCP suite",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olano-ai/mcp-singapore.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://github.com/olano-ai/mcp-singapore#readme",
+  "bugs": {
+    "url": "https://github.com/olano-ai/mcp-singapore/issues"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "singapore",
+    "cli",
+    "public-data",
+    "olano"
+  ],
+  "bin": {
+    "olano-sg": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "test": "vitest run src/helpers.test.ts"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/client": "^2.0.0",
+    "@olano/mcp-singapore": "0.2.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

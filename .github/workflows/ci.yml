@@ -15,8 +15,8 @@ jobs:
       matrix:
         node-version: [20, 22]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
@@ -25,3 +25,38 @@ jobs:
       - run: npm run format:check
       - run: npm run lint
       - run: npx vitest run
+
+      - name: Validate release metadata
+        if: matrix.node-version == 22
+        run: RELEASE_TAG="v$(node -p "require('./package.json').version")" node scripts/check-release.mjs
+
+      - name: Verify package contents
+        if: matrix.node-version == 22
+        run: node scripts/verify-packages.mjs
+
+      - name: Verify Altronis parity contract
+        if: matrix.node-version == 22
+        run: node scripts/check-parity.mjs
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Build container
+        run: docker build --tag olano-mcp-singapore:ci .
+      - name: Start container
+        run: docker run --detach --name olano-mcp-singapore --publish 3000:3000 olano-mcp-singapore:ci
+      - name: Verify Streamable HTTP server
+        run: |
+          for attempt in $(seq 1 30); do
+            status="$(curl --silent --output response.json --write-out '%{http_code}' http://127.0.0.1:3000/ || true)"
+            if [ "$status" = '404' ] && grep --quiet 'MCP endpoint: /mcp' response.json; then
+              exit 0
+            fi
+            sleep 1
+          done
+          docker logs olano-mcp-singapore
+          exit 1
+      - name: Stop container
+        if: always()
+        run: docker rm --force olano-mcp-singapore

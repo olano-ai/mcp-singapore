@@ -1,0 +1,5 @@
+interface:
+  display_name: 'Analyze Singapore Property'
+  short_description: 'Analyze Singapore property and mortgage scenarios'
+  brand_color: '#EF3340'
+  default_prompt: 'Use $analyze-singapore-property to compare this Singapore property or mortgage scenario with current public data.'
