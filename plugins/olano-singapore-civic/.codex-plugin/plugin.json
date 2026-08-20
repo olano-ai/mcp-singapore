@@ -1,0 +1,30 @@
+{
+  "name": "olano-singapore-civic",
+  "version": "0.3.0",
+  "description": "Singapore weather, health, education, population, safety, and public-service MCP tools and skills.",
+  "author": { "name": "Olano", "url": "https://olano.ai" },
+  "homepage": "https://github.com/olano-ai/mcp-singapore",
+  "repository": "https://github.com/olano-ai/mcp-singapore",
+  "license": "MIT",
+  "keywords": ["singapore", "weather", "health", "education"],
+  "skills": "./skills/",
+  "mcpServers": "./.codex-mcp.json",
+  "interface": {
+    "displayName": "Olano Singapore Civic",
+    "shortDescription": "Research Singapore civic and public-service data.",
+    "longDescription": "Research Singapore weather, air quality, health, education, childcare, population, safety, and public-service records while preserving coverage, freshness, and area-level limitations.",
+    "developerName": "Olano",
+    "category": "Productivity",
+    "capabilities": ["Read"],
+    "websiteURL": "https://github.com/olano-ai/mcp-singapore",
+    "privacyPolicyURL": "https://github.com/olano-ai/mcp-singapore/blob/main/PRIVACY.md",
+    "termsOfServiceURL": "https://github.com/olano-ai/mcp-singapore/blob/main/TERMS.md",
+    "defaultPrompt": [
+      "Show current Singapore PSI and weather observations with source timestamps and coverage.",
+      "Find official school, childcare, health, or public-service records for this Singapore area."
+    ],
+    "brandColor": "#EF5350",
+    "composerIcon": "./assets/olano-singapore.svg",
+    "logo": "./assets/olano-singapore.svg"
+  }
+}

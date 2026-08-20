@@ -13,7 +13,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",
-    "check:plugins": "node scripts/check-claude-plugins.mjs",
+    "check:plugins": "node scripts/check-claude-plugins.mjs && node scripts/check-openai-plugins.mjs",
     "test": "npm run build && vitest run && node scripts/check-capability-coverage.mjs && npm run check:plugins",
     "test:watch": "vitest"
   },

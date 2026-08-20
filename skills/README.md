@@ -45,6 +45,19 @@ result.
 
 ## Install
 
+### Codex marketplace
+
+The repository packages the skills with focused MCP profiles for Codex:
+
+```bash
+codex plugin marketplace add olano-ai/mcp-singapore
+```
+
+Open `/plugins` in Codex and install the complete Olano Singapore plugin or a focused property,
+mobility, business, economy, civic, or finance plugin.
+
+### Manual skill installation
+
 Copy the complete selected directory—not only its Markdown body—into the Agent Skills directory
 used by your client. For a client that uses a local `skills/` directory:
 

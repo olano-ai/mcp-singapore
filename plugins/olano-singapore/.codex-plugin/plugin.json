@@ -1,0 +1,30 @@
+{
+  "name": "olano-singapore",
+  "version": "0.3.0",
+  "description": "Complete Singapore public-data MCP suite and focused research skills maintained by Olano.",
+  "author": { "name": "Olano", "url": "https://olano.ai" },
+  "homepage": "https://github.com/olano-ai/mcp-singapore",
+  "repository": "https://github.com/olano-ai/mcp-singapore",
+  "license": "MIT",
+  "keywords": ["singapore", "mcp", "public-data", "research"],
+  "skills": "./skills/",
+  "mcpServers": "./.codex-mcp.json",
+  "interface": {
+    "displayName": "Olano Singapore",
+    "shortDescription": "Research Singapore public data across agencies.",
+    "longDescription": "Use focused workflows and the complete local Singapore MCP profile for property, transport, business, economic, civic, and finance research with source and freshness discipline.",
+    "developerName": "Olano",
+    "category": "Productivity",
+    "capabilities": ["Read"],
+    "websiteURL": "https://github.com/olano-ai/mcp-singapore",
+    "privacyPolicyURL": "https://github.com/olano-ai/mcp-singapore/blob/main/PRIVACY.md",
+    "termsOfServiceURL": "https://github.com/olano-ai/mcp-singapore/blob/main/TERMS.md",
+    "defaultPrompt": [
+      "Research Singapore public data for this question and cite the source, period, unit, and freshness.",
+      "Choose the smallest relevant Singapore MCP tools and explain any data limitations."
+    ],
+    "brandColor": "#EF5350",
+    "composerIcon": "./assets/olano-singapore.svg",
+    "logo": "./assets/olano-singapore.svg"
+  }
+}

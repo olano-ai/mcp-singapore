@@ -1,0 +1,50 @@
+{
+  "name": "olano",
+  "interface": {
+    "displayName": "Olano Singapore"
+  },
+  "plugins": [
+    {
+      "name": "olano-singapore",
+      "source": { "source": "local", "path": "./plugins/olano-singapore" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Productivity"
+    },
+    {
+      "name": "olano-singapore-property",
+      "source": { "source": "local", "path": "./plugins/olano-singapore-property" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Productivity"
+    },
+    {
+      "name": "olano-singapore-mobility",
+      "source": { "source": "local", "path": "./plugins/olano-singapore-mobility" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Productivity"
+    },
+    {
+      "name": "olano-singapore-business",
+      "source": { "source": "local", "path": "./plugins/olano-singapore-business" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Productivity"
+    },
+    {
+      "name": "olano-singapore-economy",
+      "source": { "source": "local", "path": "./plugins/olano-singapore-economy" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Productivity"
+    },
+    {
+      "name": "olano-singapore-civic",
+      "source": { "source": "local", "path": "./plugins/olano-singapore-civic" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Productivity"
+    },
+    {
+      "name": "olano-singapore-finance",
+      "source": { "source": "local", "path": "./plugins/olano-singapore-finance" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Productivity"
+    }
+  ]
+}

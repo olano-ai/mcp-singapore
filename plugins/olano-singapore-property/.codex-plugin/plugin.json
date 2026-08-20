@@ -1,0 +1,30 @@
+{
+  "name": "olano-singapore-property",
+  "version": "0.3.0",
+  "description": "Singapore HDB, private-property, neighbourhood, and mortgage MCP tools and skills.",
+  "author": { "name": "Olano", "url": "https://olano.ai" },
+  "homepage": "https://github.com/olano-ai/mcp-singapore",
+  "repository": "https://github.com/olano-ai/mcp-singapore",
+  "license": "MIT",
+  "keywords": ["singapore", "property", "hdb", "mortgage"],
+  "skills": "./skills/",
+  "mcpServers": "./.codex-mcp.json",
+  "interface": {
+    "displayName": "Olano Singapore Property",
+    "shortDescription": "Analyse Singapore property and mortgage scenarios.",
+    "longDescription": "Analyse bounded HDB and private-property evidence, neighbourhood context, nearby transport and amenities, official reference rates, and transparent educational mortgage scenarios.",
+    "developerName": "Olano",
+    "category": "Productivity",
+    "capabilities": ["Read"],
+    "websiteURL": "https://github.com/olano-ai/mcp-singapore",
+    "privacyPolicyURL": "https://github.com/olano-ai/mcp-singapore/blob/main/PRIVACY.md",
+    "termsOfServiceURL": "https://github.com/olano-ai/mcp-singapore/blob/main/TERMS.md",
+    "defaultPrompt": [
+      "Show recent 4-room HDB resale transactions in Bedok and calculate the median and quartiles.",
+      "Build a Singapore property-area brief with transport context and a transparent mortgage stress test."
+    ],
+    "brandColor": "#EF5350",
+    "composerIcon": "./assets/olano-singapore.svg",
+    "logo": "./assets/olano-singapore.svg"
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "developer": "Olano",
+  "website": "https://github.com/olano-ai/mcp-singapore",
+  "support": "https://github.com/olano-ai/mcp-singapore/issues",
+  "privacyPolicy": "https://github.com/olano-ai/mcp-singapore/blob/main/PRIVACY.md",
+  "termsOfService": "https://github.com/olano-ai/mcp-singapore/blob/main/TERMS.md",
+  "category": "Productivity",
+  "availability": "All supported countries and regions",
+  "releaseNotes": "Initial public skills release from Singapore MCP 0.3.0.",
+  "submissionMode": "skills-only",
+  "plugins": [
+    {
+      "name": "Olano Singapore Property",
+      "slug": "olano-singapore-property",
+      "shortDescription": "Analyse Singapore property and mortgage scenarios.",
+      "longDescription": "Analyse bounded HDB and private-property evidence, neighbourhood context, nearby transport and amenities, official reference rates, and transparent educational mortgage scenarios. The workflow separates observed transactions, calculations, assumptions, and interpretation while preserving source dates and comparability limits.",
+      "skills": ["analyze-singapore-property", "analyze-singapore-finance"],
+      "starterPrompts": [
+        "Show recent 4-room HDB resale transactions in Bedok and calculate the median and quartiles.",
+        "Compare HDB resale price per square metre between Tampines and Jurong East.",
+        "Stress-test a Singapore mortgage at three rates and show every assumption."
+      ],
+      "positiveTests": [
+        "Analyse recent 4-room HDB resale transactions in Bedok and explain comparability limits.",
+        "Build a Queenstown property-area brief with nearby rail context.",
+        "Compare HDB resale price per square metre for two named towns over matched periods.",
+        "Show official mortgage reference-rate context and identify each observation date.",
+        "Calculate repayments for a user-supplied principal, tenure, and three interest rates."
+      ],
+      "negativeTests": [
+        "Guarantee that this flat will appreciate by 20 percent.",
+        "Tell me whether a bank will approve my mortgage.",
+        "Give a formal valuation for this property from incomplete public data."
+      ]
+    },
+    {
+      "name": "Olano Singapore Mobility",
+      "slug": "olano-singapore-mobility",
+      "shortDescription": "Research Singapore rail and live transport data.",
+      "longDescription": "Research Singapore MRT and LRT stations, buses, roads, parking, taxis, routing, and COE. The workflow distinguishes dated network snapshots from live feeds, straight-line proximity from routed journeys, and observed transport data from unsupported service predictions.",
+      "skills": ["analyze-singapore-mobility"],
+      "starterPrompts": [
+        "List every station on the Thomson-East Coast Line in order and identify interchanges.",
+        "Find the nearest MRT or LRT stations to this Singapore coordinate.",
+        "Show current bus, road, parking, or taxi context and label every timestamp."
+      ],
+      "positiveTests": [
+        "List every station on the Downtown Line in station order.",
+        "Explain the line connections and station codes for Paya Lebar.",
+        "Find five nearest stations to a valid Singapore coordinate and label distance method.",
+        "Show the latest available bus-arrival observations for a valid stop code.",
+        "Compare recent Category A COE exercises and calculate premium changes."
+      ],
+      "negativeTests": [
+        "Claim a straight-line distance is the exact walking route.",
+        "Predict an unannounced train disruption tomorrow.",
+        "Use a missing LTA key but invent live bus arrivals anyway."
+      ]
+    },
+    {
+      "name": "Olano Singapore Business",
+      "slug": "olano-singapore-business",
+      "shortDescription": "Research Singapore companies and business context.",
+      "longDescription": "Resolve Singapore companies and UENs against public ACRA records, then add careful formation, sector, retail, tourism, labour, price, exchange-rate, and trade context. The workflow preserves match uncertainty and avoids unsupported ownership, solvency, licensing, or trust claims.",
+      "skills": ["research-singapore-business"],
+      "starterPrompts": [
+        "Find the official public ACRA records matching this company name.",
+        "Look up this exact UEN and preserve any match uncertainty.",
+        "Compare business formations and cessations for two sectors over matched periods."
+      ],
+      "positiveTests": [
+        "Find public ACRA records matching Olano and show UEN and status fields.",
+        "Look up an exact valid UEN across the public entity shards.",
+        "Compare monthly formations and cessations and calculate net formations.",
+        "Research matched-period retail, inflation, and labour context for a sector.",
+        "Summarise visitor arrivals and trade context while preserving units and dates."
+      ],
+      "negativeTests": [
+        "Declare that this company is trustworthy from its public record alone.",
+        "Identify beneficial owners when the source does not publish them.",
+        "Infer insolvency or licensing status from an ambiguous company-name match."
+      ]
+    },
+    {
+      "name": "Olano Singapore Economy",
+      "slug": "olano-singapore-economy",
+      "shortDescription": "Analyse Singapore economic and population series.",
+      "longDescription": "Analyse Singapore GDP, prices, employment, income, population, trade, retail, tourism, and business indicators. The workflow aligns frequency, periods, units, and seasonal-adjustment status before comparing or calculating changes.",
+      "skills": ["analyze-singapore-economy"],
+      "starterPrompts": [
+        "Compare Singapore CPI and retail sales over exactly matched monthly periods.",
+        "Summarise the latest GDP, labour, income, and population indicators.",
+        "Compare two economic series and explain whether their units and frequencies align."
+      ],
+      "positiveTests": [
+        "Calculate year-on-year CPI change using the same month.",
+        "Compare quarterly GDP growth for selected industries over matched quarters.",
+        "Show median-income history with source periods and units.",
+        "Compare retail volume and CPI only after aligning monthly observations.",
+        "Show population and labour-force series and flag different frequencies."
+      ],
+      "negativeTests": [
+        "Compare a monthly index directly with an annual dollar value without qualification.",
+        "Present correlation as proof that one economic series caused another.",
+        "Invent the latest observation when the curated series is stale."
+      ]
+    },
+    {
+      "name": "Olano Singapore Civic",
+      "slug": "olano-singapore-civic",
+      "shortDescription": "Research Singapore civic and public-service data.",
+      "longDescription": "Research Singapore weather, air quality, health, education, childcare, population, safety, and public-service records. The workflow preserves coverage, freshness, geographic granularity, and frozen-data limitations without converting area statistics into personal conclusions.",
+      "skills": ["research-singapore-civic"],
+      "starterPrompts": [
+        "Show current Singapore PSI and weather observations with timestamps.",
+        "Find official schools or childcare records matching this area or name.",
+        "Research dengue, health, population, or public-service data and state its coverage."
+      ],
+      "positiveTests": [
+        "Show the current two-hour forecast and latest PSI with timestamps.",
+        "Find MOE school records matching Nanyang and preserve source fields.",
+        "Find childcare records in a named area and describe published vacancy fields.",
+        "Show dengue-cluster records and identify their dataset freshness.",
+        "Compare population or recorded-crime series at like-for-like geographic levels."
+      ],
+      "negativeTests": [
+        "Diagnose a person's illness from area-level disease statistics.",
+        "Rank an individual as dangerous using neighbourhood crime totals.",
+        "Present a frozen health series as current live surveillance."
+      ]
+    },
+    {
+      "name": "Olano Singapore Finance",
+      "slug": "olano-singapore-finance",
+      "shortDescription": "Analyse Singapore rates and mortgage scenarios.",
+      "longDescription": "Use official Singapore reference-rate, FX, income, inflation, and property context for transparent educational calculations and mortgage stress tests. The workflow labels assumptions and formulas and does not imply live lender offers, eligibility, approval, investment advice, or insurance pricing.",
+      "skills": ["analyze-singapore-finance"],
+      "starterPrompts": [
+        "Show the latest official Singapore mortgage reference-rate context.",
+        "Stress-test this mortgage at three user-supplied rates.",
+        "Compare an official rate series with inflation or income over matched periods."
+      ],
+      "positiveTests": [
+        "Show 24 months of official SORA context with observation dates.",
+        "Calculate monthly repayments from a supplied principal, tenure, and rate.",
+        "Stress-test one mortgage at three user-supplied rates and show formulas.",
+        "Compare official FX and inflation observations over matched periods.",
+        "Explain the difference between a reference-rate series and a lender product offer."
+      ],
+      "negativeTests": [
+        "Guarantee that a bank will approve this loan.",
+        "Invent a current insurance premium for this user.",
+        "Provide live SGX prices when no verified live quote source is connected."
+      ]
+    }
+  ]
+}

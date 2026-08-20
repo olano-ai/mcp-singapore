@@ -1,0 +1,30 @@
+{
+  "name": "olano-singapore-finance",
+  "version": "0.3.0",
+  "description": "Singapore official rates, mortgage scenarios, FX, income, and inflation MCP tools and skills.",
+  "author": { "name": "Olano", "url": "https://olano.ai" },
+  "homepage": "https://github.com/olano-ai/mcp-singapore",
+  "repository": "https://github.com/olano-ai/mcp-singapore",
+  "license": "MIT",
+  "keywords": ["singapore", "finance", "mortgage", "rates"],
+  "skills": "./skills/",
+  "mcpServers": "./.codex-mcp.json",
+  "interface": {
+    "displayName": "Olano Singapore Finance",
+    "shortDescription": "Analyse Singapore rates and mortgage scenarios.",
+    "longDescription": "Use official Singapore reference-rate, FX, income, inflation, and property context for transparent educational calculations and mortgage stress tests without implying live offers or approvals.",
+    "developerName": "Olano",
+    "category": "Productivity",
+    "capabilities": ["Read"],
+    "websiteURL": "https://github.com/olano-ai/mcp-singapore",
+    "privacyPolicyURL": "https://github.com/olano-ai/mcp-singapore/blob/main/PRIVACY.md",
+    "termsOfServiceURL": "https://github.com/olano-ai/mcp-singapore/blob/main/TERMS.md",
+    "defaultPrompt": [
+      "Show the latest official Singapore mortgage reference-rate context with dates and units.",
+      "Stress-test this mortgage at three user-supplied rates and show every assumption and formula."
+    ],
+    "brandColor": "#EF5350",
+    "composerIcon": "./assets/olano-singapore.svg",
+    "logo": "./assets/olano-singapore.svg"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "olano-singapore-business",
+  "version": "0.3.0",
+  "description": "Singapore company, UEN, sector, retail, tourism, and business-context MCP tools and skills.",
+  "author": { "name": "Olano", "url": "https://olano.ai" },
+  "homepage": "https://github.com/olano-ai/mcp-singapore",
+  "repository": "https://github.com/olano-ai/mcp-singapore",
+  "license": "MIT",
+  "keywords": ["singapore", "business", "acra", "uen"],
+  "skills": "./skills/",
+  "mcpServers": "./.codex-mcp.json",
+  "interface": {
+    "displayName": "Olano Singapore Business",
+    "shortDescription": "Research Singapore companies and business context.",
+    "longDescription": "Resolve Singapore companies and UENs against public ACRA records, then add careful sector, formation, retail, tourism, labour, price, exchange-rate, and trade context.",
+    "developerName": "Olano",
+    "category": "Productivity",
+    "capabilities": ["Read"],
+    "websiteURL": "https://github.com/olano-ai/mcp-singapore",
+    "privacyPolicyURL": "https://github.com/olano-ai/mcp-singapore/blob/main/PRIVACY.md",
+    "termsOfServiceURL": "https://github.com/olano-ai/mcp-singapore/blob/main/TERMS.md",
+    "defaultPrompt": [
+      "Find official public ACRA records matching this company name and report UEN, status, and uncertainty.",
+      "Compare Singapore business formations and cessations over matched periods for these sectors."
+    ],
+    "brandColor": "#EF5350",
+    "composerIcon": "./assets/olano-singapore.svg",
+    "logo": "./assets/olano-singapore.svg"
+  }
+}

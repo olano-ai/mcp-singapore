@@ -1,0 +1,30 @@
+{
+  "name": "olano-singapore-mobility",
+  "version": "0.3.0",
+  "description": "Singapore MRT, LRT, bus, road, parking, taxi, and COE MCP tools and skills.",
+  "author": { "name": "Olano", "url": "https://olano.ai" },
+  "homepage": "https://github.com/olano-ai/mcp-singapore",
+  "repository": "https://github.com/olano-ai/mcp-singapore",
+  "license": "MIT",
+  "keywords": ["singapore", "transport", "mrt", "lta"],
+  "skills": "./skills/",
+  "mcpServers": "./.codex-mcp.json",
+  "interface": {
+    "displayName": "Olano Singapore Mobility",
+    "shortDescription": "Research Singapore rail and live transport data.",
+    "longDescription": "Research Singapore MRT and LRT stations, buses, roads, parking, taxis, routing, and COE while distinguishing static network snapshots from live operational feeds.",
+    "developerName": "Olano",
+    "category": "Productivity",
+    "capabilities": ["Read"],
+    "websiteURL": "https://github.com/olano-ai/mcp-singapore",
+    "privacyPolicyURL": "https://github.com/olano-ai/mcp-singapore/blob/main/PRIVACY.md",
+    "termsOfServiceURL": "https://github.com/olano-ai/mcp-singapore/blob/main/TERMS.md",
+    "defaultPrompt": [
+      "List every station on the Thomson-East Coast Line in order and identify interchanges.",
+      "Research live public-transport context for this Singapore location and label every feed timestamp."
+    ],
+    "brandColor": "#EF5350",
+    "composerIcon": "./assets/olano-singapore.svg",
+    "logo": "./assets/olano-singapore.svg"
+  }
+}
