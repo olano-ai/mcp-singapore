@@ -1,0 +1,5 @@
+interface:
+  display_name: 'Research Singapore Business'
+  short_description: 'Research Singapore companies and market context'
+  brand_color: '#EF3340'
+  default_prompt: 'Use $research-singapore-business to research this Singapore company or business question with authoritative public data.'

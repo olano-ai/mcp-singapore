@@ -1,0 +1,5 @@
+interface:
+  display_name: 'Research Singapore'
+  short_description: 'Research Singapore with authoritative public data'
+  brand_color: '#EF3340'
+  default_prompt: 'Use $research-singapore to answer this Singapore research question with authoritative sources and freshness checks.'

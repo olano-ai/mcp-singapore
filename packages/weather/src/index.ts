@@ -66,7 +66,7 @@ export function registerWeatherTools(server: McpServer): void {
 
 export function createWeatherServer(): McpServer {
   const server = new McpServer(
-    { name: '@olano/mcp-weather', version: '0.1.0' },
+    { name: '@olano/mcp-weather', version: '0.2.0' },
     {
       instructions:
         'Read-only weather and air-quality data from NEA/MSS through data.gov.sg. Cite NEA and data.gov.sg when using returned data.',

@@ -1,0 +1,94 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.olano-ai/mcp-singapore",
+  "title": "Singapore MCP by Olano",
+  "description": "Singapore public data, transport, rail, property, business, economy, weather, and analytics.",
+  "websiteUrl": "https://olano.ai",
+  "repository": {
+    "url": "https://github.com/olano-ai/mcp-singapore",
+    "source": "github"
+  },
+  "_meta": {
+    "io.modelcontextprotocol.registry/publisher-provided": {
+      "publisher": "Olano",
+      "documentation": "https://github.com/olano-ai/mcp-singapore#readme",
+      "keywords": [
+        "singapore",
+        "public-data",
+        "transport",
+        "mrt",
+        "property",
+        "business",
+        "economy",
+        "weather",
+        "analytics",
+        "olano"
+      ],
+      "examples": [
+        {
+          "name": "Research a neighbourhood",
+          "description": "Combine public property, rail, address, amenity, and weather context for a Singapore area."
+        },
+        {
+          "name": "Research a company",
+          "description": "Search public ACRA entities and add official Singapore business and economic context."
+        },
+        {
+          "name": "Explore MRT and LRT",
+          "description": "Search station complexes, lines, codes, exits, interchanges, and nearby stations."
+        },
+        {
+          "name": "Analyse public time series",
+          "description": "Align Singapore economic series by period and produce transparent statistics and charts."
+        }
+      ]
+    }
+  },
+  "version": "0.2.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "@olano/mcp-singapore",
+      "version": "0.2.0",
+      "runtimeHint": "npx",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "DATA_GOV_SG_API_KEY",
+          "description": "Optional data.gov.sg API key for production limits.",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "ONEMAP_TOKEN",
+          "description": "Optional OneMap token for geocoding, routing, themes, and address-based rail lookup.",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "LTA_DATAMALL_API_KEY",
+          "description": "Optional LTA DataMall Account Key for dynamic transport APIs.",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "OLANO_SG_CACHE_DIR",
+          "description": "Optional private directory for the persistent public-response cache.",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "OLANO_SG_PROFILE",
+          "description": "Optional aggregate tool profile: all, mobility, property, business, economy, civic, or finance.",
+          "isRequired": false,
+          "isSecret": false,
+          "default": "all",
+          "choices": ["all", "mobility", "property", "business", "economy", "civic", "finance"]
+        }
+      ]
+    }
+  ]
+}

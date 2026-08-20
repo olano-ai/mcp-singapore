@@ -1,6 +1,6 @@
 {
   "name": "@olano/singapore-mcp-monorepo",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "Open-source MCP servers for Singapore public data and services",
   "type": "module",
@@ -8,12 +8,12 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "npm run build -w @olano/mcp-core && npm run build -w @olano/mcp-datagov && npm run build -w @olano/mcp-onemap && npm run build -w @olano/mcp-lta && npm run build -w @olano/mcp-weather && npm run build -w @olano/mcp-singapore",
+    "build": "npm run build -w @olano/mcp-core && npm run build -w @olano/mcp-datagov && npm run build -w @olano/mcp-onemap && npm run build -w @olano/mcp-lta && npm run build -w @olano/mcp-weather && npm run build -w @olano/mcp-catalog && npm run build -w @olano/mcp-finance-sg && npm run build -w @olano/mcp-analytics && npm run build -w @olano/mcp-insights-sg && npm run build -w @olano/mcp-rail-sg && npm run build -w @olano/mcp-singapore && npm run build -w @olano/sg-cli",
     "clean": "npm run clean --workspaces --if-present",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",
-    "test": "npm run build && vitest run",
+    "test": "npm run build && vitest run && node scripts/check-parity.mjs",
     "test:watch": "vitest"
   },
   "engines": {
