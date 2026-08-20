@@ -1,0 +1,40 @@
+{
+  "name": "@olano/mcp-lta",
+  "version": "0.1.0",
+  "description": "MCP server for Singapore LTA DataMall APIs",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olano-ai/mcp-singapore.git",
+    "directory": "packages/lta"
+  },
+  "bin": {
+    "mcp-lta": "dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\""
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "^2.0.0",
+    "@olano/mcp-core": "0.1.0",
+    "zod": "^4.1.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

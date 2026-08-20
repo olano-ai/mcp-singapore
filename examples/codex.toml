@@ -1,0 +1,3 @@
+[mcp_servers.singapore]
+command = "npx"
+args = ["-y", "@olano/mcp-singapore"]

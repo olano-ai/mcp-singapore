@@ -1,0 +1,44 @@
+{
+  "name": "@olano/mcp-singapore",
+  "version": "0.1.0",
+  "description": "Unified MCP server for Singapore public data and services",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olano-ai/mcp-singapore.git",
+    "directory": "packages/singapore"
+  },
+  "bin": {
+    "mcp-singapore": "dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\""
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "^2.0.0",
+    "@olano/mcp-core": "0.1.0",
+    "@olano/mcp-datagov": "0.1.0",
+    "@olano/mcp-lta": "0.1.0",
+    "@olano/mcp-onemap": "0.1.0",
+    "@olano/mcp-weather": "0.1.0",
+    "zod": "^4.1.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
