@@ -1,0 +1,26 @@
+{
+  "name": "olano-singapore-property",
+  "version": "0.3.0",
+  "description": "Singapore HDB, private-property, neighbourhood, and mortgage MCP tools and skills.",
+  "author": { "name": "Olano", "url": "https://olano.ai" },
+  "homepage": "https://github.com/olano-ai/mcp-singapore",
+  "repository": "https://github.com/olano-ai/mcp-singapore",
+  "license": "MIT",
+  "keywords": ["singapore", "property", "hdb", "mortgage"],
+  "userConfig": {
+    "data_gov_sg_api_key": {
+      "type": "string",
+      "title": "data.gov.sg API key",
+      "description": "Optional data.gov.sg API key",
+      "sensitive": true,
+      "required": false
+    },
+    "onemap_token": {
+      "type": "string",
+      "title": "OneMap token",
+      "description": "Optional OneMap token",
+      "sensitive": true,
+      "required": false
+    }
+  }
+}

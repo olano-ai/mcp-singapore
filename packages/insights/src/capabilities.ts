@@ -35,7 +35,7 @@ function capability(
 const DGS = 'data.gov.sg and the named source agency';
 const SINGSTAT = 'SingStat Table Builder API';
 
-export const altronisCompatibilityRegistry: CompatibilityCapability[] = [
+export const capabilityCoverageRegistry: CompatibilityCapability[] = [
   capability(
     'sg_ask',
     'singapore_ask',
@@ -854,13 +854,13 @@ export const nativeCompatibilityAliases = new Set([
 ]);
 
 export function validateCompatibilityRegistry(): void {
-  const names = altronisCompatibilityRegistry.map((item) => item.compatibility_tool);
+  const names = capabilityCoverageRegistry.map((item) => item.compatibility_tool);
   if (names.length !== 87)
     throw new Error(`Expected 87 compatibility capabilities, received ${names.length}.`);
   const unique = new Set(names);
   if (unique.size !== names.length)
     throw new Error('Compatibility capability names must be unique.');
-  const nativeNames = altronisCompatibilityRegistry
+  const nativeNames = capabilityCoverageRegistry
     .filter((item) => item.mode === 'native')
     .map((item) => item.compatibility_tool);
   const missingNativeHandlers = nativeNames.filter((name) => !nativeCompatibilityAliases.has(name));
@@ -869,7 +869,7 @@ export function validateCompatibilityRegistry(): void {
       `Native compatibility capabilities must have executable alias handlers: ${missingNativeHandlers.join(', ')}.`,
     );
   }
-  const routeOnly = altronisCompatibilityRegistry.filter(
+  const routeOnly = capabilityCoverageRegistry.filter(
     (item) => item.retrieval === 'route_only' && item.compatibility_tool !== 'sg_ask',
   );
   if (routeOnly.length) {

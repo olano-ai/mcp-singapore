@@ -91,7 +91,7 @@ export function registerOneMapTools(server: McpServer): void {
 
 export function createOneMapServer(): McpServer {
   const server = new McpServer(
-    { name: '@olano/mcp-onemap', version: '0.2.0' },
+    { name: '@olano/mcp-onemap', version: '0.3.0' },
     {
       instructions:
         'Read-only access to Singapore Land Authority OneMap APIs. Every tool requires ONEMAP_TOKEN. Results use OneMap data and are not an endorsement by SLA.',

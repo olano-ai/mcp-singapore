@@ -1,0 +1,26 @@
+{
+  "name": "olano-singapore-civic",
+  "version": "0.3.0",
+  "description": "Singapore weather, health, education, population, safety, and public-service MCP tools and skills.",
+  "author": { "name": "Olano", "url": "https://olano.ai" },
+  "homepage": "https://github.com/olano-ai/mcp-singapore",
+  "repository": "https://github.com/olano-ai/mcp-singapore",
+  "license": "MIT",
+  "keywords": ["singapore", "weather", "health", "education"],
+  "userConfig": {
+    "data_gov_sg_api_key": {
+      "type": "string",
+      "title": "data.gov.sg API key",
+      "description": "Optional data.gov.sg API key",
+      "sensitive": true,
+      "required": false
+    },
+    "onemap_token": {
+      "type": "string",
+      "title": "OneMap token",
+      "description": "Optional OneMap token",
+      "sensitive": true,
+      "required": false
+    }
+  }
+}

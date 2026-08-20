@@ -2,7 +2,7 @@ import type { McpServer } from '@modelcontextprotocol/server';
 import { jsonResult } from '@olano/mcp-core';
 import * as z from 'zod/v4';
 import {
-  altronisCompatibilityRegistry,
+  capabilityCoverageRegistry,
   nativeCompatibilityAliases,
   validateCompatibilityRegistry,
   type CompatibilityCapability,
@@ -280,7 +280,7 @@ function registerCapabilityTools(server: McpServer): void {
     },
     async ({ mode, search }) => {
       const query = search?.toLowerCase();
-      const capabilities = altronisCompatibilityRegistry
+      const capabilities = capabilityCoverageRegistry
         .filter((item) => !mode || item.mode === mode)
         .filter(
           (item) =>
@@ -290,7 +290,7 @@ function registerCapabilityTools(server: McpServer): void {
               .includes(query),
         );
       return jsonResult({
-        audited_total: altronisCompatibilityRegistry.length,
+        audited_total: capabilityCoverageRegistry.length,
         returned: capabilities.length,
         capabilities,
         source: 'Olano compatibility audit registry',
@@ -306,7 +306,7 @@ function registerCapabilityTools(server: McpServer): void {
       inputSchema: z.object({ tool: z.string().trim().min(1).max(100) }),
     },
     async ({ tool }) => {
-      const capability = altronisCompatibilityRegistry.find(
+      const capability = capabilityCoverageRegistry.find(
         (item) => item.compatibility_tool === tool || item.olano_tool === tool,
       );
       return jsonResult({
@@ -321,7 +321,7 @@ function registerCapabilityTools(server: McpServer): void {
 
 function registerTransparentCompatibilityAliases(server: McpServer): void {
   const inputSchema = z.object({}).catchall(z.unknown());
-  for (const capability of altronisCompatibilityRegistry) {
+  for (const capability of capabilityCoverageRegistry) {
     if (nativeCompatibilityAliases.has(capability.compatibility_tool)) continue;
     server.registerTool(
       capability.compatibility_tool,
@@ -364,7 +364,7 @@ export function registerSingaporeInsightTools(server: McpServer): void {
 
 export {
   alignSeries,
-  altronisCompatibilityRegistry,
+  capabilityCoverageRegistry,
   nativeCompatibilityAliases,
   promptCategories,
   routeSingaporeQuestion,
@@ -380,6 +380,7 @@ export {
   formationNet,
   fxQuote,
   haversineMetres,
+  hdbSelectionIsComplete,
   periodGrowth,
   rankNearbyFeatures,
   rankWideRows,

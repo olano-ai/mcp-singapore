@@ -74,6 +74,68 @@ describe('catalog helpers', () => {
     expect(new Set(datasetSpecs.map(({ prefix }) => prefix)).size).toBe(datasetSpecs.length);
   });
 
+  it('supports structured filters and sorting for raw HDB resale searches', async () => {
+    const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          success: true,
+          result: {
+            total: 1,
+            records: [
+              {
+                month: '2026-08',
+                town: 'BEDOK',
+                flat_type: '4 ROOM',
+                street_name: 'BEDOK ROAD',
+                resale_price: '700000',
+              },
+            ],
+          },
+        }),
+        { status: 200, headers: { 'content-type': 'application/json' } },
+      ),
+    );
+    vi.stubGlobal('fetch', fetchImpl);
+
+    const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
+    const server = new McpServer({ name: 'catalog-test', version: '1.0.0' });
+    registerCatalogTools(server);
+    const client = new Client({ name: 'catalog-test-client', version: '1.0.0' });
+    await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
+
+    const response = await client.callTool({
+      name: 'hdb_resale_search',
+      arguments: {
+        query: 'BEDOK',
+        town: 'Bedok',
+        flatType: '4 ROOM',
+        month: '2026-08',
+        street: 'Bedok Road',
+        block: '12A',
+        flatModel: 'Model A',
+        limit: 100,
+      },
+    });
+
+    expect(response.isError).not.toBe(true);
+    expect(response.structuredContent).toMatchObject({ result: { total: 1 } });
+    const requestUrl = new URL(String(fetchImpl.mock.calls[0]![0]));
+    expect(JSON.parse(requestUrl.searchParams.get('filters')!)).toEqual({
+      town: 'BEDOK',
+      flat_type: '4 ROOM',
+      month: '2026-08',
+      street_name: 'BEDOK ROAD',
+      block: '12A',
+      flat_model: 'Model A',
+    });
+    expect(requestUrl.searchParams.get('q')).toBe('BEDOK');
+    expect(requestUrl.searchParams.get('sort')).toBe('month desc,_id desc');
+    expect(requestUrl.searchParams.get('limit')).toBe('100');
+
+    await client.close();
+    await server.close();
+  });
+
   it('searches the registered dengue GeoJSON dataset through poll-download', async () => {
     const fetchImpl = vi
       .fn<typeof fetch>()

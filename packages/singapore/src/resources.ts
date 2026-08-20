@@ -36,7 +36,7 @@ const sources = [
 const promptExamples = `# Singapore MCP query examples
 
 - Find official ACRA records for a company name or UEN.
-- Compare HDB resale prices by town and flat type over the last 12 months.
+- Show the latest available 4-room HDB resale transactions in Bedok and calculate median and quartiles with hdb_resale_stats.
 - Show the latest COE premium and the bids-to-quota ratio for Category B.
 - Which MRT/LRT stations and exits are nearest to these coordinates?
 - List the published station codes and lines for Paya Lebar interchange.
@@ -62,7 +62,7 @@ export function registerSingaporeResources(server: McpServer): void {
         {
           uri: uri.href,
           mimeType: 'text/markdown',
-          text: `# Olano Singapore MCP v0.2.0
+          text: `# Olano Singapore MCP v0.3.0
 
 Read-only MCP tools, prompts and resources for Singapore public APIs and datasets. The server supports stdio and Streamable HTTP and is maintained by Olano.
 

@@ -56,7 +56,7 @@ export function registerSingaporePrompts(server: McpServer): void {
     },
     ({ request }) =>
       prompt(
-        `Analyze this Singapore property request: ${request}\n\nSeparate comparable transaction evidence, location context and calculations. Explain comparability limits. Do not present the result as a valuation, lender approval or personal financial advice.`,
+        `Analyze this Singapore property request: ${request}\n\nFor filtered HDB resale rows, latest-period results, medians, quartiles or price-per-square-metre statistics, use hdb_resale_stats rather than a generic row reader or a direct API download. Use hdb_resale_search only for raw sorted pagination. Separate comparable transaction evidence, location context and calculations. Explain comparability limits and whether the latest month may be partial. Do not present the result as a valuation, lender approval or personal financial advice.`,
       ),
   );
 

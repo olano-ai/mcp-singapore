@@ -104,7 +104,7 @@ export const promptExamples: PromptExample[] = [
     prompt: 'Summarise recent 4-room HDB resale prices in Ang Mo Kio.',
     recommended_tools: ['hdb_resale_stats'],
     description:
-      'Calculate price and price-per-square-metre statistics from official transactions.',
+      'Select the latest matching month and calculate the range, median, quartiles and price-per-square-metre statistics inside the MCP.',
   },
   {
     id: 'hdb-resale-compare',

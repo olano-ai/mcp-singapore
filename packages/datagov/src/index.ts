@@ -97,7 +97,7 @@ export function registerDataGovTools(server: McpServer): void {
 
 export function createDataGovServer(): McpServer {
   const server = new McpServer(
-    { name: '@olano/mcp-datagov', version: '0.2.0' },
+    { name: '@olano/mcp-datagov', version: '0.3.0' },
     {
       instructions:
         'Read-only access to documented public data.gov.sg APIs. Cite data.gov.sg and the source agency when using returned data.',

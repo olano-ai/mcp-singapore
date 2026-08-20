@@ -8,12 +8,31 @@ import {
   renderExamples,
   selectAskTool,
 } from './helpers.js';
+import { doctorClaude, setupClaude } from './claude.js';
 
 async function main(): Promise<void> {
   const [command = 'help', ...args] = process.argv.slice(2);
+
+  if (command === 'setup' && args[0] === 'claude') {
+    const profile = args.find((argument) => !argument.startsWith('--') && argument !== 'claude');
+    const result = setupClaude(profile, { dryRun: args.includes('--dry-run') });
+    process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
+    return;
+  }
+
+  if (command === 'doctor' && args[0] === 'claude') {
+    const profile = args.find((argument) => !argument.startsWith('--') && argument !== 'claude');
+    const result = doctorClaude(profile);
+    process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
+    if (!result.claude_available || !result.marketplace_configured || !result.plugin_installed) {
+      process.exitCode = 1;
+    }
+    return;
+  }
+
   const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
   const server = createSingaporeServer();
-  const client = new Client({ name: '@olano/sg-cli', version: '0.2.0' });
+  const client = new Client({ name: '@olano/sg-cli', version: '0.3.0' });
   await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
 
   try {
@@ -113,7 +132,7 @@ async function main(): Promise<void> {
     }
 
     process.stdout.write(
-      `Olano Singapore CLI\n\nCommands:\n  list\n  search <text>\n  ask <natural-language question>\n  query <natural-language question>  Alias for ask\n  datasets [category]\n  examples [category]\n  prompts\n  profiles\n  profile <name>\n  tool <name> [JSON]\n`,
+      `Olano Singapore CLI\n\nCommands:\n  list\n  search <text>\n  ask <natural-language question>\n  query <natural-language question>  Alias for ask\n  datasets [category]\n  examples [category]\n  prompts\n  profiles\n  profile <name>\n  tool <name> [JSON]\n  setup claude [profile] [--dry-run]\n  doctor claude [profile]\n`,
     );
   } finally {
     await client.close();

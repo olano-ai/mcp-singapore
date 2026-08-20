@@ -1,0 +1,33 @@
+{
+  "name": "olano-singapore",
+  "version": "0.3.0",
+  "description": "Complete Singapore public-data MCP suite and focused research skills maintained by Olano.",
+  "author": { "name": "Olano", "url": "https://olano.ai" },
+  "homepage": "https://github.com/olano-ai/mcp-singapore",
+  "repository": "https://github.com/olano-ai/mcp-singapore",
+  "license": "MIT",
+  "keywords": ["singapore", "mcp", "public-data", "research"],
+  "userConfig": {
+    "data_gov_sg_api_key": {
+      "type": "string",
+      "title": "data.gov.sg API key",
+      "description": "Optional data.gov.sg API key",
+      "sensitive": true,
+      "required": false
+    },
+    "onemap_token": {
+      "type": "string",
+      "title": "OneMap token",
+      "description": "Optional OneMap token",
+      "sensitive": true,
+      "required": false
+    },
+    "lta_datamall_api_key": {
+      "type": "string",
+      "title": "LTA DataMall account key",
+      "description": "Optional LTA DataMall account key",
+      "sensitive": true,
+      "required": false
+    }
+  }
+}

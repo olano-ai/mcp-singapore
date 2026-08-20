@@ -1,10 +1,9 @@
 {
-  "audited_package": "@altronis/sgdata-mcp@0.5.3",
-  "audited_commit": "66c3cd7eec3f16efbb93d94bbb7c9c7408408d93",
-  "audited_at": "2026-08-20",
+  "contract_version": "1.0.0",
+  "reviewed_at": "2026-08-20",
   "expected_capability_count": 87,
-  "policy": "The capabilities object inventories exact compatibility entry points. The authoritative canonical mapping is packages/insights/src/capabilities.ts; check-parity requires every canonical tool to be registered and executable, rejecting route-only mappings except the explicitly recommendation-only sg_ask router. Implementations use official sources and never fabricate unavailable data.",
-  "canonical_mapping_source": "packages/insights/src/capabilities.ts#altronisCompatibilityRegistry",
+  "policy": "The capabilities object inventories exact compatibility entry points. The authoritative canonical mapping is packages/insights/src/capabilities.ts; check-capability-coverage requires every canonical tool to be registered and executable, rejecting route-only mappings except the explicitly recommendation-only sg_ask router. Implementations use official sources and never fabricate unavailable data.",
+  "canonical_mapping_source": "packages/insights/src/capabilities.ts#capabilityCoverageRegistry",
   "capabilities": {
     "sg_ask": ["sg_ask"],
     "sg_visualize": ["sg_visualize"],

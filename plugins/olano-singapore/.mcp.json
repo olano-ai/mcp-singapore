@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "singapore": {
+      "command": "npx",
+      "args": ["-y", "@olano/mcp-singapore@0.3.0", "--profile", "all"],
+      "env": {
+        "DATA_GOV_SG_API_KEY": "${user_config.data_gov_sg_api_key}",
+        "ONEMAP_TOKEN": "${user_config.onemap_token}",
+        "LTA_DATAMALL_API_KEY": "${user_config.lta_datamall_api_key}"
+      }
+    }
+  }
+}
