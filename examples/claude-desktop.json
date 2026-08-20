@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "singapore": {
+      "command": "npx",
+      "args": ["-y", "@olano/mcp-singapore"]
+    }
+  }
+}
