@@ -1,0 +1,46 @@
+name: Bootstrap publish to npm
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    if: github.repository == 'olano-ai/mcp-singapore'
+    runs-on: ubuntu-latest
+    environment: npm
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm test
+
+      - name: Validate release metadata
+        run: node scripts/check-release.mjs
+        env:
+          RELEASE_TAG: v0.1.0
+
+      - name: Verify package contents
+        run: npm pack --dry-run --workspaces
+
+      - name: Publish packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm publish --workspace @olano/mcp-core --access public
+          npm publish --workspace @olano/mcp-datagov --access public
+          npm publish --workspace @olano/mcp-onemap --access public
+          npm publish --workspace @olano/mcp-lta --access public
+          npm publish --workspace @olano/mcp-weather --access public
+          npm publish --workspace @olano/mcp-singapore --access public
