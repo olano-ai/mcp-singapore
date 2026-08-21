@@ -1,7 +1,6 @@
 # 🇸🇬 Singapore MCP by Olano
 
-[![npm](https://img.shields.io/npm/v/%40olano%2Fmcp-singapore?logo=npm&label=npm)](https://www.npmjs.com/package/@olano/mcp-singapore)
-[![npm downloads](https://img.shields.io/npm/dm/%40olano%2Fmcp-singapore?logo=npm&label=downloads)](https://www.npmjs.com/package/@olano/mcp-singapore)
+[![npm](https://img.shields.io/npm/v/%40olano%2Fmcp-singapore?logo=npm&label=npm&color=2563eb)](https://www.npmjs.com/package/@olano/mcp-singapore)
 [![CI](https://github.com/olano-ai/mcp-singapore/actions/workflows/ci.yml/badge.svg)](https://github.com/olano-ai/mcp-singapore/actions/workflows/ci.yml)
 [![MCP Registry](https://img.shields.io/badge/MCP_Registry-published-16a34a)](https://registry.modelcontextprotocol.io/)
 [![Node.js 20+](https://img.shields.io/badge/Node.js-20%2B-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
