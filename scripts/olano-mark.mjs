@@ -8,10 +8,10 @@ import { deflateSync } from 'node:zlib';
  * Claude Desktop shows for the .mcpb bundle. Keeping one source means the icon a user sees in the
  * install dialog cannot drift from the icon in the plugin listing.
  *
- * The mark is deliberately reduced: an octagon network, the Marina Bay Sands silhouette, and the
- * Singapore Flyer. Landmark detail that reads at 512px — window grids, wheel spokes, the Esplanade
- * lattice — turns to mush at the 16-32px sizes this asset is actually used at, so it is left out.
- * Everything is sized to clear the octagon's interior; nothing crosses the frame.
+ * The background is transparent and the mark fills the canvas. A white plate underneath made the
+ * icon read as a bright square with a small detail inside it against Claude Desktop's dark
+ * extension tile, which is where this asset is seen most; red on transparent carries on both light
+ * and dark surfaces. Pass `plate: true` for a surface that needs the white square back.
  */
 
 export const RED = '#E5262C';
@@ -19,8 +19,8 @@ export const NAVY = '#1E2A3A';
 export const CANVAS = 512;
 
 const PLATE_RADIUS = 96;
-const OCTAGON_RADIUS = 196;
-const OCTAGON_STROKE = 13;
+const OCTAGON_RADIUS = 219;
+const OCTAGON_STROKE = 15;
 
 /** Octagon vertices, offset 22.5 degrees so the mark has a flat top and bottom edge. */
 const VERTICES = Array.from({ length: 8 }, (_, index) => {
@@ -31,10 +31,10 @@ const VERTICES = Array.from({ length: 8 }, (_, index) => {
   ];
 });
 
-const INNER_RADIUS = 132;
-const SPOKE_STROKE = 8;
-const OUTER_NODE = 21;
-const INNER_NODE = 10;
+const INNER_RADIUS = 148;
+const SPOKE_STROKE = 9;
+const OUTER_NODE = 24;
+const INNER_NODE = 11;
 
 /** A second ring of nodes, rotated half a step, so vertex-to-node links triangulate the band. */
 const INNER = Array.from({ length: 8 }, (_, index) => {
@@ -151,10 +151,10 @@ function shapeToSvg(shape) {
 }
 
 /**
- * @param {{ plate?: boolean }} options Set plate false for a transparent background.
+ * @param {{ plate?: boolean }} options Set plate true to sit the mark on a white rounded square.
  * @returns {string} The mark as a standalone SVG document.
  */
-export function markSvg({ plate = true } = {}) {
+export function markSvg({ plate = false } = {}) {
   const body = SHAPES.map((shape) => `    ${shapeToSvg(shape)}`).join('\n');
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CANVAS} ${CANVAS}" role="img" aria-labelledby="title">
   <title id="title">Olano Singapore</title>
@@ -228,7 +228,7 @@ function sample(x, y, plate) {
  * @param {{ plate?: boolean, supersample?: number }} options
  * @returns {Buffer} A PNG image.
  */
-export function renderOlanoIcon(size = 512, { plate = true, supersample = 3 } = {}) {
+export function renderOlanoIcon(size = 512, { plate = false, supersample = 3 } = {}) {
   const pixels = Buffer.alloc(size * size * 4);
   const step = CANVAS / (size * supersample);
   const samplesPerPixel = supersample * supersample;
