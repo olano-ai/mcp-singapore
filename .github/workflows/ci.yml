@@ -51,6 +51,10 @@ jobs:
             npm exec --yes --package="$validator" -- claude plugin validate "$plugin"
           done
 
+      - name: Verify generated brand assets are committed
+        if: matrix.node-version == 22
+        run: npm run check:brand
+
       - name: Build the Claude Desktop bundle
         if: matrix.node-version == 22
         run: npm run build:mcpb
