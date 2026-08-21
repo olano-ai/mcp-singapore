@@ -14,6 +14,8 @@
     "format:check": "prettier --check .",
     "lint": "eslint .",
     "check:plugins": "node scripts/check-claude-plugins.mjs && node scripts/check-openai-plugins.mjs",
+    "build:brand": "node scripts/build-brand.mjs",
+    "check:brand": "node scripts/build-brand.mjs --check",
     "build:mcpb": "node scripts/build-mcpb.mjs",
     "check:mcpb": "node scripts/check-mcpb.mjs",
     "test": "npm run build && vitest run && node scripts/check-capability-coverage.mjs && npm run check:plugins",

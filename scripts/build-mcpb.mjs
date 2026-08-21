@@ -5,7 +5,7 @@ import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 import { Client, InMemoryTransport } from '@modelcontextprotocol/client';
 import { createSingaporeServer } from '../packages/singapore/dist/index.js';
-import { renderOlanoIcon } from './mcpb-icon.mjs';
+import { renderOlanoIcon } from './olano-mark.mjs';
 
 /**
  * Builds the Claude Desktop MCP Bundle (.mcpb).

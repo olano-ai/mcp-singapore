@@ -1,0 +1,147 @@
+name: Release
+
+# The release button. Run it from Actions -> Release -> Run workflow.
+#
+# It sets one new version across every file that carries one, runs the full release gate, commits
+# and tags on main, then calls publish.yml to push to npm, publish server.json to the MCP Registry,
+# and attach the Claude Desktop bundle to a new GitHub Release. Nothing is tagged unless every check
+# passed first, so a failed run leaves main untouched.
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: Which part of the version to increase
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+        default: patch
+      version:
+        description: Exact version instead of a bump, for example 0.4.0 (optional)
+        type: string
+      dry_run:
+        description: Validate everything without tagging or publishing
+        type: boolean
+        default: false
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    name: Version, verify, tag
+    if: github.repository == 'olano-ai/mcp-singapore'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write
+    outputs:
+      tag: ${{ steps.version.outputs.tag }}
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Set the new version everywhere
+        id: version
+        env:
+          BUMP: ${{ inputs.bump }}
+          EXACT: ${{ inputs.version }}
+        run: |
+          if [ -n "$EXACT" ]; then
+            node scripts/bump-version.mjs --to "$EXACT"
+          else
+            node scripts/bump-version.mjs --bump "$BUMP"
+          fi
+
+      - name: Refuse to reuse an existing tag
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          if git ls-remote --exit-code --tags origin "refs/tags/${TAG}" >/dev/null 2>&1; then
+            echo "::error::${TAG} already exists. Pick a different version." >&2
+            exit 1
+          fi
+
+      # Everything below is the release gate. It runs against the bumped tree, before anything is
+      # tagged or pushed, so a failure here costs nothing but the run.
+      - run: npm run build
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npx vitest run
+      - run: node scripts/check-capability-coverage.mjs
+      - run: npm run check:brand
+      - run: npm run check:plugins
+
+      - name: Run official Claude Code plugin validator
+        run: |
+          validator='@anthropic-ai/claude-code@2.1.237'
+          npm exec --yes --package="$validator" -- claude plugin validate .
+          for plugin in plugins/*; do
+            npm exec --yes --package="$validator" -- claude plugin validate "$plugin"
+          done
+
+      - name: Validate release metadata
+        run: node scripts/check-release.mjs
+        env:
+          RELEASE_TAG: ${{ steps.version.outputs.tag }}
+
+      - run: node scripts/verify-packages.mjs
+      - run: npm run build:mcpb
+      - run: npm run check:mcpb
+
+      - name: Commit and tag
+        if: ${{ !inputs.dry_run }}
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit --all --message "chore: release ${TAG}"
+          git tag --annotate "${TAG}" --message "Release ${TAG}"
+          git push origin HEAD:main
+          git push origin "${TAG}"
+
+      - name: Summary
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          {
+            if [ "$DRY_RUN" = 'true' ]; then
+              echo "### Dry run for ${TAG}"
+              echo
+              echo 'Every check passed. Nothing was committed, tagged, or published.'
+            else
+              echo "### Released ${TAG}"
+              echo
+              echo 'Tagged on main. Publishing to npm, the MCP Registry, and GitHub Releases.'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  publish:
+    name: Publish
+    needs: prepare
+    if: ${{ !inputs.dry_run }}
+    permissions:
+      contents: write
+      id-token: write
+    uses: ./.github/workflows/publish.yml
+    with:
+      ref: ${{ needs.prepare.outputs.tag }}
+    secrets: inherit

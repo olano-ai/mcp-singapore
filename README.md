@@ -11,11 +11,199 @@ economy, public services, and official financial reference data.
 
 **291 read-only tools · 8 Agent Skills · 7 plugins · stdio and Streamable HTTP**
 
-Built and maintained in Singapore by [Olano](https://olano.ai).
+Built and maintained in Singapore by Olano — the [olano.ai](https://olano.ai) platform for applied
+AI, and [olano.sg](https://olano.sg), our Singapore AI studio. Singapore MCP is the studio's open
+contribution to the local AI community, and it is free to use under the MIT licence.
 
 > Singapore MCP is an independent community project. It is not affiliated with, endorsed by, or an
 > official product of the Singapore Government or any government agency. “Official” below describes
 > an upstream data source, not this software.
+
+## Overview
+
+Singapore MCP is a read-only bridge between an AI client and Singapore's official public data:
+data.gov.sg, OneMap, LTA DataMall, and SingStat. Every answer keeps its source agency, dataset
+identifier, observation period, units, and freshness caveats, so you can check the work. Most of it
+runs with no API key at all.
+
+The monorepo separates provider access, reusable analysis, and user-facing workflows. Install the
+aggregate server for the complete experience or a focused executable when you only need one
+provider.
+
+| Package                  | Role                                                                                                                      | Credentials                           |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `@olano/mcp-singapore`   | Aggregate server: every provider, catalog, insight, rail, finance, analytics, prompt, resource, and cross-agency workflow | Depends on the selected tool          |
+| `@olano/mcp-datagov`     | data.gov.sg catalog, metadata, rows, and real-time feeds                                                                  | Optional data.gov.sg key              |
+| `@olano/mcp-onemap`      | OneMap address search, reverse geocoding, and routing                                                                     | OneMap token                          |
+| `@olano/mcp-lta`         | LTA DataMall bus arrivals, traffic, parking, and taxi feeds                                                               | LTA DataMall Account Key              |
+| `@olano/mcp-weather`     | Forecasts, temperature, rainfall, and PSI                                                                                 | Optional data.gov.sg key              |
+| `@olano/mcp-catalog`     | Curated Singapore datasets, 27 ACRA entity shards, and SingStat tables                                                    | Optional data.gov.sg key              |
+| `@olano/mcp-insights-sg` | Prompt discovery, semantic routing, period-aware comparisons, and derived public-data insights                            | Depends on the routed source          |
+| `@olano/mcp-rail-sg`     | MRT/LRT stations, codes, lines, exits, interchanges, and nearest-location tools                                           | None; OneMap token for address lookup |
+| `@olano/mcp-finance-sg`  | Official mortgage reference-rate history and transparent local mortgage calculations                                      | Optional data.gov.sg key              |
+| `@olano/mcp-analytics`   | Deterministic local statistics, comparisons, correlations, and text sparklines                                            | None                                  |
+| `@olano/mcp-core`        | Shared transport, safe HTTP client, caching, retries, and MCP result helpers                                              | None                                  |
+| `@olano/sg-cli`          | Search, inspect, route, and invoke the complete suite from a terminal                                                     | Depends on the selected tool          |
+
+Focused stdio/HTTP executables are available for the aggregate, data.gov.sg, OneMap, LTA, weather,
+and rail packages. The other packages are reusable registration libraries composed by the aggregate
+server.
+
+## Example questions
+
+Ask these in an MCP client, or use `olano-sg examples [category]` to browse the packaged prompt
+catalog. Results depend on upstream coverage and, for a few tools, on the optional keys in
+[Credentials and caching](#credentials-and-caching). Not installed yet? Start with
+[Quick start](#quick-start).
+
+### Companies and ACRA
+
+- “Find the official public ACRA records matching `Olano` and show the UEN and entity status.”
+- “Look up this exact UEN across all ACRA shards; make any match uncertainty explicit.”
+- “Compare monthly business formations and cessations, then calculate net formations.”
+- “How have formations changed for two SSIC sectors over matched periods?”
+
+### HDB and private property
+
+- “Show recent 4-room HDB resale transactions in Bedok and calculate the median and quartiles.”
+- “Compare HDB resale price per square metre between Tampines and Jurong East.”
+- “Find HDB carparks whose address contains `Bishan` and group them by carpark type.”
+- “Show bounded private-property transaction evidence for a project or district.”
+- “Build a property-area brief for Queenstown with OneMap location context.”
+
+The first example is a single MCP operation. `hdb_resale_stats` applies the exact town and flat-type
+filters, selects the latest available matching month by default, returns the transaction rows, and
+calculates the range, median, Q1, Q3, and price per square metre inside the server:
+
+```bash
+npx -y @olano/sg-cli tool hdb_resale_stats '{"town":"BEDOK","flatType":"4 ROOM"}'
+```
+
+Use `latestMonths`, `startMonth`, or `endMonth` to choose a different period. A direct dataset
+download is not required. This operation is available in the aggregate server's `all` and
+`property` profiles; it is not part of the focused `@olano/mcp-datagov` row-reader package.
+
+### COE, buses, roads, parking, and taxis
+
+- “What is the latest Category B COE premium, quota, number of bids, and bid-to-quota ratio?”
+- “Show the last 12 Category A bidding exercises and changes from the prior premium.”
+- “When are the next buses arriving at this bus stop?”
+- “List current traffic incidents and nearby traffic-camera images.”
+- “Show live LTA carpark availability and taxi availability.”
+
+### MRT and LRT
+
+- “What are the MRT/LRT codes and line connections for Paya Lebar?”
+- “List every station on the Thomson-East Coast Line.”
+- “Which official station exits belong to City Hall?”
+- “Find the five nearest rail stations to latitude 1.29027, longitude 103.851959.”
+- “Find rail stations near `1 Fullerton Road` and state whether distance is straight-line or walking.”
+- “List MRT/LRT interchanges and show the date of each bundled source snapshot.”
+
+### Weather, PSI, rainfall, and dengue
+
+- “Show the current two-hour forecast for Singapore areas.”
+- “What are the latest temperature and rainfall readings by station?”
+- “Show the 24-hour forecast, four-day outlook, and latest PSI readings.”
+- “Find current dengue-cluster records and include the dataset freshness.”
+
+### Education and childcare
+
+- “Find MOE schools matching `Nanyang` and show the official dataset fields.”
+- “Find ECDA childcare centres in an area and summarise any published vacancy fields.”
+- “Resolve this address with OneMap before comparing nearby school or childcare records.”
+
+### GDP, prices, labour, income, FX, tax, and trade
+
+- “Show the latest GDP growth observations and compare selected industries.”
+- “Calculate year-on-year CPI change using the same month, not adjacent months.”
+- “Compare retail-sales year-on-year change with CPI over matched monthly periods.”
+- “Show median-income history, employment by sector, and calculated employment growth.”
+- “Show unemployment and resident labour-force participation history.”
+- “Find official MAS exchange-rate observations and preserve each published unit.”
+- “Show IRAS tax-collection history and calculate category shares only where units match.”
+- “Show Singapore merchandise-trade history from SingStat.”
+
+### Tourism, population, health, energy, crime, and hawkers
+
+- “Rank visitor-arrival source markets for the latest published period.”
+- “Show tourism receipts history and warn me if the curated dataset is stale.”
+- “Compare population, live births, deaths, marriages, and divorces over available periods.”
+- “Show disease-case history, its last observation, and a clear frozen-data warning if applicable.”
+- “Show electricity-generation history and the source agency.”
+- “Compare like-for-like recorded-crime series without inferring neighbourhood or individual risk.”
+- “Find NEA hawker centres matching `Maxwell` and profile the published fields.”
+
+### Mortgage reference rates
+
+- “Show the latest official SORA and published housing-loan reference-rate series.”
+- “Show 24 months of official mortgage reference-rate context and identify the latest period.”
+- “At a user-supplied illustrative rate, calculate the monthly payment on a S$600,000 mortgage.”
+- “Stress-test that mortgage at 2.5%, 3.5%, and 4.5%, with assumptions shown.”
+
+These are official reference-rate statistics and educational calculations, not live lender offers,
+credit decisions, or personal financial advice.
+
+### Cross-series analysis and discovery
+
+- “Align these quarterly GDP and monthly CPI series to annual periods and explain the aggregation.”
+- “Compare two matched series and return observations, Pearson correlation, and calculation notes.”
+- “Create a text sparkline and chart-ready points for these observations.”
+- “Which Olano tool should answer: ‘How competitive was the latest COE bidding exercise?’”
+- “List prompt categories, then show examples for rail and property.”
+- “Show the compatibility record for `sg_cross_dataset`.”
+
+### Advanced: multi-step and cross-agency questions
+
+These are where the eight packaged Agent Skills and the analytics tools earn their keep. Each one
+spans several agencies or several periods, so the answer has to align units, match periods, and keep
+every source attached. Ask them in a client that has the Agent Skills installed — the
+[Claude Code plugin](#claude-code) or the [Claude Desktop extension](#claude-desktop-app) — and
+Claude will chain the tools itself.
+
+**Property and affordability**
+
+- “Build a Queenstown property brief: recent 4-room resale medians and quartiles, the nearest MRT
+  stations with walking versus straight-line distance stated, nearby schools and childcare, and an
+  illustrative mortgage at 3.5% on the median price. Show every assumption and source.”
+- “Compare HDB resale price per square metre across Tampines, Bedok, and Jurong East over matched
+  months, then test whether the ranking survives switching to a different flat type.”
+- “Stress-test a S$600,000 mortgage at 2.5%, 3.5%, and 4.5% against the latest published SORA and
+  housing-loan reference rates, and say plainly which parts are official statistics and which are my
+  own illustrative assumptions.”
+
+**Economy and cross-series analysis**
+
+- “Align quarterly GDP with monthly CPI to annual periods, explain the aggregation you used, then
+  report the Pearson correlation with its calculation notes and any period you had to drop.”
+- “Compare retail sales year-on-year against CPI year-on-year over exactly matched months, and flag
+  any month where the two series use different bases or units.”
+- “Track median income, employment by sector, and resident labour-force participation over the
+  longest matched window available, and calculate employment growth per sector.”
+
+**Business and sector research**
+
+- “Profile the ACRA records matching a company name, resolve the UEN across all 27 shards, make any
+  match uncertainty explicit, then put it in context with formations and cessations for its SSIC
+  sector over matched periods.”
+- “Compare net business formations across two SSIC sectors, then check whether the pattern lines up
+  with retail sales and visitor arrivals for the same periods.”
+
+**Mobility and location**
+
+- “Plan a comparison of three addresses for a new office: resolve each with OneMap, list rail
+  stations within walking distance, show live carpark availability nearby, and summarise the
+  trade-offs without inferring anything the data does not support.”
+- “Show the last 12 Category A and Category B COE bidding exercises with premium changes, quota,
+  bids, and bid-to-quota ratio, and say which exercises were most competitive and why.”
+
+**Data quality and method**
+
+- “Answer using only tools that disclose their source agency and observation period, and list any
+  part of my question you could not answer within that constraint.”
+- “Show me which Olano tool you would use for this question and why, before you run it.”
+- “Repeat that analysis, but this time show the freshness of every dataset you touched and warn me
+  about any that is stale or frozen.”
 
 ## Quick start
 
@@ -409,31 +597,6 @@ npx -y @olano/sg-cli examples
 **New here? Stop now and try a question.** The rest of this README documents packages, transports,
 credentials, data sources, and development.
 
-## What ships
-
-The monorepo separates provider access, reusable analysis, and user-facing workflows. Install the
-aggregate server for the complete experience or a focused executable when you only need one
-provider.
-
-| Package                  | Role                                                                                                                      | Credentials                           |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
-| `@olano/mcp-singapore`   | Aggregate server: every provider, catalog, insight, rail, finance, analytics, prompt, resource, and cross-agency workflow | Depends on the selected tool          |
-| `@olano/mcp-datagov`     | data.gov.sg catalog, metadata, rows, and real-time feeds                                                                  | Optional data.gov.sg key              |
-| `@olano/mcp-onemap`      | OneMap address search, reverse geocoding, and routing                                                                     | OneMap token                          |
-| `@olano/mcp-lta`         | LTA DataMall bus arrivals, traffic, parking, and taxi feeds                                                               | LTA DataMall Account Key              |
-| `@olano/mcp-weather`     | Forecasts, temperature, rainfall, and PSI                                                                                 | Optional data.gov.sg key              |
-| `@olano/mcp-catalog`     | Curated Singapore datasets, 27 ACRA entity shards, and SingStat tables                                                    | Optional data.gov.sg key              |
-| `@olano/mcp-insights-sg` | Prompt discovery, semantic routing, period-aware comparisons, and derived public-data insights                            | Depends on the routed source          |
-| `@olano/mcp-rail-sg`     | MRT/LRT stations, codes, lines, exits, interchanges, and nearest-location tools                                           | None; OneMap token for address lookup |
-| `@olano/mcp-finance-sg`  | Official mortgage reference-rate history and transparent local mortgage calculations                                      | Optional data.gov.sg key              |
-| `@olano/mcp-analytics`   | Deterministic local statistics, comparisons, correlations, and text sparklines                                            | None                                  |
-| `@olano/mcp-core`        | Shared transport, safe HTTP client, caching, retries, and MCP result helpers                                              | None                                  |
-| `@olano/sg-cli`          | Search, inspect, route, and invoke the complete suite from a terminal                                                     | Depends on the selected tool          |
-
-Focused stdio/HTTP executables are available for the aggregate, data.gov.sg, OneMap, LTA, weather,
-and rail packages. The other packages are reusable registration libraries composed by the aggregate
-server.
-
 ## More ways to run it
 
 ### Run without saving MCP configuration
@@ -521,108 +684,6 @@ For client-specific reference, updates, and validation, see
 [Claude Desktop](docs/claude-desktop.md), [Claude Code plugins](docs/claude-code.md), and
 [Codex and OpenAI plugins](docs/openai-plugins.md).
 
-## Example questions
-
-Ask these in an MCP client, or use `olano-sg examples [category]` to browse the packaged prompt
-catalog. Results depend on upstream coverage and any credentials shown above.
-
-### Companies and ACRA
-
-- “Find the official public ACRA records matching `Olano` and show the UEN and entity status.”
-- “Look up this exact UEN across all ACRA shards; make any match uncertainty explicit.”
-- “Compare monthly business formations and cessations, then calculate net formations.”
-- “How have formations changed for two SSIC sectors over matched periods?”
-
-### HDB and private property
-
-- “Show recent 4-room HDB resale transactions in Bedok and calculate the median and quartiles.”
-- “Compare HDB resale price per square metre between Tampines and Jurong East.”
-- “Find HDB carparks whose address contains `Bishan` and group them by carpark type.”
-- “Show bounded private-property transaction evidence for a project or district.”
-- “Build a property-area brief for Queenstown with OneMap location context.”
-
-The first example is a single MCP operation. `hdb_resale_stats` applies the exact town and flat-type
-filters, selects the latest available matching month by default, returns the transaction rows, and
-calculates the range, median, Q1, Q3, and price per square metre inside the server:
-
-```bash
-npx -y @olano/sg-cli tool hdb_resale_stats '{"town":"BEDOK","flatType":"4 ROOM"}'
-```
-
-Use `latestMonths`, `startMonth`, or `endMonth` to choose a different period. A direct dataset
-download is not required. This operation is available in the aggregate server's `all` and
-`property` profiles; it is not part of the focused `@olano/mcp-datagov` row-reader package.
-
-### COE, buses, roads, parking, and taxis
-
-- “What is the latest Category B COE premium, quota, number of bids, and bid-to-quota ratio?”
-- “Show the last 12 Category A bidding exercises and changes from the prior premium.”
-- “When are the next buses arriving at this bus stop?”
-- “List current traffic incidents and nearby traffic-camera images.”
-- “Show live LTA carpark availability and taxi availability.”
-
-### MRT and LRT
-
-- “What are the MRT/LRT codes and line connections for Paya Lebar?”
-- “List every station on the Thomson-East Coast Line.”
-- “Which official station exits belong to City Hall?”
-- “Find the five nearest rail stations to latitude 1.29027, longitude 103.851959.”
-- “Find rail stations near `1 Fullerton Road` and state whether distance is straight-line or walking.”
-- “List MRT/LRT interchanges and show the date of each bundled source snapshot.”
-
-### Weather, PSI, rainfall, and dengue
-
-- “Show the current two-hour forecast for Singapore areas.”
-- “What are the latest temperature and rainfall readings by station?”
-- “Show the 24-hour forecast, four-day outlook, and latest PSI readings.”
-- “Find current dengue-cluster records and include the dataset freshness.”
-
-### Education and childcare
-
-- “Find MOE schools matching `Nanyang` and show the official dataset fields.”
-- “Find ECDA childcare centres in an area and summarise any published vacancy fields.”
-- “Resolve this address with OneMap before comparing nearby school or childcare records.”
-
-### GDP, prices, labour, income, FX, tax, and trade
-
-- “Show the latest GDP growth observations and compare selected industries.”
-- “Calculate year-on-year CPI change using the same month, not adjacent months.”
-- “Compare retail-sales year-on-year change with CPI over matched monthly periods.”
-- “Show median-income history, employment by sector, and calculated employment growth.”
-- “Show unemployment and resident labour-force participation history.”
-- “Find official MAS exchange-rate observations and preserve each published unit.”
-- “Show IRAS tax-collection history and calculate category shares only where units match.”
-- “Show Singapore merchandise-trade history from SingStat.”
-
-### Tourism, population, health, energy, crime, and hawkers
-
-- “Rank visitor-arrival source markets for the latest published period.”
-- “Show tourism receipts history and warn me if the curated dataset is stale.”
-- “Compare population, live births, deaths, marriages, and divorces over available periods.”
-- “Show disease-case history, its last observation, and a clear frozen-data warning if applicable.”
-- “Show electricity-generation history and the source agency.”
-- “Compare like-for-like recorded-crime series without inferring neighbourhood or individual risk.”
-- “Find NEA hawker centres matching `Maxwell` and profile the published fields.”
-
-### Mortgage reference rates
-
-- “Show the latest official SORA and published housing-loan reference-rate series.”
-- “Show 24 months of official mortgage reference-rate context and identify the latest period.”
-- “At a user-supplied illustrative rate, calculate the monthly payment on a S$600,000 mortgage.”
-- “Stress-test that mortgage at 2.5%, 3.5%, and 4.5%, with assumptions shown.”
-
-These are official reference-rate statistics and educational calculations, not live lender offers,
-credit decisions, or personal financial advice.
-
-### Cross-series analysis and discovery
-
-- “Align these quarterly GDP and monthly CPI series to annual periods and explain the aggregation.”
-- “Compare two matched series and return observations, Pearson correlation, and calculation notes.”
-- “Create a text sparkline and chart-ready points for these observations.”
-- “Which Olano tool should answer: ‘How competitive was the latest COE bidding exercise?’”
-- “List prompt categories, then show examples for rail and property.”
-- “Show the compatibility record for `sg_cross_dataset`.”
-
 ## Prompts and resources
 
 The aggregate server packages reusable MCP prompts:
@@ -636,25 +697,6 @@ The aggregate server packages reusable MCP prompts:
 It also exposes read-only resources at `singapore://about`, `singapore://sources`, and
 `singapore://examples`. Tool-based discovery is available through `singapore_prompt_categories`,
 `singapore_prompt_examples`, `singapore_prompt_for_tool`, and `singapore_ask`.
-
-## Compatibility contract
-
-Version 0.3.0 includes a machine-readable coverage registry for 87 stable `sg_*` compatibility
-capabilities. Each record names an Olano tool and marks the implementation as:
-
-- `native` — Olano implements the calculation or workflow directly;
-- `delegated` — a focused Olano tool covers the capability through the named upstream source; or
-- `constrained` — Olano exposes the safe, supportable building blocks and states what must be done
-  explicitly instead of fabricating a result.
-
-Use `singapore_capability_registry` to inspect the full mapping or
-`singapore_capability_check` to inspect one capability. The contract is checked in CI. Compatibility
-means coverage of the user need; it does not imply identical output, code, branding, or affiliation.
-
-Olano extends the compatibility contract with OneMap routing and geocoding, live LTA DataMall tools, a dedicated
-MRT/LRT package, stdio and Streamable HTTP, MCP prompts and resources, deterministic semantic
-routing, explicit freshness/source metadata, bounded retrieval, period-aware cross-series analysis,
-an optional persistent public-response cache, a standalone CLI, and packaged Agent Skills.
 
 ## Packaged Agent Skills
 

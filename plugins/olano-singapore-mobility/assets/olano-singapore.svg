@@ -1,9 +1,40 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
   <title id="title">Olano Singapore</title>
-  <rect width="512" height="512" rx="112" fill="#fff"/>
-  <g fill="none" stroke="#EF5350" stroke-width="24" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M256 92 376 164 376 348 256 420 136 348 136 164Z"/>
-    <path d="M256 92V214M376 164 272 224M376 348 272 288M256 420V298M136 348 240 288M136 164 240 224"/>
-    <circle cx="256" cy="256" r="58" fill="#fff"/>
+  <rect width="512" height="512" rx="96" fill="#fff"/>
+  <g fill="#E5262C">
+    <path d="M437.08 331.01L349.34 349.34" fill="none" stroke="#E5262C" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M331.01 437.08L349.34 349.34" fill="none" stroke="#E5262C" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M331.01 437.08L256 388" fill="none" stroke="#E5262C" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M180.99 437.08L256 388" fill="none" stroke="#E5262C" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M180.99 437.08L162.66 349.34" fill="none" stroke="#E5262C" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M74.92 331.01L162.66 349.34" fill="none" stroke="#E5262C" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M74.92 331.01L124 256" fill="none" stroke="#E5262C" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M74.92 180.99L124 256" fill="none" stroke="#E5262C" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M74.92 180.99L162.66 162.66" fill="none" stroke="#E5262C" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M180.99 74.92L162.66 162.66" fill="none" stroke="#E5262C" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M180.99 74.92L256 124" fill="none" stroke="#E5262C" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M331.01 74.92L256 124" fill="none" stroke="#E5262C" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M331.01 74.92L349.34 162.66" fill="none" stroke="#E5262C" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M437.08 180.99L349.34 162.66" fill="none" stroke="#E5262C" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M437.08 180.99L388 256" fill="none" stroke="#E5262C" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M437.08 331.01L388 256" fill="none" stroke="#E5262C" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M349.34 349.34L256 388L162.66 349.34L124 256L162.66 162.66L256 124L349.34 162.66L388 256Z" fill="none" stroke="#E5262C" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M437.08 331.01L331.01 437.08L180.99 437.08L74.92 331.01L74.92 180.99L180.99 74.92L331.01 74.92L437.08 180.99Z" fill="none" stroke="#E5262C" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="349.34" cy="349.34" r="10"/>
+    <circle cx="256" cy="388" r="10"/>
+    <circle cx="162.66" cy="349.34" r="10"/>
+    <circle cx="124" cy="256" r="10"/>
+    <circle cx="162.66" cy="162.66" r="10"/>
+    <circle cx="256" cy="124" r="10"/>
+    <circle cx="349.34" cy="162.66" r="10"/>
+    <circle cx="388" cy="256" r="10"/>
+    <circle cx="437.08" cy="331.01" r="21"/>
+    <circle cx="331.01" cy="437.08" r="21"/>
+    <circle cx="180.99" cy="437.08" r="21"/>
+    <circle cx="74.92" cy="331.01" r="21"/>
+    <circle cx="74.92" cy="180.99" r="21"/>
+    <circle cx="180.99" cy="74.92" r="21"/>
+    <circle cx="331.01" cy="74.92" r="21"/>
+    <circle cx="437.08" cy="180.99" r="21"/>
   </g>
 </svg>
