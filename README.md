@@ -1,13 +1,159 @@
-# 🇸🇬 Singapore MCP
+# 🇸🇬 Singapore MCP by Olano
 
-Open-source Model Context Protocol servers, tools, prompts, resources, skills, and a CLI for
-Singapore public data and services.
+[![npm](https://img.shields.io/npm/v/%40olano%2Fmcp-singapore?logo=npm&label=npm)](https://www.npmjs.com/package/@olano/mcp-singapore)
+[![npm downloads](https://img.shields.io/npm/dm/%40olano%2Fmcp-singapore?logo=npm&label=downloads)](https://www.npmjs.com/package/@olano/mcp-singapore)
+[![CI](https://github.com/olano-ai/mcp-singapore/actions/workflows/ci.yml/badge.svg)](https://github.com/olano-ai/mcp-singapore/actions/workflows/ci.yml)
+[![MCP Registry](https://img.shields.io/badge/MCP_Registry-published-16a34a)](https://registry.modelcontextprotocol.io/)
+[![Node.js 20+](https://img.shields.io/badge/Node.js-20%2B-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+Ask Claude Code or Codex questions about Singapore property, MRT/LRT, buses, companies, weather,
+the economy, public services, and official financial reference data.
+
+**291 read-only tools · 8 Agent Skills · 7 focused plugins · stdio and Streamable HTTP**
 
 Built and maintained in Singapore by [Olano](https://olano.ai).
 
 > Singapore MCP is an independent community project. It is not affiliated with, endorsed by, or an
 > official product of the Singapore Government or any government agency. “Official” below describes
 > an upstream data source, not this software.
+
+## Start here
+
+Choose one route. You do not need an API key to start; tools that need optional credentials will
+tell you exactly what is missing.
+
+| Platform    | Easiest route                         | What you get                                |
+| ----------- | ------------------------------------- | ------------------------------------------- |
+| Claude Code | **Focused plugin — recommended**      | MCP tools plus skills that guide Claude     |
+| Codex       | **Direct MCP — recommended to start** | The focused MCP tools in one command        |
+| Either      | Complete profile                      | Every Singapore tool; larger tool inventory |
+
+### Claude Code
+
+#### Plugin — recommended
+
+Run these three steps:
+
+1. Install the property plugin from your terminal:
+
+   ```bash
+   npx -y @olano/sg-cli setup claude property
+   ```
+
+2. Restart Claude Code or start a new session.
+
+3. Ask:
+
+   ```text
+   Show recent 4-room HDB resale transactions in Bedok and calculate the median and quartiles.
+   ```
+
+Want Claude Code to handle step 1? Paste this prompt into Claude Code:
+
+```text
+Install the Olano Singapore property plugin at user scope. Run
+`npx -y @olano/sg-cli setup claude property`, verify it with
+`npx -y @olano/sg-cli doctor claude property`, and tell me when I should restart Claude Code.
+Do not add or request API keys yet.
+```
+
+The plugin bundles the `property` MCP profile and focused property and finance skills. Replace
+`property` with `mobility`, `business`, `economy`, `civic`, `finance`, or `all`.
+
+<details>
+<summary><strong>Claude Code: MCP only</strong></summary>
+
+1. Add the focused MCP server:
+
+   ```bash
+   claude mcp add --transport stdio --scope user singapore -- npx -y @olano/mcp-singapore --profile property
+   ```
+
+2. Restart Claude Code, then run `/mcp` to confirm that `singapore` is connected.
+
+3. Ask a Singapore property question.
+
+This installs the MCP tools without the plugin's packaged Agent Skills.
+
+</details>
+
+### Codex
+
+#### MCP — recommended to start
+
+1. Add the focused MCP server:
+
+   ```bash
+   codex mcp add singapore -- npx -y @olano/mcp-singapore --profile property
+   ```
+
+2. Start a new Codex session and run `/mcp` to confirm that `singapore` is connected.
+
+3. Ask:
+
+   ```text
+   Compare HDB resale price per square metre between Tampines and Jurong East over matched periods.
+   ```
+
+Want Codex to install it for you? Paste this prompt into Codex:
+
+```text
+Install the Olano Singapore property MCP for me. Run
+`codex mcp add singapore -- npx -y @olano/mcp-singapore --profile property`, verify it with
+`codex mcp list`, and tell me when I should start a new session. Do not add or request API keys yet.
+```
+
+<details>
+<summary><strong>Codex: plugin with MCP + Agent Skills</strong></summary>
+
+1. Add the Olano marketplace:
+
+   ```bash
+   codex plugin marketplace add olano-ai/mcp-singapore
+   ```
+
+2. In Codex, run `/plugins`, open the Olano marketplace, and install
+   `olano-singapore-property`.
+
+3. Start a new session and ask a Singapore property question.
+
+Use the plugin route when you want both the focused MCP profile and the packaged workflows that
+teach Codex how to analyse Singapore data carefully.
+
+</details>
+
+### Choose a profile
+
+Focused profiles give the model fewer tool definitions and are the best default for most users.
+
+| Profile    | Good for                                                        |
+| ---------- | --------------------------------------------------------------- |
+| `property` | HDB, private property, neighbourhoods, amenities, and mortgages |
+| `mobility` | MRT/LRT, buses, roads, parking, taxis, routing, and COE         |
+| `business` | Companies, UENs, formations, sectors, retail, and tourism       |
+| `economy`  | GDP, prices, jobs, income, population, and trade                |
+| `civic`    | Weather, health, education, childcare, safety, and services     |
+| `finance`  | Official rates, mortgage scenarios, FX, income, and inflation   |
+| `all`      | The complete Singapore suite                                    |
+
+### Questions to try
+
+- “List every station on the Thomson-East Coast Line in order and identify the interchanges.”
+- “Find the nearest MRT or LRT stations to latitude 1.29027, longitude 103.851959.”
+- “Find the official public ACRA records matching `Olano` and show the UEN and entity status.”
+- “Show the latest two-hour weather forecast and PSI, with timestamps.”
+- “Compare Singapore CPI and retail sales over exactly matched monthly periods.”
+- “Stress-test a S$600,000 mortgage at 2.5%, 3.5%, and 4.5%, showing every assumption.”
+
+More examples are available in [Example questions](#example-questions) or from:
+
+```bash
+npx -y @olano/sg-cli examples
+```
+
+**New here? Stop now and try a question.** The rest of this README documents packages, transports,
+credentials, data sources, and development.
 
 ## What ships
 
@@ -34,9 +180,9 @@ Focused stdio/HTTP executables are available for the aggregate, data.gov.sg, One
 and rail packages. The other packages are reusable registration libraries composed by the aggregate
 server.
 
-## Quick start
+## More ways to run it
 
-### MCP over stdio
+### Run without saving MCP configuration
 
 ```bash
 npx -y @olano/mcp-singapore
@@ -117,39 +263,8 @@ npx -y @olano/sg-cli doctor claude property
 arguments, and report missing inputs; they do not send the question to an external model or silently
 execute the recommendation. Use `tool` for an explicit invocation.
 
-### Claude Code plugins
-
-This repository is also the installable Claude Code marketplace `olano`:
-
-```text
-/plugin marketplace add olano-ai/mcp-singapore
-/plugin install olano-singapore-property@olano
-```
-
-Choose the complete `olano-singapore` plugin or a focused `property`, `mobility`, `business`,
-`economy`, `civic`, or `finance` plugin. Each plugin starts the matching MCP profile automatically
-and bundles focused Agent Skills. Optional API values are declared as sensitive Claude Code user
-configuration. See [Claude Code plugins](docs/claude-code.md) for the complete matrix, CLI setup,
-credential handling, updates, and validation.
-
-### Codex and OpenAI plugins
-
-The same repository is also an installable Codex plugin marketplace. Add it once, then use
-`/plugins` to choose the complete plugin or a focused `property`, `mobility`, `business`, `economy`,
-`civic`, or `finance` plugin:
-
-```bash
-codex plugin marketplace add olano-ai/mcp-singapore
-```
-
-Each repository plugin bundles focused Agent Skills and launches the matching local MCP profile.
-Optional credentials are inherited from `DATA_GOV_SG_API_KEY`, `ONEMAP_TOKEN`, and
-`LTA_DATAMALL_API_KEY`; no credential is stored in the plugin files. See
-[Codex and OpenAI plugins](docs/openai-plugins.md) for the matrix and installation details.
-
-Focused skills are also prepared for review in OpenAI's public Plugins Directory. Public
-skills-only listings do not include the local stdio server: install from this repository when you
-want the skills and MCP together.
+For plugin details, updates, and validation, see [Claude Code plugins](docs/claude-code.md) and
+[Codex and OpenAI plugins](docs/openai-plugins.md).
 
 ## Example questions
 
