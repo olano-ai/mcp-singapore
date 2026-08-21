@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/olano-lockup.svg" alt="olano.ai — Singapore MCP" width="460">
+  <img src="assets/olano-ai-singapore.svg" alt="olano.ai — MCP Singapore" width="420">
 </p>
 
 <h1 align="center">🇸🇬 Singapore MCP by Olano</h1>
