@@ -1,0 +1,48 @@
+{
+  "server": {
+    "name": "Olano Singapore MCP",
+    "package": "@olano/mcp-singapore",
+    "version": "0.3.0",
+    "registryName": "io.github.olano-ai/mcp-singapore",
+    "repository": "https://github.com/olano-ai/mcp-singapore",
+    "npm": "https://www.npmjs.com/package/@olano/mcp-singapore",
+    "description": "Open-source MCP servers and focused agent skills for Singapore public data, mobility, property, business, the economy, civic services, and finance.",
+    "transport": ["stdio", "Streamable HTTP"],
+    "license": "MIT",
+    "publisher": "Olano",
+    "website": "https://olano.ai",
+    "support": "https://github.com/olano-ai/mcp-singapore/issues"
+  },
+  "directories": [
+    {
+      "name": "Official MCP Registry",
+      "status": "published",
+      "identifier": "io.github.olano-ai/mcp-singapore@0.3.0",
+      "submission": "registry publish"
+    },
+    {
+      "name": "Glama",
+      "status": "indexed",
+      "url": "https://glama.ai/mcp/servers/olano-ai/mcp-singapore",
+      "submission": "automatic discovery"
+    },
+    {
+      "name": "PulseMCP",
+      "status": "registry-discoverable",
+      "submission": "automatic ingestion from the official MCP Registry"
+    },
+    {
+      "name": "mcp.so",
+      "status": "prepared",
+      "submission": "free GitHub issue comment",
+      "target": "https://github.com/chatmcp/mcpso/issues/1",
+      "comment": "Olano Singapore MCP — open-source MCP servers and focused agent skills for Singapore public data, mobility, property, business, the economy, civic services, and finance. Repository: https://github.com/olano-ai/mcp-singapore — npm: https://www.npmjs.com/package/@olano/mcp-singapore — Official MCP Registry: io.github.olano-ai/mcp-singapore@0.3.0"
+    },
+    {
+      "name": "Smithery",
+      "status": "blocked-until-distribution-artifact",
+      "submission": "publish a public Streamable HTTP endpoint or an MCPB bundle",
+      "target": "https://smithery.ai/new"
+    }
+  ]
+}
