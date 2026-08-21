@@ -11,9 +11,17 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    ignore:
+      # typescript-eslint peers on `typescript: >=4.8.4 <6.1.0`, so TypeScript 7 fails `npm ci`
+      # with ERESOLVE before any build runs. Remove this entry once typescript-eslint supports
+      # TypeScript 7; the upgrade is otherwise ready to go.
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major']
     groups:
-      # One pull request per week rather than a dozen; a security release still comes through on
-      # its own because Dependabot raises those regardless of grouping.
+      # One pull request per week rather than a dozen. Major updates deliberately stay ungrouped:
+      # when five of them landed at once, having each in its own pull request is what made it
+      # obvious that only TypeScript was blocked. A security release still comes through on its
+      # own because Dependabot raises those regardless of grouping.
       development:
         dependency-type: development
         update-types: [minor, patch]

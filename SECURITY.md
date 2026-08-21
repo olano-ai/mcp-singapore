@@ -59,9 +59,16 @@ during installation; that is expected for this project today. Download it only f
 Some protections live in GitHub settings rather than in this repository, so they cannot be enforced
 by a file here. A maintainer should confirm all of these:
 
-- **Branch protection on `main`.** Require a pull request and passing status checks. Add the
-  **GitHub Actions** app to the ruleset's bypass list, otherwise the release workflow cannot push
-  its version commit and every release fails after passing its checks.
+- **Branch protection on `main`.** Start with a ruleset that restricts deletions and blocks force
+  pushes. Those stop the destructive operations and still allow the release workflow's version
+  commit.
+
+  Do not add "require a pull request" or "require status checks" without changing how releases
+  push. `GITHUB_TOKEN` cannot be added to a ruleset's bypass list, so both rules reject the release
+  workflow, and it fails after every check has already passed. Requiring a pull request needs the
+  release workflow to authenticate as a GitHub App that is on the bypass list, or to stop pushing to
+  `main` at all.
+
 - **Actions → "Require approval for all external contributors."** The default only prompts for
   first-time contributors. Fork pull requests get no secrets either way, but this stops arbitrary
   code running on the runners until a maintainer looks at it.

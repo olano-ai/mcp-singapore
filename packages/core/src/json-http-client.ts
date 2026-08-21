@@ -264,7 +264,8 @@ export class JsonHttpClient {
       try {
         body = await readBoundedResponseText(response, 5_000);
       } catch {
-        body = '[response body exceeded 5000 bytes]';
+        // Keep the generic fallback. This read fails on the size bound, but also on a mid-stream
+        // network error, so naming one cause would sometimes report the wrong one.
       }
       throw new ApiError(`Upstream API returned HTTP ${response.status}: ${body}`, response.status);
     }
