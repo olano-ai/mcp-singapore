@@ -1,0 +1,31 @@
+# Keeps dependencies and pinned action SHAs current.
+#
+# Actions are pinned to commit SHAs, which is what stops a mutable tag being repointed at malicious
+# code. The cost of pinning is that nothing updates on its own, so Dependabot is what keeps the pins
+# from going stale — without it, pinning trades one risk for another.
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      # One pull request per week rather than a dozen; a security release still comes through on
+      # its own because Dependabot raises those regardless of grouping.
+      development:
+        dependency-type: development
+        update-types: [minor, patch]
+      production:
+        dependency-type: production
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      actions:
+        patterns: ['*']
