@@ -1,0 +1,15 @@
+# Review is required on everything, and named explicitly on the paths where a malicious change would
+# be worth the most to an attacker: anything that runs in CI holding our token, anything that ships
+# to a user's machine, and the release plumbing itself.
+#
+# Owners must be users or teams with write access. An owner that does not exist makes the whole file
+# inert without failing anything, so change these only to an account or team that really has access.
+*                       @cchacons
+
+/.github/               @cchacons
+/scripts/               @cchacons
+/package.json           @cchacons
+/package-lock.json      @cchacons
+/server.json            @cchacons
+/.claude-plugin/        @cchacons
+/plugins/               @cchacons

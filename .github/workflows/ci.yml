@@ -51,6 +51,14 @@ jobs:
             npm exec --yes --package="$validator" -- claude plugin validate "$plugin"
           done
 
+      - name: Check workflow security invariants
+        if: matrix.node-version == 22
+        run: npm run check:workflows
+
+      - name: Audit dependencies
+        if: matrix.node-version == 22
+        run: npm audit --audit-level=high
+
       - name: Verify generated brand assets are committed
         if: matrix.node-version == 22
         run: npm run check:brand
