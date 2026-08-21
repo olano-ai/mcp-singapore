@@ -12,43 +12,80 @@
       "name": "olano-singapore",
       "source": "https://github.com/olano-ai/mcp-singapore/tree/main/plugins/olano-singapore",
       "description": "The complete Singapore public-data MCP suite with eight focused skills and 291 tools.",
-      "category": "Productivity"
+      "category": "Productivity",
+      "profile": "all",
+      "toolCount": 291,
+      "skillCount": 8,
+      "status": "prepared"
     },
     {
       "name": "olano-singapore-property",
       "source": "https://github.com/olano-ai/mcp-singapore/tree/main/plugins/olano-singapore-property",
       "description": "Singapore HDB, private-property, neighbourhood, transport, amenity, and mortgage research.",
-      "category": "Data & Analytics"
+      "category": "Data & Analytics",
+      "profile": "property",
+      "toolCount": 63,
+      "skillCount": 2,
+      "status": "prepared"
     },
     {
       "name": "olano-singapore-mobility",
       "source": "https://github.com/olano-ai/mcp-singapore/tree/main/plugins/olano-singapore-mobility",
       "description": "Singapore MRT, LRT, bus, road, parking, taxi, routing, and COE research.",
-      "category": "Productivity"
+      "category": "Productivity",
+      "profile": "mobility",
+      "toolCount": 50,
+      "skillCount": 1,
+      "status": "prepared"
     },
     {
       "name": "olano-singapore-business",
       "source": "https://github.com/olano-ai/mcp-singapore/tree/main/plugins/olano-singapore-business",
       "description": "Singapore company, UEN, formation, sector, retail, tourism, labour, and trade research.",
-      "category": "Data & Analytics"
+      "category": "Data & Analytics",
+      "profile": "business",
+      "toolCount": 58,
+      "skillCount": 1,
+      "status": "prepared"
     },
     {
       "name": "olano-singapore-economy",
       "source": "https://github.com/olano-ai/mcp-singapore/tree/main/plugins/olano-singapore-economy",
       "description": "Singapore GDP, prices, employment, income, population, trade, retail, and tourism analysis.",
-      "category": "Data & Analytics"
+      "category": "Data & Analytics",
+      "profile": "economy",
+      "toolCount": 87,
+      "skillCount": 1,
+      "status": "prepared"
     },
     {
       "name": "olano-singapore-civic",
       "source": "https://github.com/olano-ai/mcp-singapore/tree/main/plugins/olano-singapore-civic",
       "description": "Singapore weather, air quality, health, education, childcare, safety, and public-service research.",
-      "category": "Productivity"
+      "category": "Productivity",
+      "profile": "civic",
+      "toolCount": 73,
+      "skillCount": 1,
+      "status": "prepared"
     },
     {
       "name": "olano-singapore-finance",
       "source": "https://github.com/olano-ai/mcp-singapore/tree/main/plugins/olano-singapore-finance",
       "description": "Singapore official rates, mortgage scenarios, FX, income, inflation, and optional market context.",
-      "category": "Data & Analytics"
+      "category": "Data & Analytics",
+      "profile": "finance",
+      "toolCount": 55,
+      "skillCount": 1,
+      "status": "prepared"
     }
-  ]
+  ],
+  "submissionForm": "https://clau.de/plugin-directory-submission",
+  "installSuffix": "@claude-community",
+  "preparedCopy": "submissions/anthropic/claude-community-form.md",
+  "verified": {
+    "at": "2026-08-21",
+    "method": "claude plugin validate on the root marketplace and all seven plugins; tool counts measured against the built 0.3.0 server",
+    "promptCount": 5,
+    "resourceCount": 3
+  }
 }
