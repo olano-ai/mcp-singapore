@@ -1,6 +1,6 @@
 {
   "name": "@olano/mcp-onemap",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "MCP server for Singapore OneMap APIs",
   "type": "module",
   "license": "MIT",
@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/server": "^2.0.0",
-    "@olano/mcp-core": "0.4.0",
+    "@olano/mcp-core": "0.4.1",
     "zod": "^4.1.5"
   },
   "publishConfig": {

@@ -1,6 +1,6 @@
 {
   "name": "@olano/sg-cli",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Command-line interface for the Olano Singapore MCP suite",
   "type": "module",
   "license": "MIT",
@@ -39,8 +39,8 @@
   },
   "dependencies": {
     "@modelcontextprotocol/client": "^2.0.0",
-    "@olano/mcp-core": "0.4.0",
-    "@olano/mcp-singapore": "0.4.0"
+    "@olano/mcp-core": "0.4.1",
+    "@olano/mcp-singapore": "0.4.1"
   },
   "publishConfig": {
     "access": "public"

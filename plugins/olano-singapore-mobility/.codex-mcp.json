@@ -1,6 +1,6 @@
 {
   "singapore-mobility": {
     "command": "npx",
-    "args": ["-y", "@olano/mcp-singapore@0.4.0", "--profile", "mobility"]
+    "args": ["-y", "@olano/mcp-singapore@0.4.1", "--profile", "mobility"]
   }
 }

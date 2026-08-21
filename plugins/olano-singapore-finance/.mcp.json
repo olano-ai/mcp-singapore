@@ -2,7 +2,7 @@
   "mcpServers": {
     "singapore-finance": {
       "command": "npx",
-      "args": ["-y", "@olano/mcp-singapore@0.4.0", "--profile", "finance"],
+      "args": ["-y", "@olano/mcp-singapore@0.4.1", "--profile", "finance"],
       "env": { "DATA_GOV_SG_API_KEY": "${user_config.data_gov_sg_api_key}" }
     }
   }

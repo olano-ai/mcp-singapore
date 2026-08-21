@@ -1,6 +1,6 @@
 {
   "singapore-finance": {
     "command": "npx",
-    "args": ["-y", "@olano/mcp-singapore@0.4.0", "--profile", "finance"]
+    "args": ["-y", "@olano/mcp-singapore@0.4.1", "--profile", "finance"]
   }
 }
