@@ -11,38 +11,121 @@
     "license": "MIT",
     "publisher": "Olano",
     "website": "https://olano.ai",
-    "support": "https://github.com/olano-ai/mcp-singapore/issues"
+    "support": "https://github.com/olano-ai/mcp-singapore/issues",
+    "toolCount": 291,
+    "promptCount": 5,
+    "resourceCount": 3,
+    "profiles": ["all", "mobility", "property", "business", "economy", "civic", "finance"]
+  },
+  "statusLegend": {
+    "published": "Listing is publicly visible and was observed directly.",
+    "submitted": "Filed and awaiting review. Not yet publicly visible.",
+    "prepared": "Copy is written and ready to file. Not yet filed.",
+    "unverified": "Believed to list the server, but not confirmed from this environment.",
+    "automatic": "No action required; ingests from an upstream source already published.",
+    "blocked": "Cannot be filed until a stated prerequisite ships."
   },
   "directories": [
     {
       "name": "Official MCP Registry",
       "status": "published",
       "identifier": "io.github.olano-ai/mcp-singapore@0.3.0",
-      "submission": "registry publish"
+      "submission": "automated by .github/workflows/publish.yml on a v* tag",
+      "verifiedAt": "2026-08-21",
+      "evidence": "Registry reports status active and isLatest true for 0.3.0, published 2026-08-20T16:36:55Z."
+    },
+    {
+      "name": "npm",
+      "status": "published",
+      "identifier": "@olano/mcp-singapore@0.3.0",
+      "submission": "automated by .github/workflows/publish.yml on a v* tag",
+      "verifiedAt": "2026-08-21",
+      "evidence": "npm reports 0.3.0 on the latest dist-tag."
+    },
+    {
+      "name": "Anthropic claude-community",
+      "status": "prepared",
+      "submission": "web form; requires a signed-in Claude account",
+      "target": "https://clau.de/plugin-directory-submission",
+      "copy": "submissions/anthropic/claude-community-form.md",
+      "plugins": [
+        "olano-singapore",
+        "olano-singapore-property",
+        "olano-singapore-mobility",
+        "olano-singapore-business",
+        "olano-singapore-economy",
+        "olano-singapore-civic",
+        "olano-singapore-finance"
+      ],
+      "notes": "Pull requests against anthropics/claude-plugins-community are closed automatically; that repository is a read-only nightly mirror of the internal review pipeline. Approved plugins install with the @claude-community suffix."
     },
     {
       "name": "Glama",
-      "status": "indexed",
+      "status": "unverified",
       "url": "https://glama.ai/mcp/servers/olano-ai/mcp-singapore",
-      "submission": "automatic discovery"
+      "submission": "automatic discovery; publishers may claim the listing",
+      "notes": "Previously recorded as indexed. Could not be confirmed from the release environment because glama.ai is unreachable through the egress proxy. Confirm from a normal browser and, if it resolves, claim the server and set the status to published with the observed date."
     },
     {
       "name": "PulseMCP",
-      "status": "registry-discoverable",
-      "submission": "automatic ingestion from the official MCP Registry"
+      "status": "automatic",
+      "submission": "ingests servers published to the official MCP Registry",
+      "notes": "No action required while the Registry entry stays current."
     },
     {
       "name": "mcp.so",
       "status": "prepared",
-      "submission": "free GitHub issue comment",
+      "submission": "comment on the open public intake issue",
       "target": "https://github.com/chatmcp/mcpso/issues/1",
-      "comment": "Olano Singapore MCP — open-source MCP servers and focused agent skills for Singapore public data, mobility, property, business, the economy, civic services, and finance. Repository: https://github.com/olano-ai/mcp-singapore — npm: https://www.npmjs.com/package/@olano/mcp-singapore — Official MCP Registry: io.github.olano-ai/mcp-singapore@0.3.0"
+      "copy": "submissions/directories/drafts/mcp-so-comment.md",
+      "verifiedAt": "2026-08-21",
+      "notes": "Intake thread confirmed open and still collecting server links.",
+      "blocker": "Cannot be filed from a release session scoped to olano-ai/mcp-singapore: the GitHub API refuses cross-repository calls and add_repo rejects cross-owner attachments. File from a session sourced at the target repository, or by hand.",
+      "attemptedAt": "2026-08-21"
+    },
+    {
+      "name": "Cline MCP Marketplace",
+      "status": "blocked",
+      "submission": "new GitHub issue titled [Server Submission]:",
+      "target": "https://github.com/cline/mcp-marketplace/issues/new",
+      "copy": "submissions/directories/drafts/cline-marketplace.md",
+      "blocker": "Requires a 400x400 PNG logo at a stable URL. The repository ships only an SVG mark.",
+      "notes": "Submitters must also confirm they watched Cline install the server from README.md alone. Adding an llms-install.md first reduces rejection risk."
+    },
+    {
+      "name": "awesome-mcp-servers",
+      "status": "prepared",
+      "submission": "pull request editing README.md",
+      "target": "https://github.com/punkpeye/awesome-mcp-servers",
+      "copy": "submissions/directories/drafts/awesome-mcp-servers.md",
+      "notes": "Entries must stay alphabetical within their category and match the surrounding line format and legend markers. Re-read CONTRIBUTING.md on the day of filing.",
+      "blocker": "Cannot be filed from a release session scoped to olano-ai/mcp-singapore: the GitHub API refuses cross-repository calls and add_repo rejects cross-owner attachments. File from a session sourced at the target repository, or by hand.",
+      "attemptedAt": "2026-08-21",
+      "category": "Data Platforms",
+      "placement": "Insert between mbrummerstedt/powerbi-analyst-mcp and Osseni94/keyneg-mcp to preserve case-insensitive alphabetical-by-owner ordering.",
+      "duplicateChecked": "2026-08-21; not present in README.md"
+    },
+    {
+      "name": "Docker MCP Catalog",
+      "status": "prepared",
+      "submission": "pull request adding servers/olano-singapore/server.yaml",
+      "target": "https://github.com/docker/mcp-registry",
+      "copy": "submissions/directories/drafts/docker-mcp-registry.md",
+      "notes": "Generate the manifest with the repository's task wizard. The existing Dockerfile is already built and smoke-tested in CI, so the containerised path is viable. On approval Docker builds and signs the image and the catalog entry appears within about 24 hours."
+    },
+    {
+      "name": "OpenAI Plugins Directory",
+      "status": "prepared",
+      "submission": "upload a skills-only bundle with review metadata",
+      "copy": "submissions/openai/focused-plugins.json",
+      "notes": "Public listings must omit the local stdio MCP configuration and ship only the focused skill directories."
     },
     {
       "name": "Smithery",
-      "status": "blocked-until-distribution-artifact",
+      "status": "blocked",
       "submission": "publish a public Streamable HTTP endpoint or an MCPB bundle",
-      "target": "https://smithery.ai/new"
+      "target": "https://smithery.ai/new",
+      "blocker": "No public HTTPS MCP endpoint and no MCPB artifact is built today. The server supports Streamable HTTP, but nothing is hosted, and PRIVACY.md states no Olano-hosted endpoint exists."
     }
   ]
 }
