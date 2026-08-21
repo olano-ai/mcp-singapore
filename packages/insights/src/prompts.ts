@@ -677,13 +677,15 @@ export function routeSingaporeQuestion(message: string): {
     .filter(({ hits }) => hits.length > 0)
     .sort((a, b) => b.hits.length - a.hits.length || b.hits[0]!.length - a.hits[0]!.length)
     .slice(0, 3)
-    .map(({ rule, hits }, index): RouteRecommendation => ({
-      tool: rule.tool,
-      arguments: rule.arguments?.(message) ?? {},
-      confidence: Math.min(0.97, 0.55 + hits.length * 0.14 - index * 0.04),
-      reason: rule.reason,
-      missing_arguments: rule.missing?.(message) ?? [],
-    }));
+    .map(
+      ({ rule, hits }, index): RouteRecommendation => ({
+        tool: rule.tool,
+        arguments: rule.arguments?.(message) ?? {},
+        confidence: Math.min(0.97, 0.55 + hits.length * 0.14 - index * 0.04),
+        reason: rule.reason,
+        missing_arguments: rule.missing?.(message) ?? [],
+      }),
+    );
   return {
     query: message,
     mode: 'recommend_only',

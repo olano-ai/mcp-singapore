@@ -1,6 +1,9 @@
 export type CapabilityMode = 'native' | 'delegated' | 'constrained';
 export type RetrievalMode =
-  'calculated_official_api' | 'official_api_live' | 'official_api_lookup' | 'route_only';
+  | 'calculated_official_api'
+  | 'official_api_live'
+  | 'official_api_lookup'
+  | 'route_only';
 
 export interface CompatibilityCapability {
   compatibility_tool: string;
