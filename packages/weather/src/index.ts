@@ -1,5 +1,5 @@
 import { McpServer } from '@modelcontextprotocol/server';
-import { getOptionalEnv, JsonHttpClient, jsonResult } from '@olano/mcp-core';
+import { JsonHttpClient, getOptionalEnv, jsonResult, packageVersion } from '@olano/mcp-core';
 import * as z from 'zod/v4';
 
 const dateSchema = z
@@ -66,7 +66,7 @@ export function registerWeatherTools(server: McpServer): void {
 
 export function createWeatherServer(): McpServer {
   const server = new McpServer(
-    { name: '@olano/mcp-weather', version: '0.3.0' },
+    { name: '@olano/mcp-weather', version: packageVersion(import.meta.url) },
     {
       instructions:
         'Read-only weather and air-quality data from NEA/MSS through data.gov.sg. Cite NEA and data.gov.sg when using returned data.',

@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/client": "^2.0.0",
+    "@olano/mcp-core": "0.3.0",
     "@olano/mcp-singapore": "0.3.0"
   },
   "publishConfig": {

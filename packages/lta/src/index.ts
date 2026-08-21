@@ -1,5 +1,11 @@
 import { McpServer } from '@modelcontextprotocol/server';
-import { errorResult, getOptionalEnv, JsonHttpClient, jsonResult } from '@olano/mcp-core';
+import {
+  JsonHttpClient,
+  errorResult,
+  getOptionalEnv,
+  jsonResult,
+  packageVersion,
+} from '@olano/mcp-core';
 import * as z from 'zod/v4';
 
 function client(apiKey: string): JsonHttpClient {
@@ -95,7 +101,7 @@ export function registerLtaTools(server: McpServer): void {
 
 export function createLtaServer(): McpServer {
   const server = new McpServer(
-    { name: '@olano/mcp-lta', version: '0.3.0' },
+    { name: '@olano/mcp-lta', version: packageVersion(import.meta.url) },
     { instructions: 'Read-only access to LTA DataMall. Every tool requires LTA_DATAMALL_API_KEY.' },
   );
   registerLtaTools(server);
