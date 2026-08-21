@@ -1,5 +1,11 @@
 import { McpServer } from '@modelcontextprotocol/server';
-import { errorResult, getOptionalEnv, JsonHttpClient, jsonResult } from '@olano/mcp-core';
+import {
+  JsonHttpClient,
+  errorResult,
+  getOptionalEnv,
+  jsonResult,
+  packageVersion,
+} from '@olano/mcp-core';
 import * as z from 'zod/v4';
 import { EXIT_ROWS, HISTORICAL_STATION_COUNTS, LTA_LINE_ROWS, STATION_CODE_ROWS } from './data.js';
 
@@ -1058,7 +1064,7 @@ export function registerRailTools(server: McpServer): void {
 
 export function createRailServer(): McpServer {
   const server = new McpServer(
-    { name: '@olano/mcp-rail-sg', version: '0.3.0' },
+    { name: '@olano/mcp-rail-sg', version: packageVersion(import.meta.url) },
     {
       instructions:
         'Read-only Singapore MRT/LRT station, exit, line-code, interchange, nearest-location, and historical-count tools based on dated official LTA/data.gov.sg snapshots. Treat distance as straight-line and never infer live service status.',

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { Client, InMemoryTransport } from '@modelcontextprotocol/client';
+import { packageVersion } from '@olano/mcp-core';
 import { createSingaporeServer, resolveSingaporeToolProfile } from '@olano/mcp-singapore';
 import {
   askArguments,
@@ -32,7 +33,7 @@ async function main(): Promise<void> {
 
   const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
   const server = createSingaporeServer();
-  const client = new Client({ name: '@olano/sg-cli', version: '0.3.0' });
+  const client = new Client({ name: '@olano/sg-cli', version: packageVersion(import.meta.url) });
   await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
 
   try {

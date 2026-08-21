@@ -1,5 +1,5 @@
 import { McpServer } from '@modelcontextprotocol/server';
-import { getOptionalEnv, JsonHttpClient, jsonResult } from '@olano/mcp-core';
+import { JsonHttpClient, getOptionalEnv, jsonResult, packageVersion } from '@olano/mcp-core';
 import * as z from 'zod/v4';
 
 const DATASET_BASE_URL = 'https://api-production.data.gov.sg/v2/public/api/';
@@ -97,7 +97,7 @@ export function registerDataGovTools(server: McpServer): void {
 
 export function createDataGovServer(): McpServer {
   const server = new McpServer(
-    { name: '@olano/mcp-datagov', version: '0.3.0' },
+    { name: '@olano/mcp-datagov', version: packageVersion(import.meta.url) },
     {
       instructions:
         'Read-only access to documented public data.gov.sg APIs. Cite data.gov.sg and the source agency when using returned data.',

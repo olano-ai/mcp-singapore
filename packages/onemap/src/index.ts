@@ -1,5 +1,11 @@
 import { McpServer } from '@modelcontextprotocol/server';
-import { errorResult, getOptionalEnv, JsonHttpClient, jsonResult } from '@olano/mcp-core';
+import {
+  JsonHttpClient,
+  errorResult,
+  getOptionalEnv,
+  jsonResult,
+  packageVersion,
+} from '@olano/mcp-core';
 import * as z from 'zod/v4';
 
 const coordinate = z.number().finite();
@@ -91,7 +97,7 @@ export function registerOneMapTools(server: McpServer): void {
 
 export function createOneMapServer(): McpServer {
   const server = new McpServer(
-    { name: '@olano/mcp-onemap', version: '0.3.0' },
+    { name: '@olano/mcp-onemap', version: packageVersion(import.meta.url) },
     {
       instructions:
         'Read-only access to Singapore Land Authority OneMap APIs. Every tool requires ONEMAP_TOKEN. Results use OneMap data and are not an endorsement by SLA.',
