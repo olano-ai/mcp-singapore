@@ -19,21 +19,21 @@
     <path d="M458.33 339.81L404 256" fill="none" stroke="#E5262C" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M360.65 360.65L256 404L151.35 360.65L108 256L151.35 151.35L256 108L360.65 151.35L404 256Z" fill="none" stroke="#E5262C" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M458.33 339.81L339.81 458.33L172.19 458.33L53.67 339.81L53.67 172.19L172.19 53.67L339.81 53.67L458.33 172.19Z" fill="none" stroke="#E5262C" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="360.65" cy="360.65" r="11"/>
-    <circle cx="256" cy="404" r="11"/>
-    <circle cx="151.35" cy="360.65" r="11"/>
-    <circle cx="108" cy="256" r="11"/>
-    <circle cx="151.35" cy="151.35" r="11"/>
-    <circle cx="256" cy="108" r="11"/>
-    <circle cx="360.65" cy="151.35" r="11"/>
-    <circle cx="404" cy="256" r="11"/>
-    <circle cx="458.33" cy="339.81" r="24"/>
-    <circle cx="339.81" cy="458.33" r="24"/>
-    <circle cx="172.19" cy="458.33" r="24"/>
-    <circle cx="53.67" cy="339.81" r="24"/>
-    <circle cx="53.67" cy="172.19" r="24"/>
-    <circle cx="172.19" cy="53.67" r="24"/>
-    <circle cx="339.81" cy="53.67" r="24"/>
-    <circle cx="458.33" cy="172.19" r="24"/>
+    <circle cx="360.65" cy="360.65" r="11" fill="#E5262C"/>
+    <circle cx="256" cy="404" r="11" fill="#E5262C"/>
+    <circle cx="151.35" cy="360.65" r="11" fill="#E5262C"/>
+    <circle cx="108" cy="256" r="11" fill="#E5262C"/>
+    <circle cx="151.35" cy="151.35" r="11" fill="#E5262C"/>
+    <circle cx="256" cy="108" r="11" fill="#E5262C"/>
+    <circle cx="360.65" cy="151.35" r="11" fill="#E5262C"/>
+    <circle cx="404" cy="256" r="11" fill="#E5262C"/>
+    <circle cx="458.33" cy="339.81" r="24" fill="#E5262C"/>
+    <circle cx="339.81" cy="458.33" r="24" fill="#E5262C"/>
+    <circle cx="172.19" cy="458.33" r="24" fill="#E5262C"/>
+    <circle cx="53.67" cy="339.81" r="24" fill="#E5262C"/>
+    <circle cx="53.67" cy="172.19" r="24" fill="#E5262C"/>
+    <circle cx="172.19" cy="53.67" r="24" fill="#E5262C"/>
+    <circle cx="339.81" cy="53.67" r="24" fill="#E5262C"/>
+    <circle cx="458.33" cy="172.19" r="24" fill="#E5262C"/>
   </g>
 </svg>
