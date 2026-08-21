@@ -51,6 +51,14 @@ jobs:
             npm exec --yes --package="$validator" -- claude plugin validate "$plugin"
           done
 
+      - name: Build the Claude Desktop bundle
+        if: matrix.node-version == 22
+        run: npm run build:mcpb
+
+      - name: Verify the Claude Desktop bundle starts and serves tools
+        if: matrix.node-version == 22
+        run: npm run check:mcpb
+
   docker:
     runs-on: ubuntu-latest
     steps:

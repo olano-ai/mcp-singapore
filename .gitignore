@@ -4,3 +4,7 @@ coverage/
 .env
 .DS_Store
 *.log
+
+# Claude Desktop bundle build output
+build/
+*.mcpb

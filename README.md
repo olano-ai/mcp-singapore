@@ -28,21 +28,25 @@ telemetry, or analytics. See [Privacy](PRIVACY.md).
 **complete Olano Singapore suite**. You do not need to pick a category, and you do not need an API
 key.
 
-| Your app                                       | Follow this                               | Roughly |
-| ---------------------------------------------- | ----------------------------------------- | ------- |
-| **Claude Desktop app** — the **Chat** tab      | [Claude Desktop app](#claude-desktop-app) | 3 min   |
-| **Claude Code** — terminal or the **Code** tab | [Claude Code](#claude-code)               | 1 min   |
-| **Codex app**                                  | [Codex app](#codex-app)                   | 2 min   |
-| **Codex CLI**                                  | [Codex CLI](#codex-cli)                   | 1 min   |
+| Your app                                       | Follow this                               | How                         |
+| ---------------------------------------------- | ----------------------------------------- | --------------------------- |
+| **Claude Desktop app** — the **Chat** tab      | [Claude Desktop app](#claude-desktop-app) | Download one file, click it |
+| **Claude Code** — terminal or the **Code** tab | [Claude Code](#claude-code)               | Two `/plugin` commands      |
+| **Codex app**                                  | [Codex app](#codex-app)                   | Add a server in Settings    |
+| **Codex CLI**                                  | [Codex CLI](#codex-cli)                   | One `codex mcp add` command |
 
 Not sure which one you have? If you type questions into a chat window, you are using the Claude
 Desktop app. If you run `claude` in a terminal, or you use the **Code** tab inside the desktop app,
 you are using Claude Code. Claude Code gets the better install, because it can load the Agent Skills
 as well as the tools.
 
-### Before you start: install Node.js
+### Before you start
 
-Every install below runs the server with `npx`, which comes with Node.js. You need **Node.js 20 or
+**Installing the Claude Desktop extension? Nothing to install first.** Claude Desktop ships its own
+Node.js runtime and the extension carries everything else. Skip straight to
+[Claude Desktop app](#claude-desktop-app).
+
+**Every other route** runs the server with `npx`, which comes with Node.js. You need **Node.js 20 or
 newer**.
 
 1. Download the **LTS** installer from [nodejs.org](https://nodejs.org/) and run it.
@@ -65,13 +69,39 @@ the published package for you the first time it runs.
 > This section is for the **Chat** tab of the Claude Desktop app. If you use the **Code** tab,
 > follow [Claude Code](#claude-code) instead — you get the eight Agent Skills there too.
 
-Claude Desktop reads its MCP servers from one small settings file. There is no one-click install for
-this server yet, so pick one of the two routes below. They produce exactly the same result.
+#### Route A — install the extension (recommended)
 
-#### Route A — let an AI agent edit the file for you (no JSON required)
+One file, one click, no terminal and no Node.js.
 
-If you already have Claude Code, Codex, Cursor, or any other coding agent that can edit files on your
-computer, paste this prompt into it and let it do the whole job:
+1. **Download the extension.**
+
+   [**⬇ Download olano-singapore.mcpb**](https://github.com/olano-ai/mcp-singapore/releases/latest/download/olano-singapore.mcpb)
+
+   It is about 2 MB and contains the whole server. Every published version is also listed on the
+   [releases page](https://github.com/olano-ai/mcp-singapore/releases).
+
+2. **Install it.** Double-click the downloaded file. Claude Desktop opens a review dialog showing
+   what the extension adds. Select **Install**.
+
+   If double-clicking does nothing, open Claude Desktop and drag the file onto the **Settings**
+   window, or go to **Settings → Extensions → Advanced settings → Install Extension…** and pick it.
+
+   Claude Desktop will note that the extension is not signed. That is expected for this project.
+
+3. **Leave every setting blank and finish.** The four optional boxes are for free government API
+   keys you probably do not have yet. Everything works without them, and you can add them later from
+   **Settings → Extensions**.
+
+4. **Ask a question.** No restart needed.
+
+   > Show me the latest two-hour weather forecast for Singapore, with timestamps.
+
+That is it, can already. To update later, download the file again and install it over the top.
+
+#### Route B — let an AI agent set it up for you
+
+Already have Claude Code, Codex, Cursor, or another coding agent that can edit files on your
+computer? Paste this and it will do the whole job:
 
 ```text
 Please add the Olano Singapore MCP server to my Claude Desktop configuration.
@@ -88,9 +118,9 @@ Please add the Olano Singapore MCP server to my Claude Desktop configuration.
    reopen Claude Desktop.
 ```
 
-Then jump to [step 4](#confirm-it-worked) below to confirm it worked.
+This route needs Node.js on your computer. Route A does not.
 
-#### Route B — edit the file yourself
+#### Route C — edit the configuration file yourself
 
 1. **Open the settings file.** In Claude Desktop, open **Settings → Developer → Edit Config**. That
    button opens `claude_desktop_config.json` in your text editor and creates it if it is missing.
@@ -167,16 +197,16 @@ Then jump to [step 4](#confirm-it-worked) below to confirm it worked.
    app completely — **Claude → Quit** on macOS, or right-click the tray icon and choose **Quit** on
    Windows — then open it again.
 
-4. <a id="confirm-it-worked"></a>**Confirm it worked.** Click the **+** button next to the message
-   box and look under **Connectors**. You should see `singapore` listed with its tools. Then ask a
-   question:
+4. **Confirm it worked.** Click the **+** button next to the message box and look under
+   **Connectors**. You should see `singapore` listed with its tools. Then ask a question:
 
    > Show me the latest two-hour weather forecast for Singapore, with timestamps.
 
    The first question may take 20–30 seconds while `npx` downloads the package. After that it is
-   fast. Can already.
+   fast.
 
 If `singapore` does not appear, see [If something is not working](#if-something-is-not-working).
+Reference details are in [Claude Desktop](docs/claude-desktop.md).
 
 ### Claude Code
 
@@ -302,17 +332,22 @@ The command intentionally has no `--profile` argument. With no profile selected,
 
 ### If something is not working
 
-Work through these in order. Most first-time problems are one of the first three.
+Find the row that matches what you see. The Node.js rows apply only to the `npx` routes — the Claude
+Desktop extension has no such dependency.
 
 | What you see                                       | What to do                                                                                                                                                                               |
 | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `singapore` is not listed at all                   | You did not fully quit and reopen the app. Closing the window is not enough — quit it completely, then reopen.                                                                           |
-| The server shows as failed or disconnected         | Run `node --version` in a terminal. If it is missing or below `v20`, install [Node.js](https://nodejs.org/) LTS and restart the app.                                                     |
+| Double-clicking the `.mcpb` file does nothing      | Open Claude Desktop first, then drag the file onto its **Settings** window, or use **Settings → Extensions → Advanced settings → Install Extension…**.                                   |
+| Claude Desktop warns the extension is not signed   | Expected. This project does not sign its bundles yet. Download only from the [releases page](https://github.com/olano-ai/mcp-singapore/releases).                                        |
+| The extension installed but Claude ignores it      | Open **Settings → Extensions** and confirm it is enabled. Extensions apply to new messages, not to a conversation already in progress.                                                   |
+| `singapore` is not listed at all                   | On the configuration-file route, you did not fully quit and reopen the app. Closing the window is not enough — quit it completely, then reopen.                                          |
+| The server shows as failed or disconnected         | Run `node --version` in a terminal. If it is missing or below `v20`, install [Node.js](https://nodejs.org/) LTS and restart the app — or switch to the extension, which needs neither.   |
 | It fails on Windows                                | Switch the config to `"command": "cmd"` with `"args": ["/c", "npx", "-y", "@olano/mcp-singapore"]`, then restart the app.                                                                |
 | Claude Desktop says the config file is invalid     | A missing or extra comma, or a missing outer `{`. Paste your file into a JSON validator, or copy [`examples/claude-desktop.json`](examples/claude-desktop.json) over it and start again. |
-| The first question is very slow                    | Expected. `npx` downloads the package on first run. Later questions are fast.                                                                                                            |
+| The first question is very slow                    | Expected on the `npx` routes; the package downloads on first run. The extension has no first-run download.                                                                               |
 | Claude Code says `/plugin` is not a known command  | Update Claude Code: `npm install -g @anthropic-ai/claude-code@latest`, or `brew upgrade claude-code`. Then restart your terminal.                                                        |
 | The plugin installed but the tools are missing     | Run `/reload-plugins` in the session, or start a new session. Then run `/mcp` again.                                                                                                     |
+| A tool reports a missing environment variable      | That tool needs a free key from OneMap or LTA DataMall. Add it in **Settings → Extensions**, or see [Credentials and caching](#credentials-and-caching). Everything else works without.  |
 | Claude answers from memory instead of using a tool | Ask for the source explicitly, for example "using the Singapore MCP tools, show the latest PSI readings with timestamps".                                                                |
 
 Check the exact state of a Claude Code install at any time:
@@ -321,12 +356,8 @@ Check the exact state of a Claude Code install at any time:
 npx -y @olano/sg-cli doctor claude
 ```
 
-Some tools need a free credential from the upstream agency — OneMap and LTA DataMall in particular.
-Those tools return a clear missing-credential error rather than failing silently. See
-[Credentials and caching](#credentials-and-caching); everything else works without any key.
-
 Still stuck? [Open an issue](https://github.com/olano-ai/mcp-singapore/issues) with your app name,
-your operating system, and the output of `node --version`.
+your operating system, how you installed, and the output of `node --version`.
 
 ### Optional: choose a smaller profile
 
@@ -356,7 +387,9 @@ npx -y @olano/sg-cli setup claude property
 codex mcp add singapore-property -- npx -y @olano/mcp-singapore --profile property
 ```
 
-For Claude Desktop, add `"--profile", "property"` to the `args` array in the config file.
+For Claude Desktop, add `"--profile", "property"` to the `args` array in the config file. The
+one-click extension always loads the complete suite; use the configuration-file route if you want a
+profile there.
 
 ### Questions to try
 
@@ -484,7 +517,8 @@ npx -y @olano/sg-cli doctor claude property
 arguments, and report missing inputs; they do not send the question to an external model or silently
 execute the recommendation. Use `tool` for an explicit invocation.
 
-For plugin details, updates, and validation, see [Claude Code plugins](docs/claude-code.md) and
+For client-specific reference, updates, and validation, see
+[Claude Desktop](docs/claude-desktop.md), [Claude Code plugins](docs/claude-code.md), and
 [Codex and OpenAI plugins](docs/openai-plugins.md).
 
 ## Example questions
@@ -720,8 +754,17 @@ Inspect the aggregate server interactively:
 npx @modelcontextprotocol/inspector node packages/singapore/dist/cli.js
 ```
 
-See [Architecture](docs/architecture.md), [Contributing](CONTRIBUTING.md), and
-[Security](SECURITY.md).
+Build and verify the Claude Desktop bundle. `check:mcpb` unpacks the packed `.mcpb` outside the
+repository and starts it with the exact command its own manifest declares, so a dependency that only
+resolves through the monorepo fails here rather than on a user's machine:
+
+```bash
+npm run build:mcpb
+npm run check:mcpb
+```
+
+See [Architecture](docs/architecture.md), [Claude Desktop](docs/claude-desktop.md),
+[Contributing](CONTRIBUTING.md), and [Security](SECURITY.md).
 
 ## Licence
 
