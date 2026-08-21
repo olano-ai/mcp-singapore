@@ -1,6 +1,6 @@
 {
   "name": "olano-singapore-finance",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Singapore official rates, mortgage scenarios, FX, income, and inflation MCP tools and skills.",
   "author": { "name": "Olano", "url": "https://olano.ai" },
   "homepage": "https://github.com/olano-ai/mcp-singapore",

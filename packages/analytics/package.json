@@ -1,6 +1,6 @@
 {
   "name": "@olano/mcp-analytics",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Small deterministic analytics tools for the Olano Singapore MCP suite",
   "type": "module",
   "license": "MIT",
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/server": "^2.0.0",
-    "@olano/mcp-core": "0.3.0",
+    "@olano/mcp-core": "0.4.0",
     "zod": "^4.1.5"
   },
   "publishConfig": {

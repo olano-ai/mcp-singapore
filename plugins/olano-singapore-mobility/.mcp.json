@@ -2,7 +2,7 @@
   "mcpServers": {
     "singapore-mobility": {
       "command": "npx",
-      "args": ["-y", "@olano/mcp-singapore@0.3.0", "--profile", "mobility"],
+      "args": ["-y", "@olano/mcp-singapore@0.4.0", "--profile", "mobility"],
       "env": {
         "ONEMAP_TOKEN": "${user_config.onemap_token}",
         "LTA_DATAMALL_API_KEY": "${user_config.lta_datamall_api_key}"

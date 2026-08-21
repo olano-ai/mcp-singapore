@@ -1,6 +1,6 @@
 {
   "name": "olano-singapore-civic",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Singapore weather, health, education, population, safety, and public-service MCP tools and skills.",
   "author": { "name": "Olano", "url": "https://olano.ai" },
   "homepage": "https://github.com/olano-ai/mcp-singapore",

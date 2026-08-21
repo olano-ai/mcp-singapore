@@ -1,6 +1,6 @@
 {
   "singapore": {
     "command": "npx",
-    "args": ["-y", "@olano/mcp-singapore@0.3.0", "--profile", "all"]
+    "args": ["-y", "@olano/mcp-singapore@0.4.0", "--profile", "all"]
   }
 }

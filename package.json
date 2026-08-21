@@ -1,6 +1,6 @@
 {
   "name": "@olano/singapore-mcp-monorepo",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "description": "Open-source MCP servers for Singapore public data and services",
   "type": "module",

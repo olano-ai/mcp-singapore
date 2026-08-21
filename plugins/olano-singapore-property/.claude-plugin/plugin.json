@@ -1,6 +1,6 @@
 {
   "name": "olano-singapore-property",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Singapore HDB, private-property, neighbourhood, and mortgage MCP tools and skills.",
   "author": { "name": "Olano", "url": "https://olano.ai" },
   "homepage": "https://github.com/olano-ai/mcp-singapore",
