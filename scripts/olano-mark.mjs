@@ -11,14 +11,13 @@ import { deflateSync } from 'node:zlib';
  * The background is transparent and the mark fills the canvas. A white plate underneath made the
  * icon read as a bright square with a small detail inside it against Claude Desktop's dark
  * extension tile, which is where this asset is seen most; red on transparent carries on both light
- * and dark surfaces. Pass `plate: true` for a surface that needs the white square back.
+ * and dark surfaces.
  */
 
 export const RED = '#E5262C';
 export const NAVY = '#1E2A3A';
 export const CANVAS = 512;
 
-const PLATE_RADIUS = 96;
 const OCTAGON_RADIUS = 219;
 const OCTAGON_STROKE = 15;
 
@@ -64,6 +63,131 @@ const SHAPES = [
   ...INNER.map(([cx, cy]) => ({ kind: 'disc', cx, cy, r: INNER_NODE })),
   ...VERTICES.map(([cx, cy]) => ({ kind: 'disc', cx, cy, r: OUTER_NODE })),
 ];
+
+// --- Wordmark ----------------------------------------------------------------------------------
+
+/**
+ * "olano.ai" drawn as geometry rather than text.
+ *
+ * An SVG that ships in a README cannot rely on a font: whatever renders it may not have the one we
+ * chose, and GitHub will not load a remote face. The wordmark is a geometric sans, so every glyph
+ * it needs reduces to a circle, a straight stem, or a half-circle arch — five unique letters plus a
+ * dot. Drawing them keeps the file self-contained and identical everywhere.
+ *
+ * Local units: baseline at y=100, x-height top at y=28, ascender top at y=0.
+ */
+const WORD_STROKE = 13;
+const BASELINE = 100;
+const X_TOP = 28;
+const BOWL = 29.5; // centreline radius of the round letters
+const TRACK = 15; // space between letters
+
+/** Samples a半-circle arch into a polyline; the renderer has no arc primitive and needs none. */
+function arch(cx, cy, radius, steps = 28) {
+  return Array.from({ length: steps + 1 }, (_, index) => {
+    const angle = Math.PI + (Math.PI * index) / steps;
+    return [cx + radius * Math.cos(angle), cy + radius * Math.sin(angle)];
+  });
+}
+
+/** Returns the glyph's shapes plus the width it advances. */
+function glyph(letter, x, color) {
+  const stem = (sx, top, bottom) => ({
+    kind: 'polyline',
+    points: [
+      [sx, top],
+      [sx, bottom],
+    ],
+    width: WORD_STROKE,
+    cap: 'butt',
+    color,
+  });
+  const half = WORD_STROKE / 2;
+
+  switch (letter) {
+    case 'o': {
+      const cx = x + BOWL + half;
+      return {
+        shapes: [{ kind: 'ring', cx, cy: 64, r: BOWL, width: WORD_STROKE, color }],
+        width: 2 * BOWL + WORD_STROKE,
+      };
+    }
+    case 'l':
+      return { shapes: [stem(x + half, 0, BASELINE)], width: WORD_STROKE };
+    case 'a': {
+      const cx = x + BOWL + half;
+      return {
+        shapes: [
+          { kind: 'ring', cx, cy: 64, r: BOWL, width: WORD_STROKE, color },
+          stem(cx + BOWL, X_TOP, BASELINE),
+        ],
+        width: 2 * BOWL + WORD_STROKE,
+      };
+    }
+    case 'n': {
+      const radius = 26;
+      const left = x + half;
+      const right = x + 2 * radius + half;
+      return {
+        shapes: [
+          stem(left, X_TOP, BASELINE),
+          {
+            kind: 'polyline',
+            points: arch(left + radius, X_TOP + radius, radius),
+            width: WORD_STROKE,
+            color,
+          },
+          stem(right, X_TOP + radius, BASELINE),
+        ],
+        width: 2 * radius + WORD_STROKE,
+      };
+    }
+    case 'i':
+      return {
+        shapes: [
+          stem(x + half, X_TOP, BASELINE),
+          { kind: 'disc', cx: x + half, cy: 4, r: half, color },
+        ],
+        width: WORD_STROKE,
+      };
+    case '.':
+      return {
+        shapes: [{ kind: 'disc', cx: x + half, cy: BASELINE - half, r: half, color }],
+        width: WORD_STROKE,
+      };
+    default:
+      throw new Error(`No glyph for ${letter}`);
+  }
+}
+
+/** Lays "olano" in navy and ".ai" in red, returning the shapes and the total advance. */
+function wordmarkShapes() {
+  const shapes = [];
+  let x = 0;
+  for (const [index, letter] of [...'olano.ai'].entries()) {
+    const drawn = glyph(letter, x, index < 5 ? NAVY : RED);
+    shapes.push(...drawn.shapes);
+    x += drawn.width + TRACK;
+  }
+  return { shapes, width: x - TRACK };
+}
+
+function translateScale(shapes, dx, dy, scale) {
+  const point = ([px, py]) => [dx + px * scale, dy + py * scale];
+  return shapes.map((shape) => {
+    const moved = { ...shape };
+    if (shape.points) moved.points = shape.points.map(point);
+    if (shape.cx !== undefined) [moved.cx, moved.cy] = point([shape.cx, shape.cy]);
+    if (shape.r !== undefined) moved.r = shape.r * scale;
+    if (shape.width !== undefined) moved.width = shape.width * scale;
+    if (shape.x !== undefined) {
+      [moved.x, moved.y] = point([shape.x, shape.y]);
+      moved.w = shape.w * scale;
+      moved.h = shape.h * scale;
+    }
+    return moved;
+  });
+}
 
 function round(value) {
   return Number(value.toFixed(2));
@@ -124,41 +248,35 @@ function insideShape(x, y, shape) {
   }
 }
 
-function insidePlate(x, y) {
-  return insideRoundedRect(x, y, { x: 0, y: 0, w: CANVAS, h: CANVAS, r: PLATE_RADIUS });
-}
-
 // --- SVG ---------------------------------------------------------------------------------------
 
 function shapeToSvg(shape) {
+  const colour = shape.color ?? RED;
   switch (shape.kind) {
     case 'polygon':
-      return `<polygon points="${shape.points.map(([x, y]) => `${round(x)},${round(y)}`).join(' ')}"/>`;
+      return `<polygon points="${shape.points.map(([x, y]) => `${round(x)},${round(y)}`).join(' ')}" fill="${colour}"/>`;
     case 'rect':
-      return `<rect x="${round(shape.x)}" y="${round(shape.y)}" width="${round(shape.w)}" height="${round(shape.h)}" rx="${round(shape.r)}"/>`;
+      return `<rect x="${round(shape.x)}" y="${round(shape.y)}" width="${round(shape.w)}" height="${round(shape.h)}" rx="${round(shape.r)}" fill="${colour}"/>`;
     case 'disc':
-      return `<circle cx="${round(shape.cx)}" cy="${round(shape.cy)}" r="${round(shape.r)}"/>`;
+      return `<circle cx="${round(shape.cx)}" cy="${round(shape.cy)}" r="${round(shape.r)}" fill="${colour}"/>`;
     case 'ring':
-      return `<circle cx="${round(shape.cx)}" cy="${round(shape.cy)}" r="${round(shape.r)}" fill="none" stroke="${RED}" stroke-width="${round(shape.width)}"/>`;
+      return `<circle cx="${round(shape.cx)}" cy="${round(shape.cy)}" r="${round(shape.r)}" fill="none" stroke="${colour}" stroke-width="${round(shape.width)}"/>`;
     case 'polyline': {
       const [start, ...rest] = shape.points;
       const path = `M${round(start[0])} ${round(start[1])}${rest.map(([x, y]) => `L${round(x)} ${round(y)}`).join('')}${shape.closed ? 'Z' : ''}`;
-      return `<path d="${path}" fill="none" stroke="${RED}" stroke-width="${round(shape.width)}" stroke-linecap="round" stroke-linejoin="round"/>`;
+      return `<path d="${path}" fill="none" stroke="${colour}" stroke-width="${round(shape.width)}" stroke-linecap="${shape.cap ?? 'round'}" stroke-linejoin="round"/>`;
     }
     default:
       throw new Error(`Unknown shape ${shape.kind}`);
   }
 }
 
-/**
- * @param {{ plate?: boolean }} options Set plate true to sit the mark on a white rounded square.
- * @returns {string} The mark as a standalone SVG document.
- */
-export function markSvg({ plate = false } = {}) {
+/** @returns {string} The mark as a standalone SVG document. */
+export function markSvg() {
   const body = SHAPES.map((shape) => `    ${shapeToSvg(shape)}`).join('\n');
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CANVAS} ${CANVAS}" role="img" aria-labelledby="title">
   <title id="title">Olano Singapore</title>
-${plate ? `  <rect width="${CANVAS}" height="${CANVAS}" rx="${PLATE_RADIUS}" fill="#fff"/>\n` : ''}  <g fill="${RED}">
+  <g fill="${RED}">
 ${body}
   </g>
 </svg>
@@ -212,38 +330,42 @@ function encodePng(width, height, pixels) {
   ]);
 }
 
-const RED_RGB = [0xe5, 0x26, 0x2c];
-const WHITE_RGB = [255, 255, 255];
+function toRgb(hex) {
+  const value = Number.parseInt(hex.slice(1), 16);
+  return [(value >> 16) & 255, (value >> 8) & 255, value & 255];
+}
 
 /** Returns the painted colour at one sample point, or null where the canvas stays transparent. */
-function sample(x, y, plate) {
-  const painted = SHAPES.some((shape) => insideShape(x, y, shape));
-  if (painted) return RED_RGB;
-  if (plate && insidePlate(x, y)) return WHITE_RGB;
+function sampleShapes(shapes, x, y) {
+  for (let index = shapes.length - 1; index >= 0; index -= 1) {
+    const shape = shapes[index];
+    if (insideShape(x, y, shape)) return toRgb(shape.color ?? RED);
+  }
   return null;
 }
 
-/**
- * @param {number} size Output edge length in pixels.
- * @param {{ plate?: boolean, supersample?: number }} options
- * @returns {Buffer} A PNG image.
- */
-export function renderOlanoIcon(size = 512, { plate = false, supersample = 3 } = {}) {
-  const pixels = Buffer.alloc(size * size * 4);
-  const step = CANVAS / (size * supersample);
+/** Supersampled rasteriser shared by every PNG this module produces. */
+function rasterise(shapes, width, height, { supersample = 3 } = {}) {
+  const pixels = Buffer.alloc(width * height * 4);
   const samplesPerPixel = supersample * supersample;
+  const step = 1 / supersample;
+  const offset = step / 2;
 
-  for (let row = 0; row < size; row += 1) {
-    for (let column = 0; column < size; column += 1) {
+  for (let row = 0; row < height; row += 1) {
+    for (let column = 0; column < width; column += 1) {
       let red = 0;
       let green = 0;
       let blue = 0;
       let covered = 0;
 
       for (let subRow = 0; subRow < supersample; subRow += 1) {
-        const y = (row * supersample + subRow + 0.5) * step;
+        const y = (row * supersample + subRow) * step + offset;
         for (let subColumn = 0; subColumn < supersample; subColumn += 1) {
-          const colour = sample((column * supersample + subColumn + 0.5) * step, y, plate);
+          const colour = sampleShapes(
+            shapes,
+            (column * supersample + subColumn) * step + offset,
+            y,
+          );
           if (!colour) continue;
           red += colour[0];
           green += colour[1];
@@ -252,14 +374,64 @@ export function renderOlanoIcon(size = 512, { plate = false, supersample = 3 } =
         }
       }
 
-      const offset = (row * size + column) * 4;
+      const index = (row * width + column) * 4;
       if (covered === 0) continue;
-      pixels[offset] = Math.round(red / covered);
-      pixels[offset + 1] = Math.round(green / covered);
-      pixels[offset + 2] = Math.round(blue / covered);
-      pixels[offset + 3] = Math.round((covered / samplesPerPixel) * 255);
+      pixels[index] = Math.round(red / covered);
+      pixels[index + 1] = Math.round(green / covered);
+      pixels[index + 2] = Math.round(blue / covered);
+      pixels[index + 3] = Math.round((covered / samplesPerPixel) * 255);
     }
   }
 
-  return encodePng(size, size, pixels);
+  return encodePng(width, height, pixels);
+}
+
+export function renderOlanoIcon(size = 512, { supersample = 3 } = {}) {
+  return rasterise(translateScale(SHAPES, 0, 0, size / CANVAS), size, size, { supersample });
+}
+
+/** Rasterises the horizontal lockup at a given width, for previewing what the SVG will look like. */
+export function renderLockup(width = 969, { supersample = 2 } = {}) {
+  const { shapes, viewWidth, viewHeight } = lockupGeometry();
+  const scale = width / viewWidth;
+  return rasterise(translateScale(shapes, 0, 0, scale), width, Math.round(viewHeight * scale), {
+    supersample,
+  });
+}
+
+const LOCKUP_HEIGHT = 260;
+const LOCKUP_PADDING = 24;
+const LOCKUP_GAP = 56;
+
+/**
+ * The horizontal lockup: mark, then wordmark, sized for a README header.
+ *
+ * @returns {string} A standalone SVG document.
+ */
+function lockupGeometry() {
+  const markSize = LOCKUP_HEIGHT - LOCKUP_PADDING * 2;
+  const markScale = markSize / CANVAS;
+  const word = wordmarkShapes();
+  const wordScale = (markSize * 0.62) / BASELINE;
+  const wordWidth = word.width * wordScale;
+  const wordBaseline = LOCKUP_HEIGHT / 2 + (BASELINE * wordScale) / 2;
+  const wordLeft = LOCKUP_PADDING + markSize + LOCKUP_GAP;
+  const width = Math.round(wordLeft + wordWidth + LOCKUP_PADDING);
+
+  const shapes = [
+    ...translateScale(SHAPES, LOCKUP_PADDING, LOCKUP_PADDING, markScale),
+    ...translateScale(word.shapes, wordLeft, wordBaseline - BASELINE * wordScale, wordScale),
+  ];
+
+  return { shapes, viewWidth: width, viewHeight: LOCKUP_HEIGHT };
+}
+
+/** @returns {string} The horizontal lockup as a standalone SVG document. */
+export function lockupSvg() {
+  const { shapes, viewWidth, viewHeight } = lockupGeometry();
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${viewWidth} ${viewHeight}" width="${viewWidth}" height="${viewHeight}" role="img" aria-labelledby="lockup-title">
+  <title id="lockup-title">olano.ai — Singapore MCP</title>
+${shapes.map((shape) => `  ${shapeToSvg(shape)}`).join('\n')}
+</svg>
+`;
 }

@@ -1,4 +1,8 @@
-# 🇸🇬 Singapore MCP by Olano
+<p align="center">
+  <img src="assets/olano-lockup.svg" alt="olano.ai — Singapore MCP" width="460">
+</p>
+
+<h1 align="center">🇸🇬 Singapore MCP by Olano</h1>
 
 [![npm](https://img.shields.io/npm/v/%40olano%2Fmcp-singapore?logo=npm&label=npm&color=2563eb)](https://www.npmjs.com/package/@olano/mcp-singapore)
 [![CI](https://github.com/olano-ai/mcp-singapore/actions/workflows/ci.yml/badge.svg)](https://github.com/olano-ai/mcp-singapore/actions/workflows/ci.yml)
