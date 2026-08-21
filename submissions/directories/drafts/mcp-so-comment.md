@@ -7,6 +7,13 @@ server links and list them on mcp.so)
 
 **Post as:** a GitHub account you control. This is a public comment on a third-party repository.
 
+**Status:** ready to post. Not yet posted — the release session's GitHub access is scoped to
+`olano-ai/mcp-singapore`, so calls against `chatmcp/mcpso` are refused and `add_repo` rejects
+cross-owner attachments. Posting needs a session sourced from that repository, or a person pasting
+the comment by hand.
+
+**Thread verified open on 2026-08-21**, still collecting server links.
+
 ---
 
 ## Comment body

@@ -79,7 +79,9 @@
       "target": "https://github.com/chatmcp/mcpso/issues/1",
       "copy": "submissions/directories/drafts/mcp-so-comment.md",
       "verifiedAt": "2026-08-21",
-      "notes": "Intake thread confirmed open and still collecting server links."
+      "notes": "Intake thread confirmed open and still collecting server links.",
+      "blocker": "Cannot be filed from a release session scoped to olano-ai/mcp-singapore: the GitHub API refuses cross-repository calls and add_repo rejects cross-owner attachments. File from a session sourced at the target repository, or by hand.",
+      "attemptedAt": "2026-08-21"
     },
     {
       "name": "Cline MCP Marketplace",
@@ -96,7 +98,12 @@
       "submission": "pull request editing README.md",
       "target": "https://github.com/punkpeye/awesome-mcp-servers",
       "copy": "submissions/directories/drafts/awesome-mcp-servers.md",
-      "notes": "Entries must stay alphabetical within their category and match the surrounding line format and legend markers. Re-read CONTRIBUTING.md on the day of filing."
+      "notes": "Entries must stay alphabetical within their category and match the surrounding line format and legend markers. Re-read CONTRIBUTING.md on the day of filing.",
+      "blocker": "Cannot be filed from a release session scoped to olano-ai/mcp-singapore: the GitHub API refuses cross-repository calls and add_repo rejects cross-owner attachments. File from a session sourced at the target repository, or by hand.",
+      "attemptedAt": "2026-08-21",
+      "category": "Data Platforms",
+      "placement": "Insert between mbrummerstedt/powerbi-analyst-mcp and Osseni94/keyneg-mcp to preserve case-insensitive alphabetical-by-owner ordering.",
+      "duplicateChecked": "2026-08-21; not present in README.md"
     },
     {
       "name": "Docker MCP Catalog",
