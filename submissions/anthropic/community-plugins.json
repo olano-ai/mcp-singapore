@@ -1,0 +1,54 @@
+{
+  "publisher": "Olano",
+  "website": "https://olano.ai",
+  "repository": "https://github.com/olano-ai/mcp-singapore",
+  "support": "https://github.com/olano-ai/mcp-singapore/issues",
+  "privacyPolicy": "https://github.com/olano-ai/mcp-singapore/blob/main/PRIVACY.md",
+  "termsOfService": "https://github.com/olano-ai/mcp-singapore/blob/main/TERMS.md",
+  "marketplace": "https://github.com/olano-ai/mcp-singapore/blob/main/.claude-plugin/marketplace.json",
+  "release": "0.3.0",
+  "plugins": [
+    {
+      "name": "olano-singapore",
+      "source": "https://github.com/olano-ai/mcp-singapore/tree/main/plugins/olano-singapore",
+      "description": "The complete Singapore public-data MCP suite with eight focused skills and 291 tools.",
+      "category": "Productivity"
+    },
+    {
+      "name": "olano-singapore-property",
+      "source": "https://github.com/olano-ai/mcp-singapore/tree/main/plugins/olano-singapore-property",
+      "description": "Singapore HDB, private-property, neighbourhood, transport, amenity, and mortgage research.",
+      "category": "Data & Analytics"
+    },
+    {
+      "name": "olano-singapore-mobility",
+      "source": "https://github.com/olano-ai/mcp-singapore/tree/main/plugins/olano-singapore-mobility",
+      "description": "Singapore MRT, LRT, bus, road, parking, taxi, routing, and COE research.",
+      "category": "Productivity"
+    },
+    {
+      "name": "olano-singapore-business",
+      "source": "https://github.com/olano-ai/mcp-singapore/tree/main/plugins/olano-singapore-business",
+      "description": "Singapore company, UEN, formation, sector, retail, tourism, labour, and trade research.",
+      "category": "Data & Analytics"
+    },
+    {
+      "name": "olano-singapore-economy",
+      "source": "https://github.com/olano-ai/mcp-singapore/tree/main/plugins/olano-singapore-economy",
+      "description": "Singapore GDP, prices, employment, income, population, trade, retail, and tourism analysis.",
+      "category": "Data & Analytics"
+    },
+    {
+      "name": "olano-singapore-civic",
+      "source": "https://github.com/olano-ai/mcp-singapore/tree/main/plugins/olano-singapore-civic",
+      "description": "Singapore weather, air quality, health, education, childcare, safety, and public-service research.",
+      "category": "Productivity"
+    },
+    {
+      "name": "olano-singapore-finance",
+      "source": "https://github.com/olano-ai/mcp-singapore/tree/main/plugins/olano-singapore-finance",
+      "description": "Singapore official rates, mortgage scenarios, FX, income, inflation, and optional market context.",
+      "category": "Data & Analytics"
+    }
+  ]
+}
