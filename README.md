@@ -19,25 +19,99 @@ Built and maintained in Singapore by [Olano](https://olano.ai).
 
 ## Quick start
 
-First time using MCP? No worries. Pick the app you use and follow only that section. The default
-installation gives you the **complete Olano Singapore suite**. You do not need to choose a category
-or provide an API key to get started.
+New to MCP? An MCP server is a small helper program that your AI app runs on your own computer so
+it can look things up for you. You install it once, and after that you just ask questions in plain
+English. This one runs locally and reads official Singapore public data; it has no Olano account,
+telemetry, or analytics. See [Privacy](PRIVACY.md).
 
-| Where you use AI   | Recommended installation | What is installed                                   |
-| ------------------ | ------------------------ | --------------------------------------------------- |
-| Claude Desktop app | Complete MCP             | All Singapore MCP tools                             |
-| Claude Code CLI    | Complete plugin          | All Singapore MCP tools plus all eight Agent Skills |
-| Codex app          | Complete MCP             | All Singapore MCP tools                             |
-| Codex CLI          | Complete MCP             | All Singapore MCP tools                             |
+**Find your app in the table and follow only that section.** The default install gives you the
+**complete Olano Singapore suite**. You do not need to pick a category, and you do not need an API
+key.
 
-You need [Node.js 20 or newer](https://nodejs.org/) for the local MCP commands below. Optional
-credentials unlock a few additional government services, but most of the suite works without them.
+| Your app                                       | Follow this                               | Roughly |
+| ---------------------------------------------- | ----------------------------------------- | ------- |
+| **Claude Desktop app** — the **Chat** tab      | [Claude Desktop app](#claude-desktop-app) | 3 min   |
+| **Claude Code** — terminal or the **Code** tab | [Claude Code](#claude-code)               | 1 min   |
+| **Codex app**                                  | [Codex app](#codex-app)                   | 2 min   |
+| **Codex CLI**                                  | [Codex CLI](#codex-cli)                   | 1 min   |
+
+Not sure which one you have? If you type questions into a chat window, you are using the Claude
+Desktop app. If you run `claude` in a terminal, or you use the **Code** tab inside the desktop app,
+you are using Claude Code. Claude Code gets the better install, because it can load the Agent Skills
+as well as the tools.
+
+### Before you start: install Node.js
+
+Every install below runs the server with `npx`, which comes with Node.js. You need **Node.js 20 or
+newer**.
+
+1. Download the **LTS** installer from [nodejs.org](https://nodejs.org/) and run it.
+
+2. Open a terminal — Terminal on macOS, PowerShell on Windows — and check the version:
+
+   ```bash
+   node --version
+   ```
+
+You should see `v20.` or higher, for example `v22.14.0`. If you get "command not found" or "not
+recognized", close the terminal, open a new one, and try again. If it still fails, Node.js did not
+install correctly.
+
+You do **not** need to download this repository, clone anything, or run `npm install`. `npx` fetches
+the published package for you the first time it runs.
 
 ### Claude Desktop app
 
-Claude Desktop uses the MCP server directly. This is separate from the Claude Code plugin.
+> This section is for the **Chat** tab of the Claude Desktop app. If you use the **Code** tab,
+> follow [Claude Code](#claude-code) instead — you get the eight Agent Skills there too.
 
-1. Open **Claude → Settings → Developer → Edit Config** and add this server inside `mcpServers`:
+Claude Desktop reads its MCP servers from one small settings file. There is no one-click install for
+this server yet, so pick one of the two routes below. They produce exactly the same result.
+
+#### Route A — let an AI agent edit the file for you (no JSON required)
+
+If you already have Claude Code, Codex, Cursor, or any other coding agent that can edit files on your
+computer, paste this prompt into it and let it do the whole job:
+
+```text
+Please add the Olano Singapore MCP server to my Claude Desktop configuration.
+
+1. Open my Claude Desktop config file, creating it if it does not exist:
+   - macOS:   ~/Library/Application Support/Claude/claude_desktop_config.json
+   - Windows: %APPDATA%\Claude\claude_desktop_config.json
+   - Linux:   ~/.config/Claude/claude_desktop_config.json
+2. Inside the "mcpServers" object, add an entry named "singapore" that runs the
+   command "npx" with the arguments ["-y", "@olano/mcp-singapore"]. On Windows use
+   the command "cmd" with ["/c", "npx", "-y", "@olano/mcp-singapore"] instead.
+3. Keep every server that is already in the file and keep the JSON valid.
+4. Do not add any API keys. Show me the final file and tell me to fully quit and
+   reopen Claude Desktop.
+```
+
+Then jump to [step 4](#confirm-it-worked) below to confirm it worked.
+
+#### Route B — edit the file yourself
+
+1. **Open the settings file.** In Claude Desktop, open **Settings → Developer → Edit Config**. That
+   button opens `claude_desktop_config.json` in your text editor and creates it if it is missing.
+
+   <details>
+   <summary>Can't find that menu? Open the file directly.</summary>
+
+   | System  | File                                                              |
+   | ------- | ----------------------------------------------------------------- |
+   | macOS   | `~/Library/Application Support/Claude/claude_desktop_config.json` |
+   | Windows | `%APPDATA%\Claude\claude_desktop_config.json`                     |
+   | Linux   | `~/.config/Claude/claude_desktop_config.json`                     |
+
+   On macOS the Settings window opens from **Claude** in the menu bar, not from the chat window. On
+   Windows, check the Claude icon in the system tray. If the file does not exist, create it.
+
+   </details>
+
+2. **Paste the configuration.**
+
+   If the file is **empty or brand new**, paste this entire block — the outer `{` and `}` matter:
 
    ```json
    {
@@ -50,49 +124,131 @@ Claude Desktop uses the MCP server directly. This is separate from the Claude Co
    }
    ```
 
-   If the file already contains other servers, keep them and add only the `singapore` entry.
+   If the file **already has other servers**, keep them and add only the `singapore` entry, with a
+   comma between entries:
 
-2. Save the file and restart Claude Desktop.
-
-3. Click **+ → Connectors**, confirm that `singapore` is connected, and ask a question. That is it,
-   can already.
-
-### Claude Code CLI
-
-The complete plugin is the best Claude Code experience because it includes the entire MCP plus all
-eight Olano Agent Skills.
-
-1. Run this single command in your terminal:
-
-   ```bash
-   npx -y @olano/sg-cli setup claude
+   ```json
+   {
+     "mcpServers": {
+       "some-server-you-already-had": {
+         "command": "npx",
+         "args": ["-y", "some-other-package"]
+       },
+       "singapore": {
+         "command": "npx",
+         "args": ["-y", "@olano/mcp-singapore"]
+       }
+     }
+   }
    ```
 
-2. Start a new Claude Code session.
+   The same file is available at [`examples/claude-desktop.json`](examples/claude-desktop.json).
 
-3. Run `/mcp` to confirm that `singapore` is connected, then ask a question.
+   <details>
+   <summary><strong>On Windows?</strong> Use this version instead.</summary>
 
-Prefer to ask Claude Code to do the installation? Paste this prompt:
+   Windows installs `npx` as a `.cmd` script, which some builds of Claude Desktop cannot start
+   directly. If the plain version above shows an error, wrap it in `cmd /c`:
+
+   ```json
+   {
+     "mcpServers": {
+       "singapore": {
+         "command": "cmd",
+         "args": ["/c", "npx", "-y", "@olano/mcp-singapore"]
+       }
+     }
+   }
+   ```
+
+   </details>
+
+3. **Save the file and fully restart Claude Desktop.** Closing the window is not enough. Quit the
+   app completely — **Claude → Quit** on macOS, or right-click the tray icon and choose **Quit** on
+   Windows — then open it again.
+
+4. <a id="confirm-it-worked"></a>**Confirm it worked.** Click the **+** button next to the message
+   box and look under **Connectors**. You should see `singapore` listed with its tools. Then ask a
+   question:
+
+   > Show me the latest two-hour weather forecast for Singapore, with timestamps.
+
+   The first question may take 20–30 seconds while `npx` downloads the package. After that it is
+   fast. Can already.
+
+If `singapore` does not appear, see [If something is not working](#if-something-is-not-working).
+
+### Claude Code
+
+> This covers both the `claude` terminal command and the **Code** tab in the Claude Desktop app.
+
+Use the **plugin**. It installs the complete MCP server _and_ all eight Olano Agent Skills, which
+teach Claude when to reach for which Singapore tool, so answers come back better sourced. It also
+gives you a safe place to add the optional API keys later.
+
+1. **Add the Olano marketplace.** Type this at the Claude Code prompt, exactly as shown, including
+   the leading `/`:
+
+   ```text
+   /plugin marketplace add olano-ai/mcp-singapore
+   ```
+
+   This only registers the catalogue. Nothing is installed yet.
+
+2. **Install the complete plugin:**
+
+   ```text
+   /plugin install olano-singapore@olano
+   ```
+
+   Choose **User scope** when it asks, so the plugin works in every project. If the summary says
+   `Run /reload-plugins to activate.`, run that command too; otherwise the plugin is already live.
+
+3. **Confirm and ask a question.** Run:
+
+   ```text
+   /mcp
+   ```
+
+   You should see `singapore` connected. Then try:
+
+   > List every station on the Thomson-East Coast Line in order and identify the interchanges.
+
+   The first call may take 20–30 seconds while the package downloads. After that it is fast.
+
+#### Prefer to have Claude do it?
+
+Paste this into Claude Code and it will run the setup and check it for you:
 
 ```text
 Install the complete Olano Singapore plugin for me. Run
 `npx -y @olano/sg-cli setup claude`, verify it with
 `npx -y @olano/sg-cli doctor claude`, and tell me when to start a new session.
-Do not request optional API keys yet.
+Do not ask me for optional API keys yet.
 ```
 
-The command installs `olano-singapore@olano` at user scope. It is safe to run again when you want
-to refresh the Olano marketplace.
+#### Prefer a terminal one-liner?
+
+This does the same two steps without an interactive session, at user scope. It is safe to re-run
+whenever you want to refresh the Olano marketplace:
+
+```bash
+npx -y @olano/sg-cli setup claude
+npx -y @olano/sg-cli doctor claude
+```
+
+Start a new Claude Code session afterwards, or run `/reload-plugins` in an open one.
 
 <details>
-<summary><strong>Claude Code: install the complete MCP without Agent Skills</strong></summary>
+<summary><strong>Just the tools, without the Agent Skills</strong></summary>
 
 ```bash
 claude mcp add --transport stdio --scope user singapore -- npx -y @olano/mcp-singapore
 ```
 
-Start a new session and run `/mcp`. This route installs every MCP tool but does not include the
-plugin's packaged Agent Skills.
+Start a new session and run `/mcp`. This installs every MCP tool but none of the packaged Agent
+Skills, so Claude gets the same data with less guidance on how to use it. The plugin above is the
+better default.
 
 </details>
 
@@ -144,6 +300,34 @@ Do not request optional API keys yet.
 The command intentionally has no `--profile` argument. With no profile selected,
 `@olano/mcp-singapore` loads the complete suite.
 
+### If something is not working
+
+Work through these in order. Most first-time problems are one of the first three.
+
+| What you see                                       | What to do                                                                                                                                                                               |
+| -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `singapore` is not listed at all                   | You did not fully quit and reopen the app. Closing the window is not enough — quit it completely, then reopen.                                                                           |
+| The server shows as failed or disconnected         | Run `node --version` in a terminal. If it is missing or below `v20`, install [Node.js](https://nodejs.org/) LTS and restart the app.                                                     |
+| It fails on Windows                                | Switch the config to `"command": "cmd"` with `"args": ["/c", "npx", "-y", "@olano/mcp-singapore"]`, then restart the app.                                                                |
+| Claude Desktop says the config file is invalid     | A missing or extra comma, or a missing outer `{`. Paste your file into a JSON validator, or copy [`examples/claude-desktop.json`](examples/claude-desktop.json) over it and start again. |
+| The first question is very slow                    | Expected. `npx` downloads the package on first run. Later questions are fast.                                                                                                            |
+| Claude Code says `/plugin` is not a known command  | Update Claude Code: `npm install -g @anthropic-ai/claude-code@latest`, or `brew upgrade claude-code`. Then restart your terminal.                                                        |
+| The plugin installed but the tools are missing     | Run `/reload-plugins` in the session, or start a new session. Then run `/mcp` again.                                                                                                     |
+| Claude answers from memory instead of using a tool | Ask for the source explicitly, for example "using the Singapore MCP tools, show the latest PSI readings with timestamps".                                                                |
+
+Check the exact state of a Claude Code install at any time:
+
+```bash
+npx -y @olano/sg-cli doctor claude
+```
+
+Some tools need a free credential from the upstream agency — OneMap and LTA DataMall in particular.
+Those tools return a clear missing-credential error rather than failing silently. See
+[Credentials and caching](#credentials-and-caching); everything else works without any key.
+
+Still stuck? [Open an issue](https://github.com/olano-ai/mcp-singapore/issues) with your app name,
+your operating system, and the output of `node --version`.
+
 ### Optional: choose a smaller profile
 
 The quick-start commands above install everything. Later, experienced users can choose a focused
@@ -159,12 +343,20 @@ profile to send fewer tool definitions to the model.
 | `finance`  | Official rates, mortgage scenarios, FX, income, and inflation   |
 | `all`      | The complete Singapore suite                                    |
 
-For example, add `property` to the Claude installer or `--profile property` to the MCP command:
+Each profile has its own Claude Code plugin. Install one the same way as the complete plugin:
+
+```text
+/plugin install olano-singapore-property@olano
+```
+
+Or select a profile from a terminal, where `--profile` narrows the MCP server directly:
 
 ```bash
 npx -y @olano/sg-cli setup claude property
 codex mcp add singapore-property -- npx -y @olano/mcp-singapore --profile property
 ```
+
+For Claude Desktop, add `"--profile", "property"` to the `args` array in the config file.
 
 ### Questions to try
 

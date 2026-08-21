@@ -6,28 +6,49 @@ starts the bundled MCP server automatically when the plugin is enabled.
 
 ## Install
 
-Inside Claude Code, add the GitHub marketplace once:
+This page is the reference. For a step-by-step first install, see
+[Claude Code](../README.md#claude-code) in the README.
+
+Inside Claude Code, add the GitHub marketplace once. This registers the catalogue and installs
+nothing:
 
 ```text
 /plugin marketplace add olano-ai/mcp-singapore
 ```
 
-Install one plugin. A focused plugin is recommended because it sends fewer tool definitions to the
-model:
+Then install one plugin. `olano-singapore` is the complete suite and the right default. A focused
+plugin sends fewer tool definitions to the model, which is worth choosing once you know which
+category you need:
+
+```text
+/plugin install olano-singapore@olano
+```
 
 ```text
 /plugin install olano-singapore-property@olano
 ```
 
-Or use the Olano CLI outside an interactive Claude session:
+Choose **user** scope to make the plugin available in every project. If the install summary reports
+`Run /reload-plugins to activate.`, run that command; otherwise the plugin is active immediately.
+Confirm the MCP server with `/mcp` and the packaged skills with `/plugin`.
+
+Or use the Olano CLI outside an interactive Claude session. It adds or refreshes the marketplace and
+installs the matching plugin at user scope, and is safe to re-run:
+
+```bash
+npx -y @olano/sg-cli setup claude
+npx -y @olano/sg-cli doctor claude
+```
 
 ```bash
 npx -y @olano/sg-cli setup claude property
 npx -y @olano/sg-cli doctor claude property
 ```
 
-Use `--dry-run` with `setup claude` to print the exact non-interactive operations without changing
-Claude Code configuration.
+`setup claude` shells out to `claude plugin marketplace add` and `claude plugin install`, so Claude
+Code must be installed and on your `PATH`. Start a new session afterwards, or run `/reload-plugins`
+in an open one. Use `--dry-run` with `setup claude` to print the exact non-interactive operations
+without changing Claude Code configuration.
 
 ## Available plugins
 
