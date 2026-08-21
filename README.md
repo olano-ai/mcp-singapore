@@ -6,10 +6,10 @@
 [![Node.js 20+](https://img.shields.io/badge/Node.js-20%2B-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Ask Claude Code or Codex questions about Singapore property, MRT/LRT, buses, companies, weather,
-the economy, public services, and official financial reference data.
+Ask Claude or Codex questions about Singapore property, MRT/LRT, buses, companies, weather, the
+economy, public services, and official financial reference data.
 
-**291 read-only tools · 8 Agent Skills · 7 focused plugins · stdio and Streamable HTTP**
+**291 read-only tools · 8 Agent Skills · 7 plugins · stdio and Streamable HTTP**
 
 Built and maintained in Singapore by [Olano](https://olano.ai).
 
@@ -17,114 +17,137 @@ Built and maintained in Singapore by [Olano](https://olano.ai).
 > official product of the Singapore Government or any government agency. “Official” below describes
 > an upstream data source, not this software.
 
-## Start here
+## Quick start
 
-Choose one route. You do not need an API key to start; tools that need optional credentials will
-tell you exactly what is missing.
+First time using MCP? No worries. Pick the app you use and follow only that section. The default
+installation gives you the **complete Olano Singapore suite**. You do not need to choose a category
+or provide an API key to get started.
 
-| Platform    | Easiest route                         | What you get                                |
-| ----------- | ------------------------------------- | ------------------------------------------- |
-| Claude Code | **Focused plugin — recommended**      | MCP tools plus skills that guide Claude     |
-| Codex       | **Direct MCP — recommended to start** | The focused MCP tools in one command        |
-| Either      | Complete profile                      | Every Singapore tool; larger tool inventory |
+| Where you use AI   | Recommended installation | What is installed                                   |
+| ------------------ | ------------------------ | --------------------------------------------------- |
+| Claude Desktop app | Complete MCP             | All Singapore MCP tools                             |
+| Claude Code CLI    | Complete plugin          | All Singapore MCP tools plus all eight Agent Skills |
+| Codex app          | Complete MCP             | All Singapore MCP tools                             |
+| Codex CLI          | Complete MCP             | All Singapore MCP tools                             |
 
-### Claude Code
+You need [Node.js 20 or newer](https://nodejs.org/) for the local MCP commands below. Optional
+credentials unlock a few additional government services, but most of the suite works without them.
 
-#### Plugin — recommended
+### Claude Desktop app
 
-Run these three steps:
+Claude Desktop uses the MCP server directly. This is separate from the Claude Code plugin.
 
-1. Install the property plugin from your terminal:
+1. Open **Claude → Settings → Developer → Edit Config** and add this server inside `mcpServers`:
+
+   ```json
+   {
+     "mcpServers": {
+       "singapore": {
+         "command": "npx",
+         "args": ["-y", "@olano/mcp-singapore"]
+       }
+     }
+   }
+   ```
+
+   If the file already contains other servers, keep them and add only the `singapore` entry.
+
+2. Save the file and restart Claude Desktop.
+
+3. Click **+ → Connectors**, confirm that `singapore` is connected, and ask a question. That is it,
+   can already.
+
+### Claude Code CLI
+
+The complete plugin is the best Claude Code experience because it includes the entire MCP plus all
+eight Olano Agent Skills.
+
+1. Run this single command in your terminal:
 
    ```bash
-   npx -y @olano/sg-cli setup claude property
+   npx -y @olano/sg-cli setup claude
    ```
 
-2. Restart Claude Code or start a new session.
+2. Start a new Claude Code session.
 
-3. Ask:
+3. Run `/mcp` to confirm that `singapore` is connected, then ask a question.
 
-   ```text
-   Show recent 4-room HDB resale transactions in Bedok and calculate the median and quartiles.
-   ```
-
-Want Claude Code to handle step 1? Paste this prompt into Claude Code:
+Prefer to ask Claude Code to do the installation? Paste this prompt:
 
 ```text
-Install the Olano Singapore property plugin at user scope. Run
-`npx -y @olano/sg-cli setup claude property`, verify it with
-`npx -y @olano/sg-cli doctor claude property`, and tell me when I should restart Claude Code.
-Do not add or request API keys yet.
+Install the complete Olano Singapore plugin for me. Run
+`npx -y @olano/sg-cli setup claude`, verify it with
+`npx -y @olano/sg-cli doctor claude`, and tell me when to start a new session.
+Do not request optional API keys yet.
 ```
 
-The plugin bundles the `property` MCP profile and focused property and finance skills. Replace
-`property` with `mobility`, `business`, `economy`, `civic`, `finance`, or `all`.
+The command installs `olano-singapore@olano` at user scope. It is safe to run again when you want
+to refresh the Olano marketplace.
 
 <details>
-<summary><strong>Claude Code: MCP only</strong></summary>
+<summary><strong>Claude Code: install the complete MCP without Agent Skills</strong></summary>
 
-1. Add the focused MCP server:
+```bash
+claude mcp add --transport stdio --scope user singapore -- npx -y @olano/mcp-singapore
+```
 
-   ```bash
-   claude mcp add --transport stdio --scope user singapore -- npx -y @olano/mcp-singapore --profile property
-   ```
-
-2. Restart Claude Code, then run `/mcp` to confirm that `singapore` is connected.
-
-3. Ask a Singapore property question.
-
-This installs the MCP tools without the plugin's packaged Agent Skills.
+Start a new session and run `/mcp`. This route installs every MCP tool but does not include the
+plugin's packaged Agent Skills.
 
 </details>
 
-### Codex
+### Codex app
 
-#### MCP — recommended to start
+The Codex app and Codex CLI share the same MCP configuration, so you only need to install the server
+once.
 
-1. Add the focused MCP server:
+1. Open **Settings → MCP servers → Add server**.
 
-   ```bash
-   codex mcp add singapore -- npx -y @olano/mcp-singapore --profile property
-   ```
-
-2. Start a new Codex session and run `/mcp` to confirm that `singapore` is connected.
-
-3. Ask:
+2. Enter `singapore` as the name, choose **STDIO**, use `npx` as the command, and enter these
+   arguments:
 
    ```text
-   Compare HDB resale price per square metre between Tampines and Jurong East over matched periods.
+   -y @olano/mcp-singapore
    ```
 
-Want Codex to install it for you? Paste this prompt into Codex:
+3. Save, select **Restart**, and type `/mcp` in a new conversation to confirm that `singapore` is
+   connected.
 
-```text
-Install the Olano Singapore property MCP for me. Run
-`codex mcp add singapore -- npx -y @olano/mcp-singapore --profile property`, verify it with
-`codex mcp list`, and tell me when I should start a new session. Do not add or request API keys yet.
-```
+Already installed it with the Codex CLI? Then there is nothing else to add. Restart the app and it
+will use the same configuration.
 
-<details>
-<summary><strong>Codex: plugin with MCP + Agent Skills</strong></summary>
+### Codex CLI
 
-1. Add the Olano marketplace:
+1. Add the complete MCP server:
 
    ```bash
-   codex plugin marketplace add olano-ai/mcp-singapore
+   codex mcp add singapore -- npx -y @olano/mcp-singapore
    ```
 
-2. In Codex, run `/plugins`, open the Olano marketplace, and install
-   `olano-singapore-property`.
+2. Confirm that it is enabled:
 
-3. Start a new session and ask a Singapore property question.
+   ```bash
+   codex mcp list
+   ```
 
-Use the plugin route when you want both the focused MCP profile and the packaged workflows that
-teach Codex how to analyse Singapore data carefully.
+3. Start a new Codex session and run `/mcp`, then ask a question.
 
-</details>
+Prefer to ask Codex to do the installation? Paste this prompt:
 
-### Choose a profile
+```text
+Install the complete Olano Singapore MCP for me. Run
+`codex mcp add singapore -- npx -y @olano/mcp-singapore`, verify it with
+`codex mcp list`, and tell me when to start a new session.
+Do not request optional API keys yet.
+```
 
-Focused profiles give the model fewer tool definitions and are the best default for most users.
+The command intentionally has no `--profile` argument. With no profile selected,
+`@olano/mcp-singapore` loads the complete suite.
+
+### Optional: choose a smaller profile
+
+The quick-start commands above install everything. Later, experienced users can choose a focused
+profile to send fewer tool definitions to the model.
 
 | Profile    | Good for                                                        |
 | ---------- | --------------------------------------------------------------- |
@@ -135,6 +158,13 @@ Focused profiles give the model fewer tool definitions and are the best default 
 | `civic`    | Weather, health, education, childcare, safety, and services     |
 | `finance`  | Official rates, mortgage scenarios, FX, income, and inflation   |
 | `all`      | The complete Singapore suite                                    |
+
+For example, add `property` to the Claude installer or `--profile property` to the MCP command:
+
+```bash
+npx -y @olano/sg-cli setup claude property
+codex mcp add singapore-property -- npx -y @olano/mcp-singapore --profile property
+```
 
 ### Questions to try
 
