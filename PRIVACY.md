@@ -1,6 +1,6 @@
 # Privacy Policy
 
-Last updated: August 20, 2026
+Last updated: August 31, 2026
 
 This policy describes the Olano Singapore MCP packages, command-line interface, Agent Skills, and
 plugins in this repository (the “Software”).
@@ -28,6 +28,16 @@ are responsible for its permissions, retention, and deletion. Do not share a cac
 between untrusted users.
 
 ## Hosted services
+
+Olano operates a free Telegram bot, [@OlanoSGBot](https://t.me/OlanoSGBot), so that people can try
+these tools without installing anything. The bot is a hosted Olano service rather than part of the
+Software, and the local-operation statements above do not apply to it.
+
+Messages you send to the bot are delivered through Telegram and are subject to
+[Telegram's privacy policy](https://telegram.org/privacy). Olano's bot service processes the content
+of your message to select a tool, query the upstream Singapore public-data services described above,
+and return an answer. Please do not send personal, confidential, or sensitive information to the
+bot. Run the npm packages locally if you need the request to stay on your own machine.
 
 This repository does not currently provide an Olano-hosted public MCP endpoint. If Olano introduces
 one, its data practices will be documented before it becomes publicly available.

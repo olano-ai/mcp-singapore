@@ -8,12 +8,18 @@
 [![CI](https://github.com/olano-ai/mcp-singapore/actions/workflows/ci.yml/badge.svg)](https://github.com/olano-ai/mcp-singapore/actions/workflows/ci.yml)
 [![MCP Registry](https://img.shields.io/badge/MCP_Registry-published-16a34a)](https://registry.modelcontextprotocol.io/)
 [![Node.js 20+](https://img.shields.io/badge/Node.js-20%2B-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![Telegram](https://img.shields.io/badge/Telegram-%40OlanoSGBot-26A5E4?logo=telegram&logoColor=white)](https://t.me/OlanoSGBot)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 Ask Claude or Codex questions about Singapore property, MRT/LRT, buses, companies, weather, the
 economy, public services, and official financial reference data.
 
 **291 read-only tools · 8 Agent Skills · 7 plugins · stdio and Streamable HTTP**
+
+> **Try it right now, without installing anything.** Message
+> [**@OlanoSGBot**](https://t.me/OlanoSGBot) on Telegram and ask a Singapore question in plain
+> English. It is free to use and needs no API key. See
+> [Try it on Telegram](#try-it-on-telegram).
 
 Built and maintained in Singapore by Olano — the [olano.ai](https://olano.ai) platform for applied
 AI, and [olano.sg](https://olano.sg), our Singapore AI studio. Singapore MCP is the studio's open
@@ -57,7 +63,8 @@ server.
 
 Ask these in an MCP client, or use `olano-sg examples [category]` to browse the packaged prompt
 catalog. Results depend on upstream coverage and, for a few tools, on the optional keys in
-[Credentials and caching](#credentials-and-caching). Not installed yet? Start with
+[Credentials and caching](#credentials-and-caching). Not installed yet? Ask a few of these on
+Telegram first with [@OlanoSGBot](https://t.me/OlanoSGBot), or go straight to
 [Quick start](#quick-start).
 
 ### Companies and ACRA
@@ -209,6 +216,32 @@ Claude will chain the tools itself.
 - “Repeat that analysis, but this time show the freshness of every dataset you touched and warn me
   about any that is stale or frozen.”
 
+## Try it on Telegram
+
+The fastest way to see what this server does is to ask it something.
+**[@OlanoSGBot](https://t.me/OlanoSGBot)** is a free Telegram bot, built by Olano and backed by the
+Singapore MCP tools in this repository. No install, no Node.js, no API key, and no account beyond
+the Telegram one you already have.
+
+1. Open [**t.me/OlanoSGBot**](https://t.me/OlanoSGBot), or search `@OlanoSGBot` inside Telegram.
+2. Press **Start**.
+3. Ask a question in plain English.
+
+Questions that work well in a chat window:
+
+- “What is the two-hour weather forecast and the latest PSI?”
+- “What is the latest Category B COE premium?”
+- “Show recent 4-room HDB resale prices in Bedok.”
+- “Which MRT stations are nearest to 1 Fullerton Road?”
+- “When is the next bus at stop 01012?”
+
+Answers keep their source agency and observation period, the same as they do in an MCP client.
+
+The bot is a hosted convenience for trying the data out and sharing it with someone who does not
+run an AI client. Unlike the local install, your messages travel through Telegram and Olano's bot
+service — see [Privacy](PRIVACY.md). For everyday use, for the complete 291-tool suite, and for the
+eight Agent Skills, install the server in your own AI client with [Quick start](#quick-start).
+
 ## Quick start
 
 New to MCP? An MCP server is a small helper program that your AI app runs on your own computer so
@@ -226,6 +259,10 @@ key.
 | **Claude Code** — terminal or the **Code** tab | [Claude Code](#claude-code)               | Two `/plugin` commands      |
 | **Codex app**                                  | [Codex app](#codex-app)                   | Add a server in Settings    |
 | **Codex CLI**                                  | [Codex CLI](#codex-cli)                   | One `codex mcp add` command |
+
+**Just want to see it work first?** You do not have to install anything at all — message
+[@OlanoSGBot](https://t.me/OlanoSGBot) on Telegram instead. See
+[Try it on Telegram](#try-it-on-telegram).
 
 Not sure which one you have? If you type questions into a chat window, you are using the Claude
 Desktop app. If you run `claude` in a terminal, or you use the **Code** tab inside the desktop app,
