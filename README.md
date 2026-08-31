@@ -237,10 +237,16 @@ Questions that work well in a chat window:
 
 Answers keep their source agency and observation period, the same as they do in an MCP client.
 
-The bot is a hosted convenience for trying the data out and sharing it with someone who does not
-run an AI client. Unlike the local install, your messages travel through Telegram and Olano's bot
-service — see [Privacy](PRIVACY.md). For everyday use, for the complete 291-tool suite, and for the
-eight Agent Skills, install the server in your own AI client with [Quick start](#quick-start).
+The bot is a hosted service rather than a local install. It runs as an Olano-hosted agent on a
+server in Singapore; each user's conversation and memory is stored separately, scoped to their
+account on the messaging platform, so no user — and no agent session — can reach another user's
+data. Composing a reply sends the relevant message content to a third-party language-model provider,
+which may process it outside Singapore. Read [Privacy](PRIVACY.md) before sending anything
+sensitive.
+
+For everyday use, for the complete 291-tool suite, and for the eight Agent Skills, install the
+server in your own AI client with [Quick start](#quick-start). That route runs on your own machine
+and sends nothing to Olano.
 
 ## Quick start
 

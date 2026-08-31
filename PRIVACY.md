@@ -33,11 +33,25 @@ Olano operates a free Telegram bot, [@OlanoSGBot](https://t.me/OlanoSGBot), so t
 these tools without installing anything. The bot is a hosted Olano service rather than part of the
 Software, and the local-operation statements above do not apply to it.
 
-Messages you send to the bot are delivered through Telegram and are subject to
-[Telegram's privacy policy](https://telegram.org/privacy). Olano's bot service processes the content
-of your message to select a tool, query the upstream Singapore public-data services described above,
-and return an answer. Please do not send personal, confidential, or sensitive information to the
-bot. Run the npm packages locally if you need the request to stay on your own machine.
+**Where it runs.** The bot does not run on your device. It runs as a hosted agent on an Olano server
+located in Singapore, which calls the same upstream Singapore public-data services described above.
+
+**What Telegram sees.** Messages reach the bot through Telegram and are subject to
+[Telegram's privacy policy](https://telegram.org/privacy). Telegram passes the bot the content of
+the messages you send it and your account identifier on that platform.
+
+**Separation between users.** Each user's conversation and stored memory is kept separately, keyed
+to the messaging platform and to the account identifier on that platform. One user's data is not
+accessible to another user, and the agent answering you is scoped to your identifier alone: it
+cannot read another user's messages or memory.
+
+**Language-model processing.** To interpret a question and compose a reply, the bot sends the
+relevant message content to a third-party large-language-model provider. That provider may process
+the content outside Singapore, under its own terms and privacy policy.
+
+**What to send.** Send only what you are comfortable having processed this way, and do not send
+confidential or sensitive personal information to the bot. Run the npm packages locally if you need
+the request to stay on your own machine.
 
 This repository does not currently provide an Olano-hosted public MCP endpoint. If Olano introduces
 one, its data practices will be documented before it becomes publicly available.
