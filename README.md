@@ -235,7 +235,9 @@ Questions that work well in a chat window:
 - “Which MRT stations are nearest to 1 Fullerton Road?”
 - “When is the next bus at stop 01012?”
 
-Answers keep their source agency and observation period, the same as they do in an MCP client.
+Answers keep their source agency and observation period, the same as they do in an MCP client. The
+bot remembers your conversation so that follow-up questions work; send **`/forget`** whenever you
+want it to delete the memory and conversation data it holds for you.
 
 The bot is a hosted service rather than a local install. It runs as an Olano-hosted agent on a
 server in Singapore; each user's conversation and memory is stored separately, scoped to their

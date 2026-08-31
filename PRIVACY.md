@@ -45,6 +45,11 @@ to the messaging platform and to the account identifier on that platform. One us
 accessible to another user, and the agent answering you is scoped to your identifier alone: it
 cannot read another user's messages or memory.
 
+**Deleting your data.** Send `/forget` to the bot at any time to delete the memory and stored
+conversation data it holds for you. No request or explanation is needed. This clears what Olano
+holds; it does not reach the copy of the conversation held in your own Telegram account or on
+Telegram's servers, which is governed by Telegram's policy.
+
 **Language-model processing.** To interpret a question and compose a reply, the bot sends the
 relevant message content to a third-party large-language-model provider. That provider may process
 the content outside Singapore, under its own terms and privacy policy.
