@@ -7,6 +7,17 @@ prompts, and resources behind one endpoint.
 > This is an independent community project maintained by Olano. It is not affiliated with,
 > endorsed by, or an official product of the Singapore Government or any government agency.
 
+## Try it without installing
+
+Message [**@OlanoSGBot**](https://t.me/OlanoSGBot) on Telegram and ask a Singapore question in plain
+English. The bot is free to use, needs no API key, and is backed by these tools — it is the quickest
+way to see what the server returns before you add it to an AI client.
+
+The bot is an Olano-hosted agent running on a server in Singapore, not a local install. It keeps
+each user's conversation and memory separate, and `/forget` deletes yours. See the
+[privacy policy](https://github.com/olano-ai/mcp-singapore/blob/main/PRIVACY.md) for how messages
+are handled. Running the package below keeps everything on your own machine instead.
+
 ## Run over stdio
 
 ```bash

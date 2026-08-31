@@ -1,6 +1,6 @@
 # Terms of Use
 
-Last updated: August 20, 2026
+Last updated: August 31, 2026
 
 These terms apply to the Olano Singapore MCP packages, command-line interface, Agent Skills, and
 plugins in this repository (the “Software”). By using the Software, you agree to these terms.
@@ -33,6 +33,11 @@ educational and may not reflect an institution's current products or decisions.
 The Software is provided “as is” and “as available”, without warranties of accuracy, availability,
 fitness for a particular purpose, or non-infringement, to the extent permitted by law. Olano may
 change or discontinue features as upstream services and technical requirements evolve.
+
+The free Telegram bot [@OlanoSGBot](https://t.me/OlanoSGBot) is a hosted demonstration of these
+tools rather than part of the Software. It is offered on the same “as is” and “as available” basis,
+may be rate-limited, changed, or withdrawn at any time, and is additionally subject to Telegram's
+own terms. See [Privacy](PRIVACY.md) for how messages sent to it are handled.
 
 To the extent permitted by law, Olano is not liable for indirect, incidental, special,
 consequential, or punitive damages arising from use of the Software. Nothing in these terms excludes
