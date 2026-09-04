@@ -30,7 +30,7 @@
   "dependencies": {
     "@modelcontextprotocol/server": "^2.0.0",
     "@olano/mcp-core": "0.4.1",
-    "zod": "^4.1.5"
+    "zod": "^4.5.4"
   },
   "publishConfig": {
     "access": "public"
