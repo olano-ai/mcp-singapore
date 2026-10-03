@@ -29,18 +29,18 @@
     {
       "name": "Official MCP Registry",
       "status": "published",
-      "identifier": "io.github.olano-ai/mcp-singapore@0.3.0",
+      "identifier": "io.github.olano-ai/mcp-singapore@0.4.1",
       "submission": "automated by .github/workflows/publish.yml on a v* tag",
-      "verifiedAt": "2026-08-21",
-      "evidence": "Registry reports status active and isLatest true for 0.3.0, published 2026-08-20T16:36:55Z."
+      "verifiedAt": "2026-10-03",
+      "evidence": "Registry search returns 0.2.0, 0.3.0, 0.4.0 and 0.4.1, with isLatest true only for 0.4.1."
     },
     {
       "name": "npm",
       "status": "published",
-      "identifier": "@olano/mcp-singapore@0.3.0",
+      "identifier": "@olano/mcp-singapore@0.4.1",
       "submission": "automated by .github/workflows/publish.yml on a v* tag",
-      "verifiedAt": "2026-08-21",
-      "evidence": "npm reports 0.3.0 on the latest dist-tag."
+      "verifiedAt": "2026-10-03",
+      "evidence": "npm view reports 0.4.1 as the latest version."
     },
     {
       "name": "Anthropic claude-community",
@@ -85,12 +85,11 @@
     },
     {
       "name": "Cline MCP Marketplace",
-      "status": "blocked",
+      "status": "prepared",
       "submission": "new GitHub issue titled [Server Submission]:",
-      "target": "https://github.com/cline/mcp-marketplace/issues/new",
+      "target": "https://github.com/cline/mcp-marketplace/issues/new?template=mcp-server-submission.yml",
       "copy": "submissions/directories/drafts/cline-marketplace.md",
-      "blocker": "Requires a 400x400 PNG logo at a stable URL. The repository ships only an SVG mark.",
-      "notes": "Submitters must also confirm they watched Cline install the server from README.md alone. Adding an llms-install.md first reduces rejection risk."
+      "notes": "400x400 PNG logo added at assets/olano-singapore-400.png (rendered from assets/olano-ai-singapore.svg) and llms-install.md added at the repository root on 2026-10-03. Submit through the issue form https://github.com/cline/mcp-marketplace/issues/new?template=mcp-server-submission.yml and upload the PNG there. Submitters must confirm Cline installed the server from README.md or llms-install.md alone."
     },
     {
       "name": "awesome-mcp-servers",

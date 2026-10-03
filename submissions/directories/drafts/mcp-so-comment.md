@@ -23,7 +23,7 @@ mobility, property, business, the economy, civic services, and finance.
 
 - Repository: https://github.com/olano-ai/mcp-singapore
 - npm: `@olano/mcp-singapore` — https://www.npmjs.com/package/@olano/mcp-singapore
-- Official MCP Registry: `io.github.olano-ai/mcp-singapore@0.3.0`
+- Official MCP Registry: `io.github.olano-ai/mcp-singapore@0.4.1`
 - License: MIT
 - Transport: stdio and Streamable HTTP
 

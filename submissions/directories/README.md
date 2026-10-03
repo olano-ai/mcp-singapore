@@ -9,6 +9,8 @@ must never describe a `prepared` entry as a live listing.
 Each draft states where it goes, the mechanism, and any prerequisite. Read the destination's own
 contributing rules on the day you file — categories, templates, and required fields drift.
 
+See [`../SUBMIT-NOW.md`](../SUBMIT-NOW.md) for the step-by-step filing guide.
+
 ## Current picture
 
 The Official MCP Registry and npm are the two machine-readable publications, and both are automated
@@ -19,7 +21,8 @@ Everything else is a human submission:
 - **mcp.so** and **awesome-mcp-servers** are ready to file now.
 - **Docker MCP Catalog** is ready but is the most involved, needing a generated `server.yaml` and a
   container review.
-- **Cline** is blocked on a 400×400 PNG logo, which the repository does not yet ship.
+- **Cline** is ready: the 400×400 PNG logo is at `assets/olano-singapore-400.png` and
+  `llms-install.md` is at the repository root.
 - **Smithery** is blocked until the project exposes a public HTTPS MCP endpoint or builds an MCPB
   artifact. The server already speaks Streamable HTTP, so this is a hosting and packaging decision
   rather than a code gap.

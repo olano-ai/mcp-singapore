@@ -57,7 +57,7 @@ open-data servers.
 
 - Repository: https://github.com/olano-ai/mcp-singapore
 - npm: `@olano/mcp-singapore`
-- Official MCP Registry: `io.github.olano-ai/mcp-singapore@0.3.0`
+- Official MCP Registry: `io.github.olano-ai/mcp-singapore@0.4.1`
 - License: MIT
 
 291 read-only tools, 5 prompts and 3 resources across seven selectable profiles, sourced from

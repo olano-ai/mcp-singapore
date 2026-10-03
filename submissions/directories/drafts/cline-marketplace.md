@@ -39,7 +39,7 @@ npx -y @olano/mcp-singapore --profile all
 Three optional API keys (`DATA_GOV_SG_API_KEY`, `ONEMAP_TOKEN`, `LTA_DATAMALL_API_KEY`) raise rate
 limits and unlock live transport and geocoding. Missing credentials degrade coverage rather than
 fail. MIT licensed, published on npm and in the official MCP Registry as
-`io.github.olano-ai/mcp-singapore@0.3.0`.
+`io.github.olano-ai/mcp-singapore@0.4.1`.
 
 **Installation testing:** confirm this only after actually running the flow — hand Cline the
 `README.md` and let it configure the server end to end.

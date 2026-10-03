@@ -4,16 +4,16 @@ This directory is the operational record for publishing the Olano Singapore MCP 
 directories. It holds the exact copy to submit, the mechanics for each destination, and an honest
 status for each one.
 
-Release under submission: **0.3.0**
+Release under submission: **0.4.1** (npm and Registry re-checked 2026-10-03)
 
 ## What is already live
 
-| Channel                   | Status    | Identifier / evidence                                                  |
-| ------------------------- | --------- | ---------------------------------------------------------------------- |
-| npm                       | published | `@olano/mcp-singapore@0.3.0`, `latest` dist-tag                        |
-| Official MCP Registry     | published | `io.github.olano-ai/mcp-singapore@0.3.0`, `status: active`, `isLatest` |
-| GitHub marketplace source | live      | `/plugin marketplace add olano-ai/mcp-singapore`                       |
-| Codex plugin marketplace  | live      | `codex plugin marketplace add olano-ai/mcp-singapore`                  |
+| Channel                   | Status    | Identifier / evidence                                 |
+| ------------------------- | --------- | ----------------------------------------------------- |
+| npm                       | published | `@olano/mcp-singapore@0.4.1`, `latest` dist-tag       |
+| Official MCP Registry     | published | `io.github.olano-ai/mcp-singapore@0.4.1`, `isLatest`  |
+| GitHub marketplace source | live      | `/plugin marketplace add olano-ai/mcp-singapore`      |
+| Codex plugin marketplace  | live      | `codex plugin marketplace add olano-ai/mcp-singapore` |
 
 Registry publication is automated by `.github/workflows/publish.yml` on a `v*` tag and is
 idempotent, so a rerun skips a version that is already present.
