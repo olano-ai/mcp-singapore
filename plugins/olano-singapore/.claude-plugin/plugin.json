@@ -1,7 +1,7 @@
 {
   "name": "olano-singapore",
   "displayName": "Singapore MCP by Olano",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "The complete Singapore public-data MCP suite with eight focused Agent Skills and 291 read-only tools.",
   "author": { "name": "Olano AI (Carlos Chacon)", "url": "https://olano.ai" },
   "homepage": "https://olano.ai/resources/singapore-mcp-server",

@@ -1,6 +1,6 @@
 {
   "singapore-civic": {
     "command": "npx",
-    "args": ["-y", "@olano/mcp-singapore@0.4.1", "--profile", "civic"]
+    "args": ["-y", "@olano/mcp-singapore@0.4.2", "--profile", "civic"]
   }
 }
