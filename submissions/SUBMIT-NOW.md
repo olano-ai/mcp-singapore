@@ -1,8 +1,8 @@
 # Submit Singapore MCP to the directories (about 15 minutes in total)
 
 Everything is prepared. Each step below is a paste and a click, done while signed in to the GitHub
-account (or Claude account) that should appear as the submitter. Checked on 2026-10-03 against
-release **0.4.1** (latest on npm and the Official MCP Registry). After each one, update its `status`
+account (or Claude account) that should appear as the submitter. Checked on 2026-10-04 against
+release **0.4.3** (latest on npm and the Official MCP Registry). After each one, update its `status`
 in [`directories/mcp-directories.json`](directories/mcp-directories.json).
 
 Why it matters: each listing is a link back to the project, and the project page credits olano.ai and
@@ -71,7 +71,6 @@ not urgent for search visibility.
 
 ## Already done, no action needed
 
-- **Official MCP Registry** and **npm**: published automatically on each release tag (0.4.1).
+- **Official MCP Registry** and **npm**: published automatically on each release tag (0.4.3).
 - **PulseMCP**: copies from the Official MCP Registry automatically.
-- **Glama**: may already list the server at https://glama.ai/mcp/servers/olano-ai/mcp-singapore.
-  Open it in a browser. If it loads, click **Claim** and set the Glama row to `published`.
+- **Glama**: claimed on 2026-10-04 (https://glama.ai/mcp/servers/olano-ai/mcp-singapore).

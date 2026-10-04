@@ -29,22 +29,22 @@
     {
       "name": "Official MCP Registry",
       "status": "published",
-      "identifier": "io.github.olano-ai/mcp-singapore@0.4.1",
+      "identifier": "io.github.olano-ai/mcp-singapore@0.4.3",
       "submission": "automated by .github/workflows/publish.yml on a v* tag",
-      "verifiedAt": "2026-10-03",
-      "evidence": "Registry search returns 0.2.0, 0.3.0, 0.4.0 and 0.4.1, with isLatest true only for 0.4.1."
+      "verifiedAt": "2026-10-04",
+      "evidence": "Registry search returns 0.2.0 through 0.4.3, with isLatest true only for 0.4.3."
     },
     {
       "name": "npm",
       "status": "published",
-      "identifier": "@olano/mcp-singapore@0.4.1",
+      "identifier": "@olano/mcp-singapore@0.4.3",
       "submission": "automated by .github/workflows/publish.yml on a v* tag",
-      "verifiedAt": "2026-10-03",
-      "evidence": "npm view reports 0.4.1 as the latest version."
+      "verifiedAt": "2026-10-04",
+      "evidence": "npm view reports 0.4.3 as the latest version."
     },
     {
       "name": "Anthropic claude-community",
-      "status": "prepared",
+      "status": "submitted",
       "submission": "web form; requires a signed-in Claude account",
       "target": "https://clau.de/plugin-directory-submission",
       "copy": "submissions/anthropic/claude-community-form.md",
@@ -69,15 +69,18 @@
         ],
         "bundledAt": "2026-10-04",
         "bundled": "Reviewer's finding LAUNCHER_PACKAGE_REVIEW: each plugin now carries the server it runs under server/ (scripts/build-plugin-server.mjs: about 150 readable files, largest under 256 KB; two SDK files over the limit are split unchanged into ES module parts) and .mcp.json starts it with node ${CLAUDE_PLUGIN_ROOT}/server/node_modules/@olano/mcp-singapore/dist/cli.js. check:plugins fails if the committed copy is stale; the release workflow regenerates it.",
-        "next": "Resubmit from the same repository and folder; the review reads the latest commit."
+        "releasedAt": "2026-10-04",
+        "released": "0.4.3 (commit d6f5cb5 on main) carries the bundled server, the icon and the pinned skill text. Its plugin.json files and the vendored server all read 0.4.3.",
+        "directoryState": "On 2026-10-04 the directory still tracked v0.4.1 (3749b11): its Updates panel said it was not picking up new commits. A GitHub push webhook to the directory was added on 2026-10-04 so later pushes to main are detected; Resubmit for review on the Review tab re-checks the latest commit.",
+        "next": "Once the directory shows the 0.4.3 commit (or later) as detected, select Resubmit for review."
       }
     },
     {
       "name": "Glama",
-      "status": "unverified",
+      "status": "published",
       "url": "https://glama.ai/mcp/servers/olano-ai/mcp-singapore",
       "submission": "automatic discovery; publishers may claim the listing",
-      "notes": "Previously recorded as indexed. Could not be confirmed from the release environment because glama.ai is unreachable through the egress proxy. glama.json at the repository root (added 2026-10-04) names GitHub user cchacons as maintainer, which Glama reads to verify a claim. Confirm from a normal browser, claim the server, and set the status to published with the observed date."
+      "notes": "Claimed on 2026-10-04 by GitHub user cchacons, verified through glama.json at the repository root."
     },
     {
       "name": "PulseMCP",
