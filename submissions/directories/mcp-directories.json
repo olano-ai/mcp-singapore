@@ -67,7 +67,8 @@
           "Pinned both commands to @0.4.1 in the skill and its plugin copy; bump-version.mjs now rewrites the pins and check-claude-plugins.mjs fails on any unpinned or stale @olano invocation in skill text.",
           "Added icon (./assets/olano-singapore.svg, 512x512 viewBox) to all seven plugin.json files; validator pin moved to @anthropic-ai/claude-code@2.1.289, which recognises the field."
         ],
-        "open": "Reviewer's non-blocking finding to bundle the package code into the plugin as readable source under CLAUDE_PLUGIN_ROOT (<=256 KB per file, <=512 files) is not done: compiled dist is about 1.2 MB before runtime dependencies. Needs its own build step.",
+        "bundledAt": "2026-10-04",
+        "bundled": "Reviewer's finding LAUNCHER_PACKAGE_REVIEW: each plugin now carries the server it runs under server/ (scripts/build-plugin-server.mjs: about 150 readable files, largest under 256 KB; two SDK files over the limit are split unchanged into ES module parts) and .mcp.json starts it with node ${CLAUDE_PLUGIN_ROOT}/server/node_modules/@olano/mcp-singapore/dist/cli.js. check:plugins fails if the committed copy is stale; the release workflow regenerates it.",
         "next": "Resubmit from the same repository and folder; the review reads the latest commit."
       }
     },
@@ -76,7 +77,7 @@
       "status": "unverified",
       "url": "https://glama.ai/mcp/servers/olano-ai/mcp-singapore",
       "submission": "automatic discovery; publishers may claim the listing",
-      "notes": "Previously recorded as indexed. Could not be confirmed from the release environment because glama.ai is unreachable through the egress proxy. Confirm from a normal browser and, if it resolves, claim the server and set the status to published with the observed date."
+      "notes": "Previously recorded as indexed. Could not be confirmed from the release environment because glama.ai is unreachable through the egress proxy. glama.json at the repository root (added 2026-10-04) names GitHub user cchacons as maintainer, which Glama reads to verify a claim. Confirm from a normal browser, claim the server, and set the status to published with the observed date."
     },
     {
       "name": "PulseMCP",

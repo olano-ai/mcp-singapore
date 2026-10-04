@@ -4,6 +4,14 @@ The repository is an installable Claude Code marketplace named `olano`. Each plu
 server-side tool profile and the Agent Skills that teach Claude when and how to use it. Claude Code
 starts the bundled MCP server automatically when the plugin is enabled.
 
+Each plugin carries the server it runs in `server/`, as readable JavaScript: the compiled Olano
+packages and their runtime dependencies at the versions in `package-lock.json`, no file over 256 KB
+and about 150 files in all. Its `.mcp.json` starts it with
+`node ${CLAUDE_PLUGIN_ROOT}/server/node_modules/@olano/mcp-singapore/dist/cli.js`, so nothing is
+downloaded at install or start-up; Node.js 20 or newer must be on the `PATH`.
+`scripts/build-plugin-server.mjs` writes that folder (see its header for how the two SDK files over
+the limit are split unchanged into parts), and the release workflow rewrites it at each version.
+
 ## Install
 
 This page is the reference. For a step-by-step first install, see
@@ -93,7 +101,8 @@ npm run check:plugins
 ```
 
 The repository check also verifies that plugin and npm versions match, every MCP command selects the
-intended profile, and every packaged skill is byte-for-byte equal to its canonical source.
+intended profile, every packaged skill is byte-for-byte equal to its canonical source, and every
+plugin's `server/` matches a fresh `npm run build && npm run build:plugin-server`.
 
 See the official Claude Code documentation for [plugin marketplaces](https://code.claude.com/docs/en/plugin-marketplaces),
 [plugin components and user configuration](https://code.claude.com/docs/en/plugins-reference), and

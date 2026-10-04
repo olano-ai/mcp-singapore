@@ -85,16 +85,23 @@ for (const entry of marketplace.plugins) {
   const servers = Object.values(mcp.mcpServers ?? {});
   assert(servers.length === 1, `${entry.name} must declare exactly one MCP server.`);
   const server = servers[0];
-  assert(server.command === 'npx', `${entry.name} must launch with npx.`);
+  // The plugin runs the server it carries (plugins/<name>/server, written by
+  // scripts/build-plugin-server.mjs), not a package fetched at install time: Anthropic's plugin
+  // directory reviews the code inside the plugin.
+  assert(server.command === 'node', `${entry.name} must launch its vendored server with node.`);
   assert(
     JSON.stringify(server.args) ===
       JSON.stringify([
-        '-y',
-        `@olano/mcp-singapore@${rootPackage.version}`,
+        '${CLAUDE_PLUGIN_ROOT}/server/node_modules/@olano/mcp-singapore/dist/cli.js',
         '--profile',
         contract.profile,
       ]),
-    `${entry.name} MCP package or profile is stale.`,
+    `${entry.name} MCP entry point or profile is stale.`,
+  );
+  assert(
+    readJson(`${pluginRoot}/server/node_modules/@olano/mcp-singapore/package.json`).version ===
+      rootPackage.version,
+    `${entry.name} carries a stale vendored server; run npm run build && npm run build:plugin-server.`,
   );
   for (const value of Object.values(server.env ?? {})) {
     const match = /^\$\{user_config\.([A-Za-z_][A-Za-z0-9_]*)\}$/.exec(value);

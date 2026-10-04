@@ -1,8 +1,12 @@
 {
   "mcpServers": {
     "singapore-mobility": {
-      "command": "npx",
-      "args": ["-y", "@olano/mcp-singapore@0.4.2", "--profile", "mobility"],
+      "command": "node",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/server/node_modules/@olano/mcp-singapore/dist/cli.js",
+        "--profile",
+        "mobility"
+      ],
       "env": {
         "ONEMAP_TOKEN": "${user_config.onemap_token}",
         "LTA_DATAMALL_API_KEY": "${user_config.lta_datamall_api_key}"

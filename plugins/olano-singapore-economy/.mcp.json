@@ -1,8 +1,12 @@
 {
   "mcpServers": {
     "singapore-economy": {
-      "command": "npx",
-      "args": ["-y", "@olano/mcp-singapore@0.4.2", "--profile", "economy"],
+      "command": "node",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/server/node_modules/@olano/mcp-singapore/dist/cli.js",
+        "--profile",
+        "economy"
+      ],
       "env": { "DATA_GOV_SG_API_KEY": "${user_config.data_gov_sg_api_key}" }
     }
   }
