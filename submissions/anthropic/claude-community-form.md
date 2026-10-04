@@ -23,7 +23,7 @@ Approved plugins are installed by users with the `@claude-community` suffix, for
 | Repository (public)  | https://github.com/olano-ai/mcp-singapore                                           |
 | Marketplace manifest | https://github.com/olano-ai/mcp-singapore/blob/main/.claude-plugin/marketplace.json |
 | License              | MIT                                                                                 |
-| Version              | 0.3.0                                                                               |
+| Version              | 0.4.3 (whatever `plugin.json` says at submission time)                              |
 | Support contact      | https://github.com/olano-ai/mcp-singapore/issues                                    |
 | Security contact     | GitHub private vulnerability reporting on the repository                            |
 | Privacy policy       | https://github.com/olano-ai/mcp-singapore/blob/main/PRIVACY.md                      |
@@ -143,13 +143,13 @@ Run from a clean checkout on Node.js 22+ before filing:
 npm ci && npm run build
 npm run format:check && npm run lint && npx vitest run
 npm run check:plugins
-npm exec --yes --package='@anthropic-ai/claude-code@2.1.237' -- claude plugin validate .
+npm exec --yes --package='@anthropic-ai/claude-code@2.1.289' -- claude plugin validate .
 for p in plugins/*; do
-  npm exec --yes --package='@anthropic-ai/claude-code@2.1.237' -- claude plugin validate "$p"
+  npm exec --yes --package='@anthropic-ai/claude-code@2.1.289' -- claude plugin validate "$p"
 done
 ```
 
-Last verified for 0.3.0: root marketplace and all seven plugins pass, `check:plugins` reports 7
+Last verified for 0.4.3: root marketplace and all seven plugins pass, `check:plugins` reports 7
 Claude Code plugins and 15 packaged skill copies.
 
 ## After submitting
