@@ -6,7 +6,7 @@ description: Develop, integrate, and troubleshoot clients using the Olano Singap
 # Develop with Singapore MCP
 
 1. Choose the smallest server profile: `all`, `mobility`, `property`, `business`, `economy`, `civic`, or `finance`. Use `singapore_tool_profiles` to inspect the active contract.
-2. Start stdio with `npx -y @olano/mcp-singapore@0.4.2 --profile <name>`. For local exploration, use `npx -y @olano/sg-cli@0.4.2 list`, `search`, `examples`, `prompts`, `profile`, or `tool`.
+2. Start stdio with `npx -y @olano/mcp-singapore@0.4.3 --profile <name>`. For local exploration, use `npx -y @olano/sg-cli@0.4.3 list`, `search`, `examples`, `prompts`, `profile`, or `tool`.
 3. Add only required secrets: `DATA_GOV_SG_API_KEY`, `ONEMAP_TOKEN`, and `LTA_DATAMALL_API_KEY`. Never commit credentials or silently replace a credentialed source with a different provider.
 4. Discover a tool, inspect its input schema, then send exact JSON arguments. Prefer a domain-specific filtered or aggregate tool over generic dataset downloads.
 5. For HDB filtered rows or statistics, use `hdb_resale_stats`; use `hdb_resale_search` for explicit raw pagination. Respect returned completeness, truncation, freshness, and source fields.
