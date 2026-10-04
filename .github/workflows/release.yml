@@ -81,6 +81,8 @@ jobs:
       # Everything below is the release gate. It runs against the bumped tree, before anything is
       # tagged or pushed, so a failure here costs nothing but the run.
       - run: npm run build
+      # Each Claude Code plugin carries the server it runs; rewrite it at the new version.
+      - run: npm run build:plugin-server
       - run: npm run format:check
       - run: npm run lint
       - run: npx vitest run
@@ -112,6 +114,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add --all plugins
           git commit --all --message "chore: release ${TAG}"
           git tag --annotate "${TAG}" --message "Release ${TAG}"
           git push origin HEAD:main

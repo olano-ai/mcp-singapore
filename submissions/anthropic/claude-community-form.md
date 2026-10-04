@@ -31,7 +31,8 @@ Approved plugins are installed by users with the `@claude-community` suffix, for
 
 ### Data handling (expect a question of this shape)
 
-> The plugins run a local stdio MCP server via `npx`. There is no Olano account, no Olano
+> Each plugin runs a local stdio MCP server that it carries as readable source under
+> `${CLAUDE_PLUGIN_ROOT}/server` (started with `node`; nothing is downloaded). There is no Olano account, no Olano
 > analytics, and no usage telemetry. Requests go only to the Singapore public-data services the
 > invoked tool needs — data.gov.sg, OneMap, LTA DataMall, and SingStat — and carry only the query
 > parameters for that request. All three API credentials are optional, are read from environment

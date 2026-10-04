@@ -5,6 +5,10 @@ coverage/
 .DS_Store
 *.log
 
+# Each Claude Code plugin commits the server it runs (scripts/build-plugin-server.mjs).
+!plugins/*/server/node_modules/
+!plugins/*/server/node_modules/**/dist/
+
 # Claude Desktop bundle build output
 build/
 *.mcpb
