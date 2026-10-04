@@ -1,4 +1,4 @@
-import { readFileSync, statSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 import process from 'node:process';
 
@@ -112,6 +112,21 @@ for (const entry of marketplace.plugins) {
 
 for (const name of expected.keys()) {
   assert(seen.has(name), `Missing marketplace plugin: ${name}`);
+}
+
+// Anthropic's plugin directory rejects a plugin whose launcher, skill or script text runs a package
+// without an exact version, because that code can change after review. Every npx invocation of an
+// @olano package in a skill must carry @<release version>; the packaged copies are byte-identical to
+// these canonical files (checked above), so checking the canonical ones covers both.
+const invocation = /npx\s+(?:-y\s+)?(@olano\/[a-z0-9-]+)(@[^\s`'"]+)?/g;
+for (const skill of readdirSync('skills', { withFileTypes: true }).filter((e) => e.isDirectory())) {
+  const file = `skills/${skill.name}/SKILL.md`;
+  for (const match of readText(file).matchAll(invocation)) {
+    assert(
+      match[2] === `@${rootPackage.version}`,
+      `${file} runs ${match[1]}${match[2] ?? ''} unpinned or stale; use ${match[1]}@${rootPackage.version}.`,
+    );
+  }
 }
 
 process.stdout.write(

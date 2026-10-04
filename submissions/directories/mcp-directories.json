@@ -57,7 +57,19 @@
         "olano-singapore-civic",
         "olano-singapore-finance"
       ],
-      "notes": "Pull requests against anthropics/claude-plugins-community are closed automatically; that repository is a read-only nightly mirror of the internal review pipeline. Approved plugins install with the @claude-community suffix."
+      "notes": "Pull requests against anthropics/claude-plugins-community are closed automatically; that repository is a read-only nightly mirror of the internal review pipeline. Approved plugins install with the @claude-community suffix.",
+      "review": {
+        "reviewedAt": "2026-09-25",
+        "outcome": "not approved: a reviewer asked for changes",
+        "blocking": "A package ran without an exact version in skill text (skills/develop-with-singapore-mcp: `npx -y @olano/mcp-singapore`, `npx @olano/sg-cli`). Launchers were already pinned.",
+        "fixedAt": "2026-10-04",
+        "fixes": [
+          "Pinned both commands to @0.4.1 in the skill and its plugin copy; bump-version.mjs now rewrites the pins and check-claude-plugins.mjs fails on any unpinned or stale @olano invocation in skill text.",
+          "Added icon (./assets/olano-singapore.svg, 512x512 viewBox) to all seven plugin.json files; validator pin moved to @anthropic-ai/claude-code@2.1.289, which recognises the field."
+        ],
+        "open": "Reviewer's non-blocking finding to bundle the package code into the plugin as readable source under CLAUDE_PLUGIN_ROOT (<=256 KB per file, <=512 files) is not done: compiled dist is about 1.2 MB before runtime dependencies. Needs its own build step.",
+        "next": "Resubmit from the same repository and folder; the review reads the latest commit."
+      }
     },
     {
       "name": "Glama",

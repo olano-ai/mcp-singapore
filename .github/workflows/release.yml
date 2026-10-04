@@ -90,7 +90,7 @@ jobs:
 
       - name: Run official Claude Code plugin validator
         run: |
-          validator='@anthropic-ai/claude-code@2.1.237'
+          validator='@anthropic-ai/claude-code@2.1.289'
           npm exec --yes --package="$validator" -- claude plugin validate .
           for plugin in plugins/*; do
             npm exec --yes --package="$validator" -- claude plugin validate "$plugin"

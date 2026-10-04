@@ -130,6 +130,31 @@ for (const name of directories('plugins')) {
   edit(`plugins/${name}/.codex-mcp.json`, (config) => pinnedArgument(config));
 }
 
+/**
+ * Skill text that tells an agent to run a package must pin it too: Anthropic's plugin directory
+ * rejects any launcher, skill or script that runs an unpinned package. Rewrites every
+ * `@olano/<package>@<current>` in the canonical skills and their packaged plugin copies;
+ * `check-claude-plugins.mjs` fails on any unpinned or stale invocation that remains.
+ */
+function editText(file) {
+  const absolute = path.join(ROOT, file);
+  const original = readFileSync(absolute, 'utf8');
+  const updated = original.replace(
+    new RegExp(`(@olano/[a-z0-9-]+)@${current.replaceAll('.', '\\.')}(?![0-9])`, 'g'),
+    `$1@${version}`,
+  );
+  if (updated === original) return;
+  changed.push(file);
+  if (!dryRun) writeFileSync(absolute, updated);
+}
+
+for (const skill of directories('skills')) editText(`skills/${skill}/SKILL.md`);
+for (const name of directories('plugins')) {
+  for (const skill of directories(`plugins/${name}/skills`)) {
+    editText(`plugins/${name}/skills/${skill}/SKILL.md`);
+  }
+}
+
 if (!dryRun) {
   // The lockfile carries every workspace version and is not covered by the rewrite above.
   execFileSync('npm', ['install', '--package-lock-only', '--ignore-scripts'], {
