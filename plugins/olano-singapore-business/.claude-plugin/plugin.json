@@ -6,6 +6,7 @@
   "homepage": "https://github.com/olano-ai/mcp-singapore",
   "repository": "https://github.com/olano-ai/mcp-singapore",
   "license": "MIT",
+  "icon": "./assets/olano-singapore.svg",
   "keywords": ["singapore", "business", "acra", "uen"],
   "userConfig": {
     "data_gov_sg_api_key": {

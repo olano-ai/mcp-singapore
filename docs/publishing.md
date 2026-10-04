@@ -94,7 +94,7 @@ npm run lint
 npx vitest run
 npm run check:brand
 npm run check:plugins
-npm exec --yes --package='@anthropic-ai/claude-code@2.1.237' -- claude plugin validate .
+npm exec --yes --package='@anthropic-ai/claude-code@2.1.289' -- claude plugin validate .
 RELEASE_TAG="v$(node -p "require('./package.json').version")" node scripts/check-release.mjs
 node scripts/verify-packages.mjs
 npm run build:mcpb
