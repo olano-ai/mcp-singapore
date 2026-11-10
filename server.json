@@ -58,19 +58,19 @@
       "environmentVariables": [
         {
           "name": "DATA_GOV_SG_API_KEY",
-          "description": "Optional data.gov.sg API key for production limits.",
+          "description": "Optional, not needed to start: the server runs without any key. A data.gov.sg API key is for production use and the provider's rate limits.",
           "isRequired": false,
           "isSecret": true
         },
         {
           "name": "ONEMAP_TOKEN",
-          "description": "Optional OneMap token for geocoding, routing, themes, and address-based rail lookup.",
+          "description": "Optional, not needed to start: the server runs without any key. A OneMap token enables geocoding, routing, themes, and address-based rail lookup.",
           "isRequired": false,
           "isSecret": true
         },
         {
           "name": "LTA_DATAMALL_API_KEY",
-          "description": "Optional LTA DataMall Account Key for dynamic transport APIs.",
+          "description": "Optional, not needed to start: the server runs without any key. An LTA DataMall Account Key enables the dynamic transport APIs.",
           "isRequired": false,
           "isSecret": true
         },
@@ -82,10 +82,9 @@
         },
         {
           "name": "OLANO_SG_PROFILE",
-          "description": "Optional aggregate tool profile: all, mobility, property, business, economy, civic, or finance.",
+          "description": "Optional tool profile. Leave unset to load every tool, or choose mobility, property, business, economy, civic, or finance for a focused set.",
           "isRequired": false,
           "isSecret": false,
-          "default": "all",
           "choices": ["all", "mobility", "property", "business", "economy", "civic", "finance"]
         }
       ]
