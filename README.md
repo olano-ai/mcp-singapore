@@ -769,6 +769,16 @@ See [skills/README.md](skills/README.md) for installation and usage guidance.
 
 ## Credentials and caching
 
+Start without government credentials. Add a key only when you need the corresponding provider
+capabilities, using your client's supported secure credential storage or protected local environment
+configuration. Do not commit real keys to configuration examples.
+
+The registry manifest omits these keys from package installation inputs so directories do not
+generate unnecessary credential placeholders. Their descriptions are retained under publisher
+metadata as `optionalCredentials`, with `isSecret: true`. This custom documentation field is not
+a client secret-storage mechanism. OneMap and LTA tools still require their respective credentials
+when called; other tools and focused profiles can start without them.
+
 | Variable               | Purpose                                                                    |
 | ---------------------- | -------------------------------------------------------------------------- |
 | `DATA_GOV_SG_API_KEY`  | Optional data.gov.sg key for production use and provider limits            |

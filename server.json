@@ -41,21 +41,8 @@
           "name": "Analyse public time series",
           "description": "Align Singapore economic series by period and produce transparent statistics and charts."
         }
-      ]
-    }
-  },
-  "version": "0.4.3",
-  "packages": [
-    {
-      "registryType": "npm",
-      "registryBaseUrl": "https://registry.npmjs.org",
-      "identifier": "@olano/mcp-singapore",
-      "version": "0.4.3",
-      "runtimeHint": "npx",
-      "transport": {
-        "type": "stdio"
-      },
-      "environmentVariables": [
+      ],
+      "optionalCredentials": [
         {
           "name": "DATA_GOV_SG_API_KEY",
           "description": "Optional, not needed to start: the server runs without any key. A data.gov.sg API key is for production use and the provider's rate limits.",
@@ -73,7 +60,22 @@
           "description": "Optional, not needed to start: the server runs without any key. An LTA DataMall Account Key enables the dynamic transport APIs.",
           "isRequired": false,
           "isSecret": true
-        },
+        }
+      ]
+    }
+  },
+  "version": "0.4.3",
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "@olano/mcp-singapore",
+      "version": "0.4.3",
+      "runtimeHint": "npx",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
         {
           "name": "OLANO_SG_CACHE_DIR",
           "description": "Optional private directory for the persistent public-response cache.",
